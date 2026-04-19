@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blush Blossom Fan Fest 2026 — Fan Guide (Fan-made)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#080412;--card:rgba(255,255,255,.04);--card2:rgba(255,255,255,.08);
+  --bdr:rgba(167,139,250,.16);--bdr2:rgba(167,139,250,.32);
+  --v:#7c3aed;--lav:#a78bfa;--lav2:#c4b5fd;
+  --pk:#ec4899;--rose:#f9a8d4;--gold:#fbbf24;--cream:#fef9ee;
+  /* EXACT zone colors from official seating map */
+  --cA2:#dc2626; --cA3:#dc2626;   /* red 7900 */
+  --cA1:#ca8a04; --cA4:#ca8a04;   /* yellow 5000 */
+  --cB23:#16a34a;                  /* green 5900 B2 B3 B4 */
+  --cB15:#c026d3;                  /* magenta 4500 B1 B5 */
+  --cC24:#c026d3;                  /* magenta 4500 C2 C4 */
+  --cC135:#9333ea;                 /* purple 3500 C1 C3 C5 */
+  --cDfront:#1d4ed8;               /* blue 3000 D front rows */
+  --cDback:#0e7490;                /* teal 2500 D back rows */
+  --cEfront:#db2777;               /* pink 2000 E front rows */
+  --cEback:#06b6d4;                /* cyan 1500 E back rows */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans Thai','Sarabun',sans-serif;background:var(--ink);color:#fff;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 10% 5%,rgba(124,58,237,.2) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 90%,rgba(236,72,153,.13) 0%,transparent 55%)}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite var(--dl);opacity:0}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--b,.7)}}
+
+/* ── FAN-MADE BANNER ── */
+.fanmade-bar{
+  background:rgba(251,191,36,.08);border-bottom:1px solid rgba(251,191,36,.2);
+  padding:7px 16px;text-align:center;font-size:11px;color:rgba(251,191,36,.8);
+  position:relative;z-index:200;
+}
+.fanmade-bar a{color:var(--gold);text-decoration:underline}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,4,18,.88);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--bdr);padding:0 14px;display:flex;align-items:center;
+  justify-content:space-between;height:52px;gap:8px}
+.nav-logo{font-family:'Cinzel Decorative',serif;font-size:11px;
+  background:linear-gradient(135deg,var(--lav),var(--rose));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;flex-shrink:0}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-tab{padding:5px 10px;border:none;background:transparent;color:rgba(255,255,255,.4);
+  font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;
+  border-radius:7px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nav-tab.active{background:var(--card2);color:#fff}
+.nav-tab:not(.active):hover{color:var(--lav)}
+.lang-btn{padding:4px 10px;border:1px solid var(--bdr2);border-radius:100px;
+  background:transparent;color:var(--lav2);font-family:'Noto Sans Thai',sans-serif;
+  font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0}
+.lang-btn:hover{background:var(--card2)}
+
+/* ── PAGES ── */
+.page{display:none;position:relative;z-index:1;animation:fadeUp .3s ease both}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.wrap{max-width:1060px;margin:0 auto;padding:0 14px 80px}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:44px 14px 32px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.28);
+  border-radius:100px;padding:5px 15px;font-size:11px;color:var(--gold);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5vw,46px);
+  background:linear-gradient(135deg,var(--lav),var(--rose) 50%,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.15;margin-bottom:6px}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(14px,2.5vw,20px);color:rgba(167,139,250,.7);margin-bottom:24px}
+.hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.hero-pill{display:flex;align-items:center;gap:6px;background:var(--card);
+  border:1px solid var(--bdr);border-radius:100px;padding:6px 14px;
+  font-size:12px;color:rgba(255,255,255,.7);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.hero-pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+
+/* ── SECTION HDR ── */
+.sec-hd{font-family:'DM Serif Display',serif;font-size:22px;font-style:italic;
+  color:var(--cream);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.sec-hd::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.sec-hd small{font-size:11px;color:rgba(167,139,250,.6);font-family:'Noto Sans Thai',sans-serif;
+  font-style:normal;font-weight:400}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:24px;margin-bottom:32px}
+.timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(to bottom,var(--v),var(--pk),transparent)}
+.tl-item{position:relative;margin-bottom:16px}
+.tl-dot{position:absolute;left:-24px;top:4px;width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--v);background:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px var(--v)}
+.tl-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--lav)}
+.tl-time{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.07em;margin-bottom:2px}
+.tl-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.tl-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6}
+
+/* ── INFO CARDS ── */
+.info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:32px}
+.info-card{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:16px;position:relative;overflow:hidden;transition:all 0.3s}
+.info-card:hover{background:var(--card2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ac,var(--lav));box-shadow:0 0 8px var(--ac,var(--lav))}
+.info-icon{font-size:20px;margin-bottom:7px}
+.info-label{font-size:9px;font-weight:700;color:rgba(167,139,250,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.info-val{font-size:13px;font-weight:700;color:#fff;line-height:1.5}
+.info-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:3px;line-height:1.5}
+
+/* ── MAPS EMBED ── */
+.maps-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:32px;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+.maps-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.maps-title{font-size:14px;font-weight:700;color:#fff}
+.maps-sub{font-size:11px;color:rgba(255,255,255,.45)}
+.maps-link{padding:6px 14px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.35);border-radius:8px;color:#60a5fa;font-family:'Noto Sans Thai',sans-serif;font-size:11px;font-weight:700;text-decoration:none;transition:all .2s;box-shadow:0 0 10px rgba(59,130,246,0.1)}
+.maps-link:hover{background:rgba(59,130,246,.25);box-shadow:0 0 15px rgba(59,130,246,0.3)}
+.maps-iframe{width:100%;height:260px;border:none;display:block}
+
+/* ── BENEFIT TABLE ── */
+.benefit-wrap{overflow-x:auto;margin-bottom:32px;border-radius:12px;border:1px solid var(--bdr);background:var(--card)}
+.btable{width:100%;border-collapse:collapse;font-size:11px;min-width:640px}
+.btable th{padding:12px 9px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(167,139,250,.7);border-bottom:1px solid var(--bdr);background:rgba(8,4,18,0.5)}
+.btable th:first-child{text-align:left;min-width:160px;padding-left:16px}
+.btable td{padding:10px 9px;text-align:center;border-bottom:1px solid rgba(167,139,250,.06);color:rgba(255,255,255,.75)}
+.btable td:first-child{text-align:left;font-weight:600;font-size:11px;padding-left:16px;color:#fff}
+.btable tr:last-child td{border-bottom:none}
+.btable tr:hover td{background:rgba(167,139,250,0.05)}
+.chk{color:#4ade80;font-size:14px;text-shadow:0 0 8px rgba(74,222,128,0.4)}
+.crx{color:rgba(255,255,255,.18);font-size:11px}
+.rnd{font-size:9px;color:var(--gold);line-height:1.3;font-weight:600}
+.pbadge{display:inline-block;padding:3px 8px;border-radius:100px;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2)}
+
+/* ── LIVE STREAMING ── */
+.ls-card{background:var(--card);border:1px solid rgba(6,182,212,.3);border-radius:14px;padding:18px;margin-bottom:32px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(6,182,212,0.08)}
+.ls-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#06b6d4,#3b82f6);box-shadow:0 0 12px #06b6d4}
+.ls-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ls-tier{text-align:center;padding:16px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.18);border-radius:11px;transition:all 0.3s}
+.ls-tier:hover{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.4);transform:translateY(-2px)}
+.ls-price{font-size:26px;font-weight:700;color:#06b6d4;text-shadow:0 0 15px rgba(6,182,212,0.4)}
+.ls-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:7px;letter-spacing:0.05em}
+.ls-benefit{font-size:11px;color:rgba(255,255,255,.7);line-height:1.7}
+
+/* ── RULES ── */
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:32px}
+.rule-card{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;transition:all 0.2s}
+.rule-card:hover{background:var(--card2);border-color:var(--bdr2)}
+.rule-icon{font-size:18px;flex-shrink:0;margin-top:2px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4))}
+.rule-text{font-size:11px;color:rgba(255,255,255,.65);line-height:1.6}
+.rule-text strong{color:#fff;display:block;margin-bottom:2px;font-size:12px}
+.rule-no{border-color:rgba(239,68,68,.25);background:rgba(239,68,68,0.03)}
+.rule-no:hover{border-color:rgba(239,68,68,.5);background:rgba(239,68,68,0.06)}
+
+/* ── ARTISTS ── */
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:32px}
+.artist-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px 10px;text-align:center;transition:all .3s ease;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.artist-card:hover{background:var(--card2);border-color:var(--lav);transform:translateY(-4px);box-shadow:0 8px 20px rgba(167,139,250,0.15)}
+.aname{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px}
+.afull{font-size:10px;color:rgba(255,255,255,.45);margin-bottom:8px;line-height:1.4}
+.agl{display:inline-block;font-size:9px;font-weight:700;background:rgba(236,72,153,.14);border:1px solid rgba(236,72,153,.3);border-radius:100px;padding:3px 10px;color:var(--rose);margin-bottom:5px;box-shadow:0 0 8px rgba(236,72,153,0.1)}
+.atag{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px}
+.atag a{font-size:9px;color:rgba(167,139,250,.95);text-decoration:none;border:1px solid rgba(167,139,250,.35);border-radius:999px;padding:2px 8px;line-height:1.4;transition:all .2s}
+.atag a:hover{color:#fff;border-color:var(--lav2);background:rgba(167,139,250,.25);box-shadow:0 0 10px rgba(167,139,250,0.3)}
+.achar{display:inline-block;font-size:9px;font-weight:700;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);border-radius:100px;padding:3px 10px;color:var(--gold);box-shadow:0 0 8px rgba(251,191,36,0.1)}
+.anochar{font-size:9px;color:rgba(255,255,255,.2);padding:3px 0}
+
+/* ════════════════════════════════
+   CENSUS PAGE - ENHANCED MAP UI
+════════════════════════════════ */
+.census-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;padding-top:22px}
+.census-title{font-family:'DM Serif Display',serif;font-size:24px;font-style:italic;color:var(--cream);text-shadow:0 2px 10px rgba(254,249,238,0.2)}
+.total-badge{background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.25));border:1px solid rgba(167,139,250,.4);border-radius:100px;padding:8px 16px;font-size:12px;color:var(--lav);box-shadow:0 0 15px rgba(167,139,250,0.2)}
+.total-badge strong{color:#fff;font-size:18px;margin:0 4px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:lp 1.4s ease-in-out infinite;vertical-align:middle;margin-right:6px}
+@keyframes lp{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+
+/* stats */
+.stats-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px;text-align:center;position:relative;overflow:hidden;transition:transform .3s, box-shadow .3s;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.3)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac,var(--lav));box-shadow:0 0 10px var(--ac,var(--lav))}
+.stat-n{font-size:28px;font-weight:700;line-height:1;text-shadow:0 2px 10px rgba(255,255,255,0.1)}
+.stat-l{font-size:10px;color:rgba(255,255,255,.5);margin-top:6px;letter-spacing:0.05em}
+.stat-s{font-size:10px;color:var(--lav);margin-top:4px;font-weight:600}
+
+.census-day-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-8px 0 18px}
+.cdf-lbl{font-size:11px;color:rgba(255,255,255,.5);font-weight:700;letter-spacing:.05em}
+.cdf-chip{padding:6px 12px;border-radius:999px;border:1px solid rgba(167,139,250,.35);background:rgba(0,0,0,.25);color:rgba(255,255,255,.7);font-family:'Noto Sans Thai',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.cdf-chip:hover{border-color:var(--lav);color:#fff;background:rgba(167,139,250,.15)}
+.cdf-chip.on{background:rgba(167,139,250,.25);border-color:var(--lav);color:#fff;box-shadow:0 0 12px rgba(167,139,250,.3)}
+
+/* ══ ENHANCED SEAT MAP (BLUEPRINT STYLE) ══ */
+.map-wrap{
+  background-color:#0b0616;
+  background-image:
+    linear-gradient(rgba(167, 139, 250, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.05) 1px, transparent 1px);
+  background-size:20px 20px;
+  border:1px solid var(--bdr2);
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:inset 0 0 40px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.3);
+  position:relative;
+  overflow:hidden;
+}
+/* Blueprint glowing corner accents */
+.map-wrap::before, .map-wrap::after {
+  content: ''; position: absolute; width: 40px; height: 40px; pointer-events: none;
+}
+.map-wrap::before {
+  top: 0; left: 0; border-top: 2px solid var(--lav); border-left: 2px solid var(--lav); border-top-left-radius: 20px; opacity: 0.5;
+}
+.map-wrap::after {
+  bottom: 0; right: 0; border-bottom: 2px solid var(--rose); border-right: 2px solid var(--rose); border-bottom-right-radius: 20px; opacity: 0.5;
+}
+
+.stage-lbl{text-align:center;margin-bottom:20px;position:relative;z-index:10;}
+.stage-box{
+  display:inline-block;
+  background:linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:8px;
+  padding:8px 40px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.2em;
+  color:#fff;
+  text-shadow:0 0 10px rgba(255,255,255,0.8);
+  box-shadow:0 0 20px rgba(255,255,255,0.1), inset 0 0 10px rgba(255,255,255,0.05);
+}
+
+svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;filter:drop-shadow(0 10px 15px rgba(0,0,0,0.5));}
+
+/* SVG Interactive Zones */
+.zblk{
+  transition:all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor:pointer;
+}
+.zblk path, .zblk rect {
+  stroke:rgba(255,255,255,0.3);
+  stroke-width:1.5px;
+  transition:all 0.3s ease;
+}
+.zblk:hover path, .zblk:hover rect {
+  stroke:rgba(255,255,255,0.8);
+  stroke-width:2px;
+  filter:brightness(1.3);
+}
+/* This handles the glow effect dynamically using SVG filters/dropshadow */
+.zblk:hover {
+  filter:drop-shadow(0 0 12px currentColor) brightness(1.2);
+  transform:translateY(-1px);
+}
+.zblk.sel {
+  filter:drop-shadow(0 0 15px currentColor) brightness(1.4) !important;
+  opacity:1 !important;
+}
+.zblk.sel path, .zblk.sel rect {
+  stroke:#fff;
+  stroke-width:2.5px;
+}
+.zblk.dim {
+  opacity:0.2 !important;
+  filter:grayscale(60%);
+}
+
+.zlbl{font-family:'Noto Sans Thai',sans-serif;font-weight:800;font-size:12px;fill:#fff;pointer-events:none;text-anchor:middle;dominant-baseline:middle;text-shadow:0 2px 4px rgba(0,0,0,0.8)}
+.zprice{font-family:'Noto Sans Thai',sans-serif;font-size:8.5px;fill:rgba(255,255,255,.8);pointer-events:none;text-anchor:middle;dominant-baseline:middle;font-weight:600;letter-spacing:0.05em}
+.zcnt-svg{font-family:'Noto Sans Thai',sans-serif;font-size:9px;fill:#fbbf24;pointer-events:none;text-anchor:middle;dominant-baseline:middle;font-weight:700;text-shadow:0 0 5px rgba(251,191,36,0.6)}
+
+/* map legend */
+.map-legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;background:rgba(0,0,0,0.4);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.05)}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(255,255,255,.6);font-weight:600}
+.leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;box-shadow:0 0 5px currentColor}
+
+/* D/E strip */
+.de-section{margin-top:16px}
+.de-zone-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;margin-top:16px;text-align:center}
+.de-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.de-btn{border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;transition:all .2s cubic-bezier(0.25, 0.8, 0.25, 1);border:1px solid;background-clip:padding-box}
+.de-btn:hover{filter:brightness(1.3);transform:translateY(-2px);box-shadow:0 4px 12px currentColor}
+.de-btn.sel{outline:3px solid var(--lav);outline-offset:2px;background-color:rgba(255,255,255,0.1) !important}
+.de-label{font-size:14px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+.de-prices{font-size:9.5px;margin-top:4px;line-height:1.5;font-weight:600}
+.de-cnt{font-size:11px;font-weight:800;margin-top:6px;background:rgba(0,0,0,0.4);display:inline-block;padding:2px 8px;border-radius:100px}
+
+/* ══ GLASSMORPHISM ZONE DETAIL ══ */
+.zone-detail{
+  display:none;
+  background:rgba(18, 9, 36, 0.6);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  position:relative;
+}
+.zone-detail.open{display:block;animation:slideUpFade .4s cubic-bezier(0.16, 1, 0.3, 1) both}
+@keyframes slideUpFade{
+  from{opacity:0;transform:translateY(20px) scale(0.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.zd-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px}
+.zd-title{font-size:24px;font-weight:800;letter-spacing:0.02em;text-shadow:0 0 15px currentColor}
+.zd-meta{font-size:12px;color:rgba(255,255,255,.6);margin-top:4px;font-weight:500}
+.zd-close{padding:6px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,.7);font-family:'Noto Sans Thai',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.zd-close:hover{background:rgba(239,68,68,0.15);color:#fca5a5;border-color:rgba(239,68,68,0.4)}
+
+.filter-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;align-items:center}
+.filter-label{font-size:11px;color:rgba(255,255,255,.4);margin-right:4px;font-weight:600}
+.fchip{padding:5px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:100px;background:rgba(0,0,0,0.3);color:rgba(255,255,255,.5);font-family:'Noto Sans Thai',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.fchip.on{background:rgba(167,139,250,.2);border-color:var(--lav);color:#fff;box-shadow:0 0 10px rgba(167,139,250,0.3)}
+.fchip.dd-on{background:rgba(251,191,36,.2);border-color:var(--gold);color:#fff;box-shadow:0 0 10px rgba(251,191,36,0.3)}
+.fchip:hover:not(.on):not(.dd-on){border-color:rgba(255,255,255,0.3);color:#fff;background:rgba(255,255,255,0.05)}
+
+/* 3D SEAT GRID */
+.seat-grid-wrap{
+  overflow-x:auto;
+  overflow-y:visible;
+  padding:44px 4px 16px 4px;
+  margin:0 -8px;
+  /* Custom scrollbar for seat map */
+  scrollbar-width: thin;
+  scrollbar-color: var(--bdr2) transparent;
+}
+.seat-grid-wrap::-webkit-scrollbar { height: 6px; }
+.seat-grid-wrap::-webkit-scrollbar-thumb { background-color: var(--bdr2); border-radius: 10px; }
+
+.seat-grid{display:flex;flex-direction:column;gap:4px;width:max-content;padding-left:8px}
+.row-line{display:flex;align-items:center;gap:4px}
+.row-lbl{font-size:10px;font-weight:800;color:rgba(255,255,255,.4);width:28px;text-align:right;flex-shrink:0;font-family:'Courier New', monospace;letter-spacing:-0.5px}
+
+.seat{
+  width:24px;
+  height:24px;
+  border-radius:5px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:7.5px;
+  font-weight:700;
+  color:rgba(255,255,255,.25);
+  cursor:default;
+  transition:all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position:relative;
+  flex-shrink:0;
+  font-family:monospace;
+  /* 3D un-taken seat look */
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.02), 0 2px 4px rgba(0,0,0,0.2);
+}
+.seat.taken{
+  border-width:1.5px;
+  color:#fff;
+  cursor:pointer;
+  /* Base 3D look for taken seats, color added via JS inline styles */
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 2px 8px var(--glow-color, rgba(0,0,0,0.5));
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  font-weight: 800;
+}
+.seat.taken:hover{
+  transform:translateY(-3px) scale(1.1);
+  z-index: 10;
+  filter:brightness(1.2);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 4px 12px var(--glow-color, rgba(255,255,255,0.5));
+}
+.seat.is-dd{
+  background:rgba(251,191,36,.25) !important;
+  border-color:var(--gold) !important;
+  color:#fff !important;
+  --glow-color: rgba(251,191,36,0.4);
+}
+.seat.dimmed{
+  opacity:.15;
+  filter:grayscale(80%);
+}
+
+/* Enhanced Tooltip */
+.seat-tip{
+  display:none;
+  position:absolute;
+  bottom:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(8, 4, 18, 0.95);
+  backdrop-filter:blur(4px);
+  border:1px solid var(--lav);
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:10px;
+  color:#fff;
+  white-space:nowrap;
+  z-index:250;
+  pointer-events:none;
+  min-width:120px;
+  line-height:1.6;
+  box-shadow:0 4px 15px rgba(0,0,0,0.5), 0 0 15px rgba(167,139,250,0.2);
+  text-align:center;
+}
+.seat:hover .seat-tip{display:block;animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
+@keyframes popIn {
+  from {opacity: 0; transform: translateX(-50%) translateY(5px) scale(0.9);}
+  to {opacity: 1; transform: translateX(-50%) translateY(0) scale(1);}
+}
+.seat-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--lav)}
+.seat-tip strong{font-size:12px;color:var(--lav2);letter-spacing:0.5px}
+
+.seat-tip.tip-down{
+  top:calc(100% + 8px);
+  bottom:auto;
+}
+.seat-tip.tip-down::after{
+  top:auto;
+  bottom:100%;
+  border:5px solid transparent;
+  border-bottom-color:var(--lav);
+}
+
+.fan-sum{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08)}
+.fan-chip{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:600}
+.fan-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+
+/* fandom bars */
+.fan-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:32px;background:var(--card);padding:20px;border-radius:16px;border:1px solid var(--bdr)}
+.fan-bar-row{display:grid;grid-template-columns:110px 1fr 32px;align-items:center;gap:12px}
+.fan-bar-name{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:rgba(255,255,255,0.9)}
+.bar-bg{background:rgba(0,0,0,0.4);border-radius:100px;height:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);box-shadow:inset 0 1px 3px rgba(0,0,0,0.5)}
+.bar-fg{height:100%;border-radius:100px;transition:width 1s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 10px currentColor}
+.fan-cnt{font-size:11px;font-weight:800;color:#fff;text-align:right}
+.day-split-wrap{display:flex;height:36px;border-radius:10px;overflow:hidden;gap:3px;margin-bottom:10px;box-shadow:inset 0 2px 5px rgba(0,0,0,0.2)}
+.dsb{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border-radius:8px;transition:flex 1s cubic-bezier(.34,1.56,.64,1);min-width:0;overflow:hidden;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+
+/* ════════════════════════════════
+   REGISTER PAGE
+════════════════════════════════ */
+/* Styles remain mostly the same, ensuring global variables apply correctly */
+.reg-card{background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:32px;max-width:600px;margin:24px auto 0;position:relative;overflow:hidden;box-shadow:0 15px 35px rgba(0,0,0,0.3)}
+.reg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--lav),var(--rose),transparent)}
+.reg-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:500;color:var(--cream);text-align:center;margin-bottom:24px;text-shadow:0 2px 10px rgba(167,139,250,0.3)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.frow.full{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:10px;font-weight:800;color:var(--lav);letter-spacing:.1em;text-transform:uppercase}
+.req::after{content:' *';color:var(--rose)}
+.fg select,.fg input[type=text],.fg input[type=number]{background:rgba(0,0,0,0.2);border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:12px 14px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:14px;outline:none;transition:all .3s;width:100%;-webkit-appearance:none;appearance:none;box-shadow:inset 0 2px 4px rgba(0,0,0,0.2)}
+.fg select option{background:#150930;color:#fff}
+.fg select:focus,.fg input:focus{border-color:var(--rose);background:rgba(236,72,153,.08);box-shadow:0 0 0 4px rgba(236,72,153,.15), inset 0 2px 4px rgba(0,0,0,0.2)}
+.seat-check{font-size:11px;min-height:16px;margin-top:2px;font-weight:700}
+.seat-check.ok{color:#4ade80}
+.seat-check.warn{color:#f59e0b}
+.day-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.day-opt{position:relative}
+.day-opt input{position:absolute;opacity:0;pointer-events:none}
+.day-opt label{display:flex;flex-direction:column;align-items:center;padding:10px 5px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:10px;cursor:pointer;transition:all .2s;font-size:11px;color:rgba(255,255,255,.5);text-transform:none;letter-spacing:0}
+.day-opt label strong{font-size:16px;color:#fff;display:block;margin-bottom:2px}
+.day-opt input:checked+label{border-color:var(--v);background:rgba(124,58,237,.2);color:#fff;box-shadow:0 4px 15px rgba(124,58,237,0.2);transform:translateY(-2px)}
+.fandom-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.fc{position:relative}
+.fc input{position:absolute;opacity:0;pointer-events:none}
+.fc label{display:inline-block;padding:6px 14px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:100px;font-size:12px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;text-transform:none;letter-spacing:0;font-weight:500}
+.fc input:checked+label{background:rgba(236,72,153,.2);border-color:var(--pk);color:#fff;box-shadow:0 4px 15px rgba(236,72,153,0.2);transform:translateY(-1px)}
+.fc.dd-fc input:checked+label{background:rgba(251,191,36,.2);border-color:var(--gold);color:#fff;box-shadow:0 4px 15px rgba(251,191,36,0.2)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);margin:24px 0}
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--v),var(--pk));border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.05em;cursor:pointer;margin-top:20px;transition:all .3s;box-shadow:0 8px 20px rgba(124,58,237,.4)}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(236,72,153,.5);filter:brightness(1.1)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.form-note{font-size:11px;color:rgba(255,255,255,.4);margin-top:16px;text-align:center;line-height:1.7}
+
+/* setup banner */
+.setup-banner{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.3);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:12px;display:flex;align-items:flex-start;gap:14px;box-shadow:0 4px 15px rgba(251,191,36,0.05)}
+.setup-banner code{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:2px 8px;font-size:11px;color:var(--cream);word-break:break-all}
+.setup-banner p{color:rgba(255,255,255,.7);line-height:1.7}
+
+/* toast */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,rgba(18,9,36,0.95),rgba(56,15,84,0.95));backdrop-filter:blur(20px);border:1px solid var(--lav);border-radius:100px;padding:12px 28px;color:#fff;font-size:13px;font-weight:700;z-index:999;transition:transform .5s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(167,139,250,0.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:580px){
+  .frow{grid-template-columns:1fr;gap:12px}
+  .reg-card{padding:24px 16px}
+  .info-grid{grid-template-columns:1fr}
+  .artists-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+  .de-strip{grid-template-columns:repeat(2,1fr)}
+  .ls-grid{grid-template-columns:1fr}
+  .census-title{font-size:20px}
+  .map-wrap{padding:12px;}
+}
+
+@media(max-width:920px){
+  .info-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="fanmade-bar">
+  ⚠️ <span data-th="นี่คือ Fan Guide ที่แฟนคลับสร้างขึ้น ไม่ใช่ข้อมูลทางการจาก GMMTV · ข้อมูลอ้างอิงจาก" data-en="This is a fan-made guide, not official GMMTV content · Info sourced from">นี่คือ Fan Guide ที่แฟนคลับสร้างขึ้น ไม่ใช่ข้อมูลทางการจาก GMMTV · ข้อมูลอ้างอิงจาก</span>
+  <a href="https://www.thaiticketmajor.com/concert/blush-blossom-fan-fest-2026-midnight-bloom.html" target="_blank">ThaiTicketMajor</a>
+</div>
+
+<nav>
+  <div class="nav-logo">BB FanFest 2026 ✦</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goPage('home')" data-page="home">
+      <span data-th="🏠 คู่มืองาน" data-en="🏠 Guide">🏠 คู่มืองาน</span>
+    </button>
+    <button class="nav-tab" onclick="goPage('census')" data-page="census">
+      <span data-th="🌸 ประชากร" data-en="🌸 Census">🌸 ประชากร</span>
+    </button>
+    <button class="nav-tab" onclick="goPage('register')" data-page="register">
+      <span data-th="✦ ลงทะเบียน" data-en="✦ Register">✦ ลงทะเบียน</span>
+    </button>
+  </div>
+  <button class="lang-btn" onclick="toggleLang()" id="lang-btn">EN</button>
+</nav>
+
+<div class="page active" id="page-home">
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge">Fan-made Guide · #BBFanFest2026</div>
+    <h1>Blush Blossom<br>Fan Fest 2026</h1>
+    <div class="hero-sub">Midnight Bloom</div>
+    <div class="hero-pills">
+      <div class="hero-pill"><div class="dot" style="background:#ef4444"></div>
+        <span data-th="13–14 มิถุนายน 2569" data-en="13–14 June 2026">13–14 มิถุนายน 2569</span></div>
+      <div class="hero-pill"><div class="dot" style="background:var(--gold)"></div><span>BITEC LIVE · Bangkok</span></div>
+      <div class="hero-pill"><div class="dot" style="background:#22c55e"></div>
+        <span data-th="17:00 น." data-en="5:00 PM">17:00 น.</span></div>
+      <div class="hero-pill"><div class="dot" style="background:var(--lav)"></div>
+        <span data-th="16 ศิลปิน · 8 คู่ GL · GMMTV" data-en="16 Artists · 8 GL Pairs · GMMTV">16 ศิลปิน · 8 คู่ GL · GMMTV</span></div>
+    </div>
+  </div>
+
+  <div class="sec-hd"><span data-th="⏰ กำหนดการงาน" data-en="⏰ Day Schedule">⏰ กำหนดการงาน</span></div>
+  <div class="timeline" id="tl-wrap"></div>
+
+  <div class="sec-hd"><span data-th="📍 ข้อมูลสำคัญ" data-en="📍 Key Info">📍 ข้อมูลสำคัญ</span></div>
+  <div class="info-grid" id="info-grid"></div>
+
+  <div class="sec-hd"><span data-th="📍 BITEC LIVE — แผนที่" data-en="📍 BITEC LIVE — Location">📍 BITEC LIVE — แผนที่</span></div>
+  <div class="maps-card">
+    <div class="maps-header">
+      <div>
+        <div class="maps-title">BITEC LIVE (ไบเทค บางนา)</div>
+        <div class="maps-sub">88 ถ.บางนา-ตราด กม.1 บางนา กรุงเทพฯ 10260</div>
+      </div>
+      <a class="maps-link" href="https://www.google.com/maps/search/?api=1&query=BITEC+LIVE+Bangkok" target="_blank" rel="noopener noreferrer">
+        <span data-th="เปิดใน Google Maps" data-en="Open in Google Maps">เปิดใน Google Maps</span> ↗
+      </a>
+    </div>
+    <iframe class="maps-iframe"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3877.249898752576!2d100.60756827497598!3d13.681610786716218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2a00391d2f42b%3A0x6c6e3a28db218dba!2sBITEC%20LIVE!5e0!3m2!1sth!2sth!4v1713500000000!5m2!1sth!2sth"
+      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+    <div style="padding:12px 18px;font-size:12px;color:rgba(255,255,255,.6);display:flex;flex-wrap:wrap;gap:16px;background:rgba(0,0,0,0.2)">
+      <span data-th="🚇 BTS บางนา → รถตู้/แกร็บ ~10 นาที" data-en="🚇 BTS Bangna → Shuttle/Grab ~10 min">🚇 BTS บางนา → รถตู้/แกร็บ ~10 นาที</span>
+      <span data-th="🚗 จากสุวรรณภูมิ ~15 นาที" data-en="🚗 From Suvarnabhumi ~15 min">🚗 จากสุวรรณภูมิ ~15 นาที</span>
+    </div>
+  </div>
+
+  <div class="sec-hd">
+    <span data-th="🎁 Benefit ตามระดับบัตร (In-Venue)" data-en="🎁 Ticket Benefits — In-Venue">🎁 Benefit ตามระดับบัตร (In-Venue)</span>
+    <small data-th="R = Random · จำนวนต่อรอบการแสดง" data-en="R = Random · quantity per show">R = Random · จำนวนต่อรอบการแสดง</small>
+  </div>
+  <div class="benefit-wrap"><table class="btable" id="btable"></table></div>
+
+  <div class="sec-hd"><span data-th="📡 Live Streaming & Rerun (TTM LIVE)" data-en="📡 Live Streaming & Rerun (TTM LIVE)">📡 Live Streaming & Rerun (TTM LIVE)</span></div>
+  <div class="ls-card">
+    <div style="font-size:12px;color:rgba(255,255,255,.7);margin-bottom:16px;font-weight:500"
+      data-th="รับชมผ่าน TTM LIVE · ราคายังไม่รวม Service Fee 30฿/ใบ · E-Photo Set แต่ละรอบไม่เหมือนกัน"
+      data-en="Via TTM LIVE · Prices exclude 30 THB service fee · E-Photo Set differs per show">
+      รับชมผ่าน TTM LIVE · ราคายังไม่รวม Service Fee 30฿/ใบ · E-Photo Set แต่ละรอบไม่เหมือนกัน
+    </div>
+    <div class="ls-grid">
+      <div class="ls-tier">
+        <div class="ls-name" data-th="LIVE STREAMING + RERUN" data-en="LIVE + RERUN">LIVE STREAMING + RERUN</div>
+        <div class="ls-price">1,500 ฿</div>
+        <div class="ls-benefit" style="margin-top:12px">
+          <div data-th="✦ E-Photo Set 10 รูป + Digital Signature" data-en="✦ E-Photo Set 10 photos + Digital Sig.">✦ E-Photo Set 10 รูป + Digital Signature</div>
+          <div data-th="✦ RERUN สูงสุด 360 นาที/โค้ด" data-en="✦ RERUN up to 360 min/code">✦ RERUN สูงสุด 360 นาที/โค้ด</div>
+          <div style="color:rgba(255,255,255,.4);font-size:10px;margin-top:8px"
+            data-th="RERUN: 4–10 ก.ค. 2569 (GMT+7)" data-en="RERUN: 4–10 Jul 2026 (GMT+7)">RERUN: 4–10 ก.ค. 2569 (GMT+7)</div>
+        </div>
+      </div>
+      <div class="ls-tier">
+        <div class="ls-name" data-th="RERUN ONLY" data-en="RERUN ONLY">RERUN ONLY</div>
+        <div class="ls-price" style="color:#3b82f6;text-shadow:0 0 15px rgba(59,130,246,0.4)">1,200 ฿</div>
+        <div class="ls-benefit" style="margin-top:12px">
+          <div data-th="✦ E-Photo Set 5 รูป + Digital Signature" data-en="✦ E-Photo Set 5 photos + Digital Sig.">✦ E-Photo Set 5 รูป + Digital Signature</div>
+          <div data-th="✦ RERUN สูงสุด 360 นาที/โค้ด" data-en="✦ RERUN up to 360 min/code">✦ RERUN สูงสุด 360 นาที/โค้ด</div>
+          <div style="color:rgba(255,255,255,.4);font-size:10px;margin-top:8px"
+            data-th="ประกาศลิงก์ E-Photo: 15 ก.ค. 2569" data-en="E-Photo link: 15 Jul 2026">ประกาศลิงก์ E-Photo: 15 ก.ค. 2569</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:11px;color:rgba(255,255,255,.4);line-height:1.7;text-align:center"
+      data-th="📌 ซื้อสูงสุด 20 ใบ/ออเดอร์ · 1 โค้ด = 1 อุปกรณ์พร้อมกัน · ดาวน์โหลด E-Photo ได้ถึง 15 ก.ย. 2569"
+      data-en="📌 Max 20 tickets/order · 1 code = 1 device · E-Photo download until 15 Sep 2026">
+      📌 ซื้อสูงสุด 20 ใบ/ออเดอร์ · 1 โค้ด = 1 อุปกรณ์พร้อมกัน · ดาวน์โหลด E-Photo ได้ถึง 15 ก.ย. 2569
+    </div>
+  </div>
+
+  <div class="sec-hd"><span data-th="📋 กฎการเข้างาน" data-en="📋 Event Rules">📋 กฎการเข้างาน</span></div>
+  <div class="rules-grid" id="rules-grid"></div>
+
+  <div class="sec-hd">
+    <span data-th="🌸 ศิลปิน 16 คน · 8 คู่ GL" data-en="🌸 16 Artists · 8 GL Pairs">🌸 ศิลปิน 16 คน · 8 คู่ GL</span>
+    <small data-th="Official Fandom Character มี 3 คู่เท่านั้น" data-en="Official Fandom Characters: 3 pairs only">Official Fandom Characters: 3 คู่เท่านั้น</small>
+  </div>
+  <div class="artists-grid" id="artists-grid"></div>
+</div>
+</div>
+
+<div class="page" id="page-census">
+<div class="wrap">
+  <div class="census-top">
+    <div>
+      <div class="census-title" data-th="ผังประชากรแฟนเฟสต์" data-en="Fan Census Map">ผังประชากรแฟนเฟสต์</div>
+      <span style="font-size:12px;color:rgba(255,255,255,.6);display:inline-block;margin-top:4px">
+        <span class="live-dot"></span>
+        <span data-th="ข้อมูลจากผู้ลงทะเบียนเรียลไทม์" data-en="Live from registered fans">ข้อมูลจากผู้ลงทะเบียนเรียลไทม์</span>
+      </span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="total-badge">
+        <span data-th="รวม" data-en="Total">รวม</span>
+        <strong id="total-cnt">0</strong>
+        <span data-th="คน" data-en="fans">คน</span>
+      </div>
+      <button onclick="renderCensus()" style="padding:8px 16px;background:rgba(167,139,250,.15);border:1px solid var(--lav);border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 0 10px rgba(167,139,250,0.2);transition:all 0.2s"
+        onmouseover="this.style.background='rgba(167,139,250,0.3)';this.style.boxShadow='0 0 15px rgba(167,139,250,0.4)'"
+        onmouseout="this.style.background='rgba(167,139,250,0.15)';this.style.boxShadow='0 0 10px rgba(167,139,250,0.2)'"
+        data-th="↻ อัปเดตข้อมูล" data-en="↻ Refresh">↻ อัปเดตข้อมูล</button>
+    </div>
+  </div>
+
+  <div class="stats-top" id="census-stats"></div>
+  <div class="census-day-filter" id="census-day-filter"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:30px" id="census-charts"></div>
+
+  <div class="sec-hd"><span data-th="🗺 คลิกโซนเพื่อดูที่นั่ง" data-en="🗺 Click zone to explore seats">🗺 คลิกโซนเพื่อดูที่นั่ง</span></div>
+  
+  <div class="map-wrap">
+    <div class="stage-lbl"><div class="stage-box">MAIN STAGE</div></div>
+    
+    <svg class="smap" viewBox="0 0 520 500" xmlns="http://www.w3.org/2000/svg" id="census-map">
+      <g class="zblk" id="zb-A1" onclick="openZone('A1')" style="color:var(--cA1)">
+        <path d="M8 32 L70 32 L70 130 L8 116 Z" fill="rgba(202, 138, 4, 0.5)"/>
+        <text class="zlbl" x="40" y="78">A1</text>
+        <text class="zprice" x="40" y="92">5,000฿</text>
+        <text class="zcnt-svg" x="40" y="106" id="sc-A1"></text>
+      </g>
+      <g class="zblk" id="zb-A2" onclick="openZone('A2')" style="color:var(--cA2)">
+        <rect x="76" y="20" width="152" height="114" fill="rgba(220, 38, 38, 0.5)"/>
+        <text class="zlbl" x="150" y="76">A2</text>
+        <text class="zprice" x="150" y="90">7,900฿</text>
+        <text class="zcnt-svg" x="150" y="104" id="sc-A2"></text>
+      </g>
+      <g class="zblk" id="zb-A3" onclick="openZone('A3')" style="color:var(--cA3)">
+        <rect x="292" y="20" width="152" height="114" fill="rgba(220, 38, 38, 0.5)"/>
+        <text class="zlbl" x="372" y="76">A3</text>
+        <text class="zprice" x="372" y="90">7,900฿</text>
+        <text class="zcnt-svg" x="372" y="104" id="sc-A3"></text>
+      </g>
+      <g class="zblk" id="zb-A4" onclick="openZone('A4')" style="color:var(--cA4)">
+        <path d="M450 32 L512 32 L512 116 L450 130 Z" fill="rgba(202, 138, 4, 0.5)"/>
+        <text class="zlbl" x="481" y="78">A4</text>
+        <text class="zprice" x="481" y="92">5,000฿</text>
+        <text class="zcnt-svg" x="481" y="106" id="sc-A4"></text>
+      </g>
+
+      <g class="zblk" id="zb-B1" onclick="openZone('B1')" style="color:var(--cB15)">
+        <rect x="8" y="140" width="100" height="94" fill="rgba(192, 38, 211, 0.5)"/>
+        <text class="zlbl" x="58" y="185">B1</text>
+        <text class="zprice" x="58" y="198">4,500฿</text>
+        <text class="zcnt-svg" x="58" y="211" id="sc-B1"></text>
+      </g>
+      <g class="zblk" id="zb-B2" onclick="openZone('B2')" style="color:var(--cB23)">
+        <rect x="112" y="152" width="98" height="82" fill="rgba(22, 163, 74, 0.45)"/>
+        <text class="zlbl" x="162" y="188">B2</text>
+        <text class="zprice" x="162" y="201">5,900฿</text>
+        <text class="zcnt-svg" x="162" y="214" id="sc-B2"></text>
+      </g>
+      <g class="zblk" id="zb-B3" onclick="openZone('B3')" style="color:var(--cB23)">
+        <path d="M224 196 L296 196 L296 238 L224 238 Z" fill="rgba(22, 163, 74, 0.4)"/>
+        <text class="zlbl" x="260" y="213">B3</text>
+        <text class="zprice" x="260" y="225">5,900฿</text>
+        <text class="zcnt-svg" x="260" y="236" id="sc-B3"></text>
+      </g>
+      <g class="zblk" id="zb-B4" onclick="openZone('B4')" style="color:var(--cB23)">
+        <rect x="310" y="152" width="98" height="82" fill="rgba(22, 163, 74, 0.45)"/>
+        <text class="zlbl" x="360" y="188">B4</text>
+        <text class="zprice" x="360" y="201">5,900฿</text>
+        <text class="zcnt-svg" x="360" y="214" id="sc-B4"></text>
+      </g>
+      <g class="zblk" id="zb-B5" onclick="openZone('B5')" style="color:var(--cB15)">
+        <rect x="412" y="140" width="100" height="94" fill="rgba(192, 38, 211, 0.5)"/>
+        <text class="zlbl" x="462" y="185">B5</text>
+        <text class="zprice" x="462" y="198">4,500฿</text>
+        <text class="zcnt-svg" x="462" y="211" id="sc-B5"></text>
+      </g>
+
+      <g class="zblk" id="zb-C1" onclick="openZone('C1')" style="color:var(--cC135)">
+        <rect x="8" y="242" width="96" height="76" fill="rgba(147, 51, 234, 0.5)"/>
+        <text class="zlbl" x="56" y="278">C1</text>
+        <text class="zprice" x="56" y="292">3,500฿</text>
+        <text class="zcnt-svg" x="56" y="306" id="sc-C1"></text>
+      </g>
+      <g class="zblk" id="zb-C2" onclick="openZone('C2')" style="color:var(--cC24)">
+        <path d="M108 242 L238 242 L238 318 L108 318 Z" fill="rgba(192, 38, 211, 0.4)"/>
+        <text class="zlbl" x="173" y="278">C2</text>
+        <text class="zprice" x="173" y="292">4,500฿</text>
+        <text class="zcnt-svg" x="173" y="306" id="sc-C2"></text>
+      </g>
+      <g class="zblk" id="zb-C3" onclick="openZone('C3')" style="color:var(--cC135)">
+        <rect x="244" y="258" width="34" height="60" rx="4" fill="rgba(147, 51, 234, 0.5)"/>
+        <text class="zlbl" x="261" y="286">C3</text>
+        <text class="zprice" x="261" y="298">3,500฿</text>
+        <text class="zcnt-svg" x="261" y="310" id="sc-C3"></text>
+      </g>
+      <g class="zblk" id="zb-C4" onclick="openZone('C4')" style="color:var(--cC24)">
+        <rect x="282" y="242" width="130" height="76" fill="rgba(192, 38, 211, 0.4)"/>
+        <text class="zlbl" x="347" y="278">C4</text>
+        <text class="zprice" x="347" y="292">4,500฿</text>
+        <text class="zcnt-svg" x="347" y="306" id="sc-C4"></text>
+      </g>
+      <g class="zblk" id="zb-C5" onclick="openZone('C5')" style="color:var(--cC135)">
+        <rect x="416" y="242" width="96" height="76" fill="rgba(147, 51, 234, 0.5)"/>
+        <text class="zlbl" x="464" y="278">C5</text>
+        <text class="zprice" x="464" y="292">3,500฿</text>
+        <text class="zcnt-svg" x="464" y="306" id="sc-C5"></text>
+      </g>
+
+      <g class="zblk" id="zb-D1" onclick="openZone('D1')" style="color:var(--cDfront)">
+        <rect x="8" y="328" width="122" height="62" fill="rgba(29, 78, 216, 0.5)"/>
+        <rect x="8" y="352" width="122" height="38" fill="rgba(14, 116, 144, 0.6)"/>
+        <text class="zlbl" x="69" y="344">D1</text>
+        <text class="zprice" x="69" y="358">3,000/2,500฿</text>
+        <text class="zcnt-svg" x="69" y="374" id="sc-D1"></text>
+      </g>
+      <g class="zblk" id="zb-D2" onclick="openZone('D2')" style="color:var(--cDfront)">
+        <rect x="136" y="328" width="122" height="62" fill="rgba(29, 78, 216, 0.5)"/>
+        <rect x="136" y="352" width="122" height="38" fill="rgba(14, 116, 144, 0.6)"/>
+        <text class="zlbl" x="197" y="344">D2</text>
+        <text class="zprice" x="197" y="358">3,000/2,500฿</text>
+        <text class="zcnt-svg" x="197" y="374" id="sc-D2"></text>
+      </g>
+      <g class="zblk" id="zb-D3" onclick="openZone('D3')" style="color:var(--cDfront)">
+        <rect x="262" y="328" width="122" height="62" fill="rgba(29, 78, 216, 0.5)"/>
+        <rect x="262" y="352" width="122" height="38" fill="rgba(14, 116, 144, 0.6)"/>
+        <text class="zlbl" x="323" y="344">D3</text>
+        <text class="zprice" x="323" y="358">3,000/2,500฿</text>
+        <text class="zcnt-svg" x="323" y="374" id="sc-D3"></text>
+      </g>
+      <g class="zblk" id="zb-D4" onclick="openZone('D4')" style="color:var(--cDfront)">
+        <rect x="390" y="328" width="122" height="62" fill="rgba(29, 78, 216, 0.5)"/>
+        <rect x="390" y="352" width="122" height="38" fill="rgba(14, 116, 144, 0.6)"/>
+        <text class="zlbl" x="451" y="344">D4</text>
+        <text class="zprice" x="451" y="358">3,000/2,500฿</text>
+        <text class="zcnt-svg" x="451" y="374" id="sc-D4"></text>
+      </g>
+
+      <g class="zblk" id="zb-E1" onclick="openZone('E1')" style="color:var(--cEfront)">
+        <rect x="8" y="438" width="122" height="36" fill="rgba(219, 39, 119, 0.5)"/>
+        <rect x="8" y="456" width="122" height="18" fill="rgba(6, 182, 212, 0.6)"/>
+        <text class="zlbl" x="69" y="448">E1</text>
+        <text class="zprice" x="69" y="460">2,000/1,500฿</text>
+        <text class="zcnt-svg" x="69" y="470" id="sc-E1"></text>
+      </g>
+      <g class="zblk" id="zb-E2" onclick="openZone('E2')" style="color:var(--cEfront)">
+        <rect x="136" y="438" width="122" height="36" fill="rgba(219, 39, 119, 0.5)"/>
+        <rect x="136" y="456" width="122" height="18" fill="rgba(6, 182, 212, 0.6)"/>
+        <text class="zlbl" x="197" y="448">E2</text>
+        <text class="zprice" x="197" y="460">2,000/1,500฿</text>
+        <text class="zcnt-svg" x="197" y="470" id="sc-E2"></text>
+      </g>
+      <g class="zblk" id="zb-E3" onclick="openZone('E3')" style="color:var(--cEfront)">
+        <rect x="262" y="438" width="122" height="36" fill="rgba(219, 39, 119, 0.5)"/>
+        <rect x="262" y="456" width="122" height="18" fill="rgba(6, 182, 212, 0.6)"/>
+        <text class="zlbl" x="323" y="448">E3</text>
+        <text class="zprice" x="323" y="460">2,000/1,500฿</text>
+        <text class="zcnt-svg" x="323" y="470" id="sc-E3"></text>
+      </g>
+      <g class="zblk" id="zb-E4" onclick="openZone('E4')" style="color:var(--cEfront)">
+        <rect x="390" y="438" width="122" height="36" fill="rgba(219, 39, 119, 0.5)"/>
+        <rect x="390" y="456" width="122" height="18" fill="rgba(6, 182, 212, 0.6)"/>
+        <text class="zlbl" x="451" y="448">E4</text>
+        <text class="zprice" x="451" y="460">2,000/1,500฿</text>
+        <text class="zcnt-svg" x="451" y="470" id="sc-E4"></text>
+      </g>
+    </svg>
+
+    <div class="map-legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cA2);box-shadow:0 0 8px var(--cA2)"></div>A2/A3 — 7,900฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cB23);box-shadow:0 0 8px var(--cB23)"></div>B2/B3/B4 — 5,900฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cA1);box-shadow:0 0 8px var(--cA1)"></div>A1/A4 — 5,000฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cB15);box-shadow:0 0 8px var(--cB15)"></div>B1/B5/C2/C4 — 4,500฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cC135);box-shadow:0 0 8px var(--cC135)"></div>C1/C3/C5 — 3,500฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cDfront);box-shadow:0 0 8px var(--cDfront)"></div>D — 3,000฿ (หน้า)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cDback);box-shadow:0 0 8px var(--cDback)"></div>D — 2,500฿ (หลัง)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cEfront);box-shadow:0 0 8px var(--cEfront)"></div>E — 2,000฿ (หน้า)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cEback);box-shadow:0 0 8px var(--cEback)"></div>E — 1,500฿ (หลัง)</div>
+    </div>
+  </div>
+
+  <div class="zone-detail" id="zone-detail">
+    <div class="zd-header">
+      <div>
+        <div class="zd-title" id="zd-title">Zone A2</div>
+        <div class="zd-meta" id="zd-meta"></div>
+      </div>
+      <button class="zd-close" onclick="closeZone()" data-th="✕ ปิด" data-en="✕ Close">✕ ปิด</button>
+    </div>
+    <div class="filter-bar" id="zd-filter"></div>
+    <div class="seat-grid-wrap"><div class="seat-grid" id="seat-grid"></div></div>
+    <div class="fan-sum" id="fan-sum"></div>
+  </div>
+
+  <div class="sec-hd" style="margin-top:16px"><span data-th="🌸 ด้อมที่ลงทะเบียน" data-en="🌸 Registered Fandoms">🌸 ด้อมที่ลงทะเบียน</span></div>
+  <div class="fan-bars" id="census-fandoms"></div>
+</div>
+</div>
+
+<div class="page" id="page-register">
+<div class="wrap">
+  <div class="reg-card">
+    <div class="setup-banner" id="setup-banner">
+      <div style="font-size:22px;flex-shrink:0">⚙️</div>
+      <p>
+        <strong style="color:var(--gold);font-size:14px;display:block;margin-bottom:4px">ตั้งค่า Google Sheets:</strong>
+        แก้บรรทัด <code>const GAS_URL = ''</code> ในไฟล์ HTML ด้วย URL จาก Apps Script
+        <br><span style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:4px;display:inline-block">· ดูไฟล์ apps-script-code.gs และ SETUP_GUIDE.md ที่แนบมา</span>
+      </p>
+    </div>
+
+    <div class="reg-title" data-th="📝 เช็กประชากร — ลงทะเบียนที่นั่ง" data-en="📝 Census — Register Your Seat">📝 เช็กประชากร — ลงทะเบียนที่นั่ง</div>
+
+    <div class="fg" style="margin-bottom:16px">
+      <label class="req" data-th="วันที่ไป (เลือก 1 วันต่อ 1 รายการ)" data-en="Day (1 day per entry)">วันที่ไป (เลือก 1 วันต่อ 1 รายการ)</label>
+      <div class="day-grid">
+        <div class="day-opt"><input type="radio" name="show-day" id="d13" value="13" onchange="checkSeatDuplicateRealtime()"><label for="d13"><strong>13</strong><span data-th="มิ.ย." data-en="Jun">มิ.ย.</span></label></div>
+        <div class="day-opt"><input type="radio" name="show-day" id="d14" value="14" onchange="checkSeatDuplicateRealtime()"><label for="d14"><strong>14</strong><span data-th="มิ.ย." data-en="Jun">มิ.ย.</span></label></div>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label class="req" data-th="โซนหลัก" data-en="Zone">โซนหลัก</label>
+        <select id="main-zone" onchange="updateSub()">
+          <option value="" disabled selected data-th="เลือกโซน" data-en="Select zone">เลือกโซน</option>
+          <option value="A">A (5,000–7,900฿)</option>
+          <option value="B">B (4,500–5,900฿)</option>
+          <option value="C">C (3,500–4,500฿)</option>
+          <option value="D">D (2,500–3,000฿)</option>
+          <option value="E">E Grand Stand (1,500–2,000฿)</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="req" data-th="โซนย่อย" data-en="Sub-Zone">โซนย่อย</label>
+        <select id="sub-zone" onchange="updatePrice();updateRowOptions();checkSeatDuplicateRealtime()"><option value="" disabled selected>—</option></select>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label class="req" data-th="ราคาบัตร" data-en="Ticket Price">ราคาบัตร</label>
+        <select id="seat-price"><option value="" disabled selected data-th="เลือกราคา" data-en="Select price">เลือกราคา</option></select>
+      </div>
+      <div class="fg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="fg">
+          <label class="req" data-th="แถว" data-en="Row">แถว</label>
+          <select id="seat-row" onchange="updateSeatOptions();checkSeatDuplicateRealtime()"><option value="" disabled selected>—</option></select>
+        </div>
+        <div class="fg">
+          <label class="req" data-th="ที่นั่ง" data-en="Seat">ที่นั่ง</label>
+          <select id="seat-num" onchange="checkSeatDuplicateRealtime()"><option value="" disabled selected>—</option></select>
+        </div>
+      </div>
+      <div class="seat-check" id="seat-check-msg"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="fg" style="margin-bottom:16px">
+      <label class="req" data-th="ด้อมของคุณ (เลือกได้หลายคน)" data-en="Your Fandom(s)">ด้อมของคุณ (เลือกได้หลายคน)</label>
+      <div style="font-size:11px;color:rgba(251,191,36,.8);margin-bottom:10px"
+        data-th="💛 DD = ชอบทุกคน · ชื่อ Official Character อยู่ในวงเล็บ"
+        data-en="💛 DD = Love all · Official character names in brackets">
+        💛 DD = ชอบทุกคน · ชื่อ Official Character อยู่ในวงเล็บ
+      </div>
+      <div class="fandom-wrap" id="fandom-wrap"></div>
+    </div>
+
+    <div class="frow full">
+      <div class="fg">
+        <label data-th="Twitter / ชื่อเล่น (ไม่บังคับ)" data-en="Twitter / Nickname (optional)">Twitter / ชื่อเล่น (ไม่บังคับ)</label>
+        <input type="text" id="nickname" placeholder="@yourname">
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm()" id="submit-btn"
+      data-th="✦ บันทึก & ส่งข้อมูล" data-en="✦ Save & Submit">✦ บันทึก & ส่งข้อมูล</button>
+    <p class="form-note"
+      data-th="ข้อมูลถูกส่งไปเก็บที่ Google Sheets · ไม่มีข้อมูลส่วนตัวที่ระบุตัวตนได้ · Fan-made เพื่อแฟนด้อม 🌸"
+      data-en="Data saved to Google Sheets · No personally identifiable info · Fan-made for fans 🌸">
+      ข้อมูลถูกส่งไปเก็บที่ Google Sheets · ไม่มีข้อมูลส่วนตัวที่ระบุตัวตนได้ · Fan-made เพื่อแฟนด้อม 🌸
+    </p>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   CONFIG — แก้ตรงนี้เพียงจุดเดียว
+══════════════════════════════════════ */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyt4A0-RqRitolVC0Qn58u5LrWJJcGbVMxiNCRI2r_0b7E5XJLQj8sAPZRAQFIkPure0A/exec';
+// วาง URL ที่ได้จาก Google Apps Script "Deploy as Web App" ตรงนี้
+// ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb.../exec'
+
+/* ══════════════════════════════════════
+   ARTISTS DATA — verified from ThaiTicketMajor
+══════════════════════════════════════ */
+const ARTISTS = [
+  {id:'milk',   name:'มิ้ลค์',   nameEn:'Milk',     full:'พรรษา วอสเบียน',            glPair:'love',    pairTag:'Milk Love',      charTh:'MuvMuv (เมิฟเมิฟ)', charEn:'MuvMuv', color:'#818cf8'},
+  {id:'love',   name:'เลิฟ',    nameEn:'Love',     full:'ภัทรานิษฐ์ ลิ้มปติยากร',   glPair:'milk',    pairTag:'Milk Love',      charTh:'MuvMuv (เมิฟเมิฟ)', charEn:'MuvMuv', color:'#c084fc'},
+  {id:'namtan', name:'น้ำตาล',  nameEn:'Namtan',   full:'ทิพนารี วีรวัฒโนดม',        glPair:'film',    pairTag:'Namtan Film',    charTh:'Lunar (ลูน่า)',      charEn:'Lunar',  color:'#fb923c'},
+  {id:'film',   name:'ฟิล์ม',   nameEn:'Film',     full:'รชานันท์ มหาวรรณ์',         glPair:'namtan',  pairTag:'Namtan Film',    charTh:'Lunar (ลูน่า)',      charEn:'Lunar',  color:'#f472b6'},
+  {id:'amy',    name:'เอมี่',    nameEn:'Emi',      full:'ทสร กลิ่นเนียม',             glPair:'bonnie',  pairTag:'Emi Bonnie',     charTh:'Any (เอนี่)',        charEn:'Any',    color:'#38bdf8'},
+  {id:'bonnie', name:'บอนนี่',  nameEn:'Bonnie',   full:'ภัทราภัสร์ โบรัชตะสุวรรณ์', glPair:'amy',     pairTag:'Emi Bonnie',     charTh:'Any (เอนี่)',        charEn:'Any',    color:'#fb7185'},
+  {id:'view',   name:'วิว',     nameEn:'View',     full:'เบญญาภา จีนประสม',          glPair:'mim',     pairTag:'View Mim',       charTh:null, charEn:null, color:'#34d399'},
+  {id:'mim',    name:'มิ้ม',    nameEn:'Mim',      full:'รัตนวดี วงค์ทอง',            glPair:'view',    pairTag:'View Mim',       charTh:null, charEn:null, color:'#f9a8d4'},
+  {id:'june',   name:'จูน',     nameEn:'June',     full:'วรรณวิมล เจนอัศวเมธี',      glPair:'munich',  pairTag:'June Mewnich',   charTh:null, charEn:null, color:'#fde68a'},
+  {id:'munich', name:'มิวนิค',  nameEn:'Mewnich',  full:'นันท์นภัส เลิศนามเชิดสกุล', glPair:'june',    pairTag:'June Mewnich',   charTh:null, charEn:null, color:'#7dd3fc'},
+  {id:'jan',    name:'แจน',     nameEn:'Jan',      full:'พลอยชมพู ศุภทรัพย์',        glPair:'jing',    pairTag:'Jan Jingjing',   charTh:null, charEn:null, color:'#a5f3fc'},
+  {id:'jing',   name:'จิงจิง',  nameEn:'Jingjing', full:'จิงจิง ยู',                  glPair:'jan',     pairTag:'Jan Jingjing',   charTh:null, charEn:null, color:'#fdba74'},
+  {id:'pan',    name:'ป่าน',    nameEn:'Pahn',     full:'ปทิตตา พรจำเริญรัตน์',      glPair:'fond',    pairTag:'Pahn Fond',      charTh:null, charEn:null, color:'#d8b4fe'},
+  {id:'fond',   name:'ฟ้อนด์',  nameEn:'Fond',     full:'ณัฐทิชา จันทรวารีเลขา',     glPair:'pan',     pairTag:'Pahn Fond',      charTh:null, charEn:null, color:'#fca5a5'},
+  {id:'krapook',name:'กระปุก', nameEn:'Kapook',   full:'พลอยนิรา หิรัญทวีศิลป์',    glPair:'saisee',  pairTag:'Kapook Ciize',   charTh:null, charEn:null, color:'#6ee7b7'},
+  {id:'saisee', name:'ไซซี',   nameEn:'Ciize',    full:'รัตท์ริชา ประภากิติ',        glPair:'krapook', pairTag:'Kapook Ciize',   charTh:null, charEn:null, color:'#fde68a'},
+];
+
+const PAIR_HASHTAGS = {
+  'Milk Love':'#MilkLove #MuvMuv',
+  'Namtan Film':'#NamtanFilm #Lunar',
+  'Emi Bonnie':'#EmiBonnie #Any',
+  'View Mim':'#ViewMim',
+  'June Mewnich':'#JuneMewnich',
+  'Jan Jingjing':'#JanJingjing',
+  'Pahn Fond':'#PahnFond',
+  'Kapook Ciize':'#KapookCiize',
+};
+
+const PAIRS = [
+  {id:'milklove', tag:'Milk Love', th:'มิ้ลค์×เลิฟ', color:'#a78bfa'},
+  {id:'namtanfilm', tag:'Namtan Film', th:'น้ำตาล×ฟิล์ม', color:'#fb923c'},
+  {id:'emibonnie', tag:'Emi Bonnie', th:'เอมี่×บอนนี่', color:'#38bdf8'},
+  {id:'viewmim', tag:'View Mim', th:'วิว×มิ้ม', color:'#34d399'},
+  {id:'junemewnich', tag:'June Mewnich', th:'จูน×มิวนิค', color:'#fde68a'},
+  {id:'janjingjing', tag:'Jan Jingjing', th:'แจน×จิงจิง', color:'#fdba74'},
+  {id:'pahnfond', tag:'Pahn Fond', th:'ป่าน×ฟ้อนด์', color:'#d8b4fe'},
+  {id:'kapookciize', tag:'Kapook Ciize', th:'กระปุก×ไซซี', color:'#6ee7b7'},
+];
+const PAIR_BY_ID = Object.fromEntries(PAIRS.map(p=>[p.id,p]));
+const ARTIST_TO_PAIR = {
+  milk:'milklove',love:'milklove',
+  namtan:'namtanfilm',film:'namtanfilm',
+  amy:'emibonnie',bonnie:'emibonnie',
+  view:'viewmim',mim:'viewmim',
+  june:'junemewnich',munich:'junemewnich',
+  jan:'janjingjing',jing:'janjingjing',
+  pan:'pahnfond',fond:'pahnfond',
+  krapook:'kapookciize',saisee:'kapookciize',
+};
+
+function normalizeFandoms(raw){
+  const arr=Array.isArray(raw)?raw:(raw?[raw]:[]);
+  const out=[];
+  arr.forEach(f=>{
+    if(!f)return;
+    if(f==='dd'){out.push('dd');return;}
+    if(PAIR_BY_ID[f]){out.push(f);return;}
+    if(ARTIST_TO_PAIR[f]){out.push(ARTIST_TO_PAIR[f]);return;}
+    out.push(f);
+  });
+  return [...new Set(out)];
+}
+function fandomName(fid){
+  if(fid==='dd') return '💛 DD';
+  const p=PAIR_BY_ID[fid];
+  if(!p) return fid;
+  return lang==='th'?p.th:p.tag;
+}
+function fandomColor(fid){
+  if(fid==='dd') return 'var(--gold)';
+  return PAIR_BY_ID[fid]?.color||'var(--lav)';
+}
+
+/* ══════════════════════════════════════
+   ZONE CONFIG — corrected prices
+══════════════════════════════════════ */
+const ZONES = {
+  A:{subs:['A1','A2','A3','A4'],
+     prices:{A1:'5,000',A2:'7,900',A3:'7,900',A4:'5,000'},
+     colors:{A1:'#ca8a04',A2:'#dc2626',A3:'#dc2626',A4:'#ca8a04'},
+     mainColor:'#dc2626'},
+  B:{subs:['B1','B2','B3','B4','B5'],
+     prices:{B1:'4,500',B2:'5,900',B3:'5,900',B4:'5,900',B5:'4,500'},
+     colors:{B1:'#c026d3',B2:'#16a34a',B3:'#16a34a',B4:'#16a34a',B5:'#c026d3'},
+     mainColor:'#16a34a'},
+  C:{subs:['C1','C2','C3','C4','C5'],
+     prices:{C1:'3,500',C2:'4,500',C3:'3,500',C4:'4,500',C5:'3,500'},
+     colors:{C1:'#9333ea',C2:'#c026d3',C3:'#9333ea',C4:'#c026d3',C5:'#9333ea'},
+     mainColor:'#9333ea'},
+  D:{subs:['D1','D2','D3','D4'],
+     prices:{D1:'3,000/2,500',D2:'3,000/2,500',D3:'3,000/2,500',D4:'3,000/2,500'},
+     colors:{D1:'#1d4ed8',D2:'#1d4ed8',D3:'#1d4ed8',D4:'#1d4ed8'},
+     colorBack:{D1:'#0e7490',D2:'#0e7490',D3:'#0e7490',D4:'#0e7490'},
+     mainColor:'#1d4ed8'},
+  E:{subs:['E1','E2','E3','E4'],
+     prices:{E1:'2,000/1,500',E2:'2,000/1,500',E3:'2,000/1,500',E4:'2,000/1,500'},
+     colors:{E1:'#db2777',E2:'#db2777',E3:'#db2777',E4:'#db2777'},
+     colorBack:{E1:'#06b6d4',E2:'#06b6d4',E3:'#06b6d4',E4:'#06b6d4'},
+     mainColor:'#db2777'},
+};
+
+// Seat rows per main zone (reference)
+const ZONE_ROWS = {
+  A:['A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z'],
+  B:['BA','BB','BC','BD','BE','BF','BG','BH','BJ','BK','BL','BM','BN','BP','BQ','BR','BS','BT','BU','BV','BW'],
+  C:['CA','CB','CC','CD','CE','CF','CG','CH','CJ','CK'],
+  D:['DA','DB','DC','DD','DE','DF','DG','DH','DJ','DK','DL','DM'],
+  E:['EA','EB','EC','ED','EE','EF','EG','EH','EJ','EK','EL','EM','EN','EP','EQ'],
+};
+
+// Exact row list per sub-zone (from user-provided zoomed map)
+const SZ_ROWS = {
+  A1:['A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T','U'],
+  A2:['A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T'],
+  A3:['A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z'],
+  A4:['A','B','C','D','E','F','G','H','J','K','L','M','N','P','Q','R','S','T','U','V','W','X','Y','Z'],
+  B1:['BA','BB','BC','BD','BE','BF','BG','BH','BJ','BK','BL','BM','BN','BP','BQ','BR','BS','BT','BU','BV','BW'],
+  B2:['BC','BD','BE','BF','BG','BH','BJ','BK','BL','BM','BN','BP','BQ','BR','BS','BT','BU','BV','BW'],
+  B3:['BK','BL','BM','BN','BP','BQ','BR','BS','BT','BU','BV','BW'],
+  B4:['BJ','BK','BL','BM','BN','BP','BQ','BR','BS','BT','BU','BV','BW'],
+  B5:['BF','BG','BH','BJ','BK','BL','BM','BN','BP','BQ','BR','BS','BT','BU','BV','BW'],
+  C1:['CA','CB','CC','CD','CE','CF','CG','CH','CJ','CK'],
+  C2:['CA','CB','CC','CD','CE','CF','CG','CH','CJ','CK'],
+  C3:['CA','CB','CC','CD','CE','CF','CG','CH','CJ','CK'],
+  C4:['CA','CB','CC','CD','CE','CF','CG','CH','CJ','CK'],
+  C5:['CA','CB','CC','CD','CE','CF','CG','CH','CJ','CK'],
+  D1:['DA','DB','DC','DD','DE','DF','DG','DH','DJ','DK','DL','DM'],
+  D2:['DA','DB','DC','DD','DE','DF','DG','DH','DJ','DK','DL','DM'],
+  D3:['DA','DB','DC','DD','DE','DF','DG','DH','DJ','DK','DL','DM'],
+  D4:['DA','DB','DC','DD','DE','DF','DG','DH','DJ','DK','DL','DM'],
+  E1:['EA','EB','EC','ED','EE','EF','EG','EH','EJ','EK','EL','EM','EN','EP','EQ'],
+  E2:['EA','EB','EC','ED','EE','EF','EG','EH','EJ','EK','EL','EM','EN','EP','EQ'],
+  E3:['EA','EB','EC','ED','EE','EF','EG','EH','EJ','EK','EL','EM','EN','EP','EQ'],
+  E4:['EA','EB','EC','ED','EE','EF','EG','EH','EJ','EK','EL','EM','EN','EP','EQ'],
+};
+
+// Sub-zone seat column ranges
+const SZ_RANGE = {
+  A1:{r:[1,17]},A2:{r:[18,50]},A3:{r:[52,67]},A4:{r:[68,83]},
+  B1:{r:[1,17]},B2:{r:[18,35]},B3:{r:[39,52]},B4:{r:[53,67]},B5:{r:[68,83]},
+  C1:{r:[1,17]},C2:{r:[18,37]},C3:{r:[38,52]},C4:{r:[53,67]},C5:{r:[68,83]},
+  D1:{r:[1,12]},D2:{r:[14,29]},D3:{r:[46,61]},D4:{r:[63,74]},
+  E1:{r:[1,16]},E2:{r:[17,36]},E3:{r:[37,56]},E4:{r:[57,72]},
+};
+
+// Exact row->seat window per sub-zone (from user-provided zoomed map)
+const SZ_WINDOWS = {
+  A1:{A:[14,17],B:[12,17],C:[10,17],D:[8,17],E:[6,17],F:[4,17],G:[2,17],H:[1,17],J:[1,17],K:[1,17],L:[1,17],M:[1,17],N:[1,17],P:[1,17],Q:[1,17],R:[1,17],S:[1,17],T:[1,17],U:[1,17]},
+  A2:{A:[18,44],B:[18,46],C:[18,47],D:[18,48],E:[18,49],F:[18,50],G:[18,50],H:[18,50],J:[18,50],K:[18,50],L:[18,50],M:[18,50],N:[18,49],P:[18,48],Q:[18,48],R:[18,38],S:[18,36],T:[18,22]},
+  A3:{A:[53,67],B:[54,67],C:[54,67],D:[55,67],E:[55,67],F:[55,67],G:[55,67],H:[55,67],J:[55,67],K:[55,67],L:[55,67],M:[55,67],N:[54,67],P:[54,67],Q:[53,67],R:[52,67],S:[52,67],T:[55,67],U:[56,67],V:[56,67],W:[57,67],X:[58,67],Y:[58,64],Z:[58,61]},
+  A4:{A:[68,73],B:[68,75],C:[68,77],D:[68,79],E:[68,81],F:[68,83],G:[68,83],H:[68,83],J:[68,83],K:[68,83],L:[68,83],M:[68,83],N:[68,83],P:[68,83],Q:[68,83],R:[68,83],S:[68,83],T:[68,83],U:[72,83],V:[74,83],W:[77,83],X:[80,83],Y:[80,83],Z:[78,83]},
+
+  B1:{BA:[1,11],BB:[1,9],BC:[1,8],BD:[1,7],BE:[1,9],BF:[1,11],BG:[1,14],BH:[1,17],BJ:[1,17],BK:[1,17],BL:[1,17],BM:[1,17],BN:[1,17],BP:[1,17],BQ:[1,17],BR:[1,17],BS:[1,17],BT:[1,17],BU:[1,17],BV:[1,17],BW:[1,17]},
+  B2:{BC:[24,28],BD:[21,28],BE:[19,29],BF:[18,30],BG:[18,30],BH:[18,31],BJ:[18,33],BK:[18,35],BL:[18,34],BM:[18,33],BN:[18,33],BP:[18,32],BQ:[18,32],BR:[18,31],BS:[18,31],BT:[18,31],BU:[18,31],BV:[18,31],BW:[18,31]},
+  B3:{BK:[51,52],BL:[50,52],BM:[41,52],BN:[41,52],BP:[40,52],BQ:[40,52],BR:[39,52],BS:[39,52],BT:[39,52],BU:[39,52],BV:[40,52],BW:[41,52]},
+  B4:{BJ:[53,67],BK:[53,67],BL:[53,67],BM:[53,67],BN:[53,67],BP:[53,67],BQ:[53,67],BR:[53,67],BS:[53,67],BT:[53,67],BU:[53,67],BV:[53,67],BW:[53,67]},
+  B5:{BF:[73,83],BG:[70,83],BH:[68,83],BJ:[68,83],BK:[68,83],BL:[68,83],BM:[68,83],BN:[68,83],BP:[68,83],BQ:[68,83],BR:[68,83],BS:[68,83],BT:[68,83],BU:[68,83],BV:[68,83],BW:[68,83]},
+
+  C1:{CA:[1,17],CB:[1,17],CC:[1,17],CD:[1,17],CE:[1,17],CF:[1,17],CG:[1,17],CH:[1,17],CJ:[1,17],CK:[1,17]},
+  C2:{CA:[18,32],CB:[18,32],CC:[18,32],CD:[18,32],CE:[18,35],CF:[18,36],CG:[18,37],CH:[18,37],CJ:[18,37],CK:[18,37]},
+  C3:{CA:[43,52],CB:[44,52],CC:[45,52],CD:[46,52],CE:[48,52],CF:[49,52],CG:[49,52],CH:[38,52],CJ:[38,52],CK:[38,52]},
+  C4:{CA:[53,67],CB:[53,67],CC:[53,67],CD:[53,67],CE:[53,67],CF:[53,67],CG:[53,67],CH:[53,67],CJ:[53,67],CK:[53,67]},
+  C5:{CA:[68,83],CB:[68,83],CC:[68,83],CD:[68,83],CE:[68,83],CF:[68,83],CG:[68,83],CH:[68,83],CJ:[68,83],CK:[68,83]},
+
+  D1:{DA:[1,12],DB:[1,12],DC:[1,12],DD:[1,12],DE:[1,12],DF:[1,12],DG:[1,12],DH:[1,12],DJ:[1,12],DK:[1,12],DL:[1,12],DM:[1,12]},
+  D2:{DA:[14,29],DB:[14,29],DC:[14,29],DD:[14,29],DE:[14,29],DF:[14,29],DG:[14,29],DH:[14,29],DJ:[14,29],DK:[14,29],DL:[14,29],DM:[14,29]},
+  D3:{DA:[46,61],DB:[46,61],DC:[46,61],DD:[46,61],DE:[46,61],DF:[46,61],DG:[46,61],DH:[46,61],DJ:[46,61],DK:[46,61],DL:[46,61],DM:[46,61]},
+  D4:{DA:[63,74],DB:[63,74],DC:[63,74],DD:[63,74],DE:[63,74],DF:[63,74],DG:[63,74],DH:[63,74],DJ:[63,74],DK:[63,74],DL:[63,74],DM:[63,74]},
+
+  E1:{EA:[1,16],EB:[1,16],EC:[1,16],ED:[1,16],EE:[1,16],EF:[1,16],EG:[1,16],EH:[1,16],EJ:[1,16],EK:[1,16],EL:[1,16],EM:[1,16],EN:[1,16],EP:[1,16],EQ:[1,16]},
+  E2:{EA:[17,36],EB:[17,36],EC:[17,36],ED:[17,36],EE:[17,36],EF:[17,36],EG:[17,36],EH:[17,36],EJ:[17,36],EK:[17,36],EL:[17,36],EM:[17,36],EN:[17,36],EP:[17,36],EQ:[17,36]},
+  E3:{EA:[37,56],EB:[37,56],EC:[37,56],ED:[37,56],EE:[37,56],EF:[37,56],EG:[37,56],EH:[37,56],EJ:[37,56],EK:[37,56],EL:[37,56],EM:[37,56],EN:[37,56],EP:[37,56],EQ:[37,56]},
+  E4:{EA:[57,72],EB:[57,72],EC:[57,72],ED:[57,72],EE:[57,72],EF:[57,72],EG:[57,72],EH:[57,72],EJ:[57,72],EK:[57,72],EL:[57,72],EM:[57,72],EN:[57,72],EP:[57,72],EQ:[57,72]},
+};
+
+function calcZoneCapacity(zoneId){
+  const rows=SZ_ROWS[zoneId]||[];
+  let sum=0;
+  rows.forEach(r=>{
+    const w=SZ_WINDOWS[zoneId]?.[r];
+    if(w){sum+=Math.max(0,w[1]-w[0]+1);return;}
+    const rg=SZ_RANGE[zoneId]?.r;
+    if(rg) sum+=Math.max(0,rg[1]-rg[0]+1);
+  });
+  return sum;
+}
+
+const SUBZONE_CAPACITY=Object.fromEntries(
+  Object.keys(SZ_ROWS).map(sz=>[sz,calcZoneCapacity(sz)])
+);
+
+function getRowSeatWindow(zoneId,rowName){
+  const r=(rowName||'').toUpperCase();
+  const w=SZ_WINDOWS[zoneId]?.[r];
+  if(w)return{start:w[0],end:w[1],count:w[1]-w[0]+1};
+  const rg=SZ_RANGE[zoneId]?.r;
+  return rg?{start:rg[0],end:rg[1],count:rg[1]-rg[0]+1}:null;
+}
+
+function normalizeRowForZone(mainZone,rowRaw){
+  const r=(rowRaw||'').toUpperCase().trim();
+  if(mainZone==='A'&&/^A[A-Z]$/.test(r)) return r.slice(1); // backward compatibility: AA->A, AB->B ...
+  return r;
+}
+// All sub-zone price options (for dropdown)
+const SZ_PRICES = {
+  A1:['5,000'],A2:['7,900'],A3:['7,900'],A4:['5,000'],
+  B1:['4,500'],B2:['5,900'],B3:['5,900'],B4:['5,900'],B5:['4,500'],
+  C1:['3,500'],C2:['4,500'],C3:['3,500'],C4:['4,500'],C5:['3,500'],
+  D1:['3,000','2,500'],D2:['3,000','2,500'],D3:['3,000','2,500'],D4:['3,000','2,500'],
+  E1:['2,000','1,500'],E2:['2,000','1,500'],E3:['2,000','1,500'],E4:['2,000','1,500'],
+};
+
+/* ══ STARS ══ */
+(()=>{const se=document.getElementById('stars');for(let i=0;i<120;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const sz=Math.random()<.15?3:2;s.style.width=s.style.height=sz+'px';s.style.setProperty('--d',(2+Math.random()*5)+'s');s.style.setProperty('--dl',(-Math.random()*7)+'s');s.style.setProperty('--b',(0.3+Math.random()*.7).toFixed(2));se.appendChild(s);}})();
+
+/* ══ SETUP BANNER ══ */
+if(GAS_URL) document.getElementById('setup-banner').style.display='none';
+
+/* ══ LANG ══ */
+let lang='th';
+function toggleLang(){
+  lang=lang==='th'?'en':'th';
+  document.getElementById('lang-btn').textContent=lang==='th'?'EN':'ไทย';
+  document.querySelectorAll('[data-th]').forEach(el=>{
+    const v=el.dataset[lang]||el.dataset.th;
+    if(['OPTION','SPAN','STRONG','SMALL','A','DIV','P'].includes(el.tagName)||!el.children.length)
+      el.textContent=v;
+  });
+  buildHomePage();buildFandomChips();buildDEStrip();buildCensusDayFilter();checkSeatDuplicateRealtime();
+}
+
+/* ══ NAV ══ */
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+  if(id==='census')renderCensus();
+  if(id==='register')syncData(true).then(()=>checkSeatDuplicateRealtime());
+}
+
+/* ══ TOAST ══ */
+function toast(msg,dur=3200){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur)}
+
+/* ══════════════════════════════════════
+   HOME PAGE DATA
+══════════════════════════════════════ */
+const TL={
+  th:[
+    {t:'08:00 น.',h:'เปิดบูธหน้างาน',d:'จำหน่าย Official Merchandise · เปิดลงทะเบียนรับ Fan Benefit'},
+    {t:'08:00–13:30 น.',h:'ลงทะเบียน Photo Session',d:'ผู้มีสิทธิ์ Private/Group Photo ต้องลงทะเบียนในช่วงนี้ · หากไม่ทัน = สละสิทธิ์ (แต่ยังเข้าชมโชว์ได้)'},
+    {t:'12:30 น.',h:'เปิดประตู (ผู้มีสิทธิ์ถ่ายรูป)',d:'เข้าฮอลล์เพื่อเตรียมกิจกรรม Group Photo'},
+    {t:'13:30 น.',h:'Fan Benefits Group Photo เริ่ม',d:'ถ่ายภาพกับศิลปิน · เสร็จแล้วต้องออกจากฮอลล์ทันที และห้ามทิ้งของไว้ที่นั่ง'},
+    {t:'16:00 น.',h:'เปิดประตูทั่วไป',d:'ผู้ชมทุกท่านเข้าฮอลล์ได้'},
+    {t:'17:00 น. ✦',h:'SHOWTIME',d:'Blush Blossom Fan Fest 2026 : Midnight Bloom เริ่มต้น!'},
+    {t:'หลังโชว์จบ',h:'Hi-Bye Session',d:'สำหรับบัตร 7,900 / 5,900 / 5,000 / 4,500 บาท'},
+  ],
+  en:[
+    {t:'8:00 AM',h:'Merchandise Booth Opens',d:'Official goods on sale · Fan Benefit registration begins'},
+    {t:'8:00–1:30 PM',h:'Photo Session Registration',d:'Must register during this window · Late = forfeit slot (can still attend show)'},
+    {t:'12:30 PM',h:'Hall Opens (Photo holders)',d:'Enter hall to prepare for Group Photo'},
+    {t:'1:30 PM',h:'Fan Benefit Group Photo Starts',d:'Photos with artists · Must exit hall immediately after · Do not leave belongings'},
+    {t:'4:00 PM',h:'General Doors Open',d:'All ticket holders may enter'},
+    {t:'5:00 PM ✦',h:'SHOWTIME',d:'Blush Blossom Fan Fest 2026 : Midnight Bloom begins!'},
+    {t:'After show',h:'Hi-Bye Session',d:'For 7,900 / 5,900 / 5,000 / 4,500 THB tickets'},
+  ]
+};
+const INFO={
+  th:[
+    {i:'📅',l:'วันจัดงาน',v:'เสาร์ 13 & อาทิตย์ 14 มิ.ย. 2569',s:'2 รอบการแสดง · เวลา 17:00 น.',ac:'var(--gold)'},
+    {i:'📍',l:'สถานที่',v:'BITEC LIVE (ไบเทค)',s:'88 ถ.บางนา-ตราด กม.1 กรุงเทพฯ',ac:'var(--lav)'},
+    {i:'🎟',l:'ราคาบัตร (In-Venue)',v:'1,500 – 7,900 บาท',s:'ซื้อที่ ThaiTicketMajor เท่านั้น',ac:'var(--rose)'},
+    {i:'📡',l:'Live Streaming',v:'TTM LIVE · 1,500 / 1,200 ฿',s:'+Service Fee 30฿/ใบ · สูงสุด 20 ใบ/ออเดอร์',ac:'#06b6d4'},
+    {i:'📸',l:'ประกาศ Lucky Fan Benefit',v:'8 มิถุนายน 2569',s:'ทาง GMMTV Social Media',ac:'var(--gold)'},
+    {i:'🪪',l:'จำกัดการซื้อ',v:'สูงสุด 4 ใบ/รอบ/บัตรประชาชน',s:'รวม 2 รอบ = สูงสุด 8 ใบ',ac:'var(--lav)'},
+  ],
+  en:[
+    {i:'📅',l:'Date',v:'Sat 13 & Sun 14 June 2026',s:'2 shows · 5:00 PM each',ac:'var(--gold)'},
+    {i:'📍',l:'Venue',v:'BITEC LIVE',s:'88 Bangna-Trad Rd. Km.1, Bangkok',ac:'var(--lav)'},
+    {i:'🎟',l:'In-Venue Tickets',v:'1,500 – 7,900 THB',s:'ThaiTicketMajor only',ac:'var(--rose)'},
+    {i:'📡',l:'Live Streaming',v:'TTM LIVE · 1,500 / 1,200 THB',s:'+30 THB service fee · Max 20/order',ac:'#06b6d4'},
+    {i:'📸',l:'Fan Benefit Lucky Draw',v:'8 June 2026',s:'Via GMMTV Social Media',ac:'var(--gold)'},
+    {i:'🪪',l:'Purchase Limit',v:'Max 4 tickets/show per ID',s:'Max 8 across both shows',ac:'var(--lav)'},
+  ]
+};
+const BPRICES=['7,900','5,900','5,000','4,500','3,500','3,000','2,500','2,000','1,500'];
+const BCOLORS=['#dc2626','#16a34a','#ca8a04','#c026d3','#9333ea','#1d4ed8','#0e7490','#db2777','#06b6d4'];
+const BROWS={
+  th:[
+    {l:'สินค้า Official (Pre-order + ช่องพิเศษ)',v:['✓','✓','✓','—','—','—','—','—','—']},
+    {l:'Private Photo 16:1 (*ผู้ที่ได้ Private จะไม่ได้ Group 16:8)',v:['R50','—','—','—','—','—','—','—','—']},
+    {l:'Group Photo 16:8',v:['✓','✓','✓','—','—','—','—','—','—']},
+    {l:'Group Photo 16:16',v:['✓','✓','✓','✓','—','—','—','—','—']},
+    {l:'Group Photo 16:20',v:['✓','✓','✓','✓','✓','—','—','—','—']},
+    {l:'Group Photo 16:24',v:['—','—','—','R360','R72','R48','R24','—','—']},
+    {l:'Hi-Bye (หลังโชว์)',v:['✓','✓','✓','✓','—','—','—','—','—']},
+    {l:'Hi-Bye (Random)',v:['—','—','—','—','R300','R200','R100','—','—']},
+    {l:'Signed Official Poster',v:['✓','✓','—','—','—','—','—','—','—']},
+    {l:'Signed Poster (Random)',v:['—','—','R100','R50','—','—','—','—','—']},
+    {l:'Official Poster (ทุกคน)',v:['✓','✓','✓','✓','✓','✓','✓','✓','✓']},
+  ],
+  en:[
+    {l:'Official Merch (pre-order + special lane)',v:['✓','✓','✓','—','—','—','—','—','—']},
+    {l:'Private Photo 16:1 (*Private winners ineligible for Group 16:8)',v:['R50','—','—','—','—','—','—','—','—']},
+    {l:'Group Photo 16:8',v:['✓','✓','✓','—','—','—','—','—','—']},
+    {l:'Group Photo 16:16',v:['✓','✓','✓','✓','—','—','—','—','—']},
+    {l:'Group Photo 16:20',v:['✓','✓','✓','✓','✓','—','—','—','—']},
+    {l:'Group Photo 16:24',v:['—','—','—','R360','R72','R48','R24','—','—']},
+    {l:'Hi-Bye (post-show)',v:['✓','✓','✓','✓','—','—','—','—','—']},
+    {l:'Hi-Bye (Random)',v:['—','—','—','—','R300','R200','R100','—','—']},
+    {l:'Signed Official Poster',v:['✓','✓','—','—','—','—','—','—','—']},
+    {l:'Signed Poster (Random)',v:['—','—','R100','R50','—','—','—','—','—']},
+    {l:'Official Poster (everyone)',v:['✓','✓','✓','✓','✓','✓','✓','✓','✓']},
+  ]
+};
+const RULES={
+  th:[
+    {i:'🚫',t:'ห้ามถ่ายวิดีโอ / Live',d:'ห้ามบันทึกเสียงหรือถ่ายทอดสดด้วยอุปกรณ์ทุกชนิด · ฝ่าฝืน = เชิญออกทันที + ลบไฟล์ทั้งหมด',no:true},
+    {i:'🚫',t:'ห้ามนำอาหาร-เครื่องดื่มเข้าฮอลล์',d:'ทุกชนิด',no:true},
+    {i:'🚫',t:'ห้ามชูป้ายระหว่างการแสดง',d:'ทุกขนาด ทุกชนิด (บังผู้ชมด้านหลัง)',no:true},
+    {i:'🚫',t:'ห้ามใช้แฟลช',d:'ในการถ่ายภาพทุกกรณี',no:true},
+    {i:'🚫',t:'ห้ามเลนส์ซูมยาว',d:'ห้ามเลนส์ระยะ 50-230/70-200/70-300/300-400/600mm · Teleconverter x1.4 x2 · Pro Zoomer · Compact Camera ที่เลนส์ >150mm · เลนส์ถึง 150mm OK',no:true},
+    {i:'⏰',t:'ลงทะเบียน Photo ภายใน 08:00–13:30 น.',d:'หากไม่ทัน = สละสิทธิ์ (แต่ยังดูโชว์ได้ปกติ)',no:false},
+    {i:'📛',t:'1 ที่นั่ง รับ Fan Benefit ได้ 1 สิทธิ์',d:'สำหรับสิทธิ์ Random เท่านั้น',no:false},
+    {i:'🎫',t:'สูงสุด 4 ใบ/รอบ/บัตรประชาชน',d:'รวม 2 รอบ = สูงสุด 8 ใบ',no:false},
+    {i:'📷',t:'กล้อง DSLR ใช้ได้',d:'แต่เลนส์ต้องไม่เกิน 150mm เท่านั้น',no:false},
+  ],
+  en:[
+    {i:'🚫',t:'No video/livestream',d:'No recording of any kind · Violators = removed immediately + files deleted',no:true},
+    {i:'🚫',t:'No food or drinks inside hall',d:'All types prohibited',no:true},
+    {i:'🚫',t:'No signs during show',d:'All types/sizes (blocks other fans\' view)',no:true},
+    {i:'🚫',t:'No flash photography',d:'At any time',no:true},
+    {i:'🚫',t:'Long zoom lenses prohibited',d:'50-230/70-200/70-300/300-400/600mm · Teleconverters · Pro Zoomer · Compact with >150mm · Up to 150mm OK',no:true},
+    {i:'⏰',t:'Register for photo by 1:30 PM',d:'Late = forfeit slot (can still attend show)',no:false},
+    {i:'📛',t:'1 ticket = 1 Fan Benefit slot',d:'For randomly allocated benefits only',no:false},
+    {i:'🎫',t:'Max 4 tickets/show per ID',d:'Max 8 across both shows',no:false},
+    {i:'📷',t:'DSLR cameras allowed',d:'Lens must be 150mm or shorter',no:false},
+  ]
+};
+
+function buildHomePage(){
+  document.getElementById('tl-wrap').innerHTML=TL[lang].map(t=>`
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-time">${t.t}</div>
+      <div class="tl-title">${t.h}</div>
+      <div class="tl-desc">${t.d}</div>
+    </div>`).join('');
+  document.getElementById('info-grid').innerHTML=INFO[lang].map(c=>`
+    <div class="info-card" style="--ac:${c.ac}">
+      <div class="info-icon">${c.i}</div>
+      <div class="info-label">${c.l}</div>
+      <div class="info-val">${c.v}</div>
+      <div class="info-sub">${c.s}</div>
+    </div>`).join('');
+  // Benefit table
+  const rows=BROWS[lang];
+  let th=`<thead><tr><th style="min-width:170px">${lang==='th'?'สิทธิพิเศษ':'Benefit'}</th>`;
+  BPRICES.forEach((p,i)=>th+=`<th><span class="pbadge" style="background:${BCOLORS[i]}44;color:${BCOLORS[i]}">${p}</span></th>`);
+  th+='</tr></thead>';
+  const tb='<tbody>'+rows.map(r=>`<tr><td>${r.l}</td>${r.v.map(v=>{
+    if(v==='✓')return`<td><span class="chk">✓</span></td>`;
+    if(v==='—')return`<td><span class="crx">—</span></td>`;
+    return`<td><span class="rnd">Random<br>${v.replace('R','')}</span></td>`;
+  }).join('')}</tr>`).join('')+'</tbody>';
+  document.getElementById('btable').innerHTML=th+tb;
+  // Rules
+  document.getElementById('rules-grid').innerHTML=RULES[lang].map(r=>`
+    <div class="rule-card ${r.no?'rule-no':''}">
+      <div class="rule-icon">${r.i}</div>
+      <div class="rule-text"><strong>${r.t}</strong>${r.d}</div>
+    </div>`).join('');
+  // Artists
+  document.getElementById('artists-grid').innerHTML=ARTISTS.map(a=>{
+    const glPairLabel=a.pairTag||'—';
+    const pairTags=(PAIR_HASHTAGS[glPairLabel]||'').split(' ').filter(Boolean);
+    const tagLinks=pairTags.map(tag=>`<a href="https://x.com/search?q=${encodeURIComponent(tag)}" target="_blank" rel="noopener noreferrer">${tag}</a>`).join('');
+    return`<div class="artist-card">
+      <div class="aname">${lang==='th'?a.name:a.nameEn}</div>
+      <div class="afull">${a.full}</div>
+      <div class="agl">GL: ${glPairLabel}</div>
+      ${pairTags.length?`<div class="atag">${tagLinks}</div>`:''}
+      ${a.charTh?`<div class="achar">${lang==='th'?a.charTh:a.charEn}</div>`:`<div class="anochar">${lang==='th'?'(ยังไม่มี Character)':'(No official char.)'}</div>`}
+    </div>`;
+  }).join('');
+}
+
+/* ══ SUB-ZONE + PRICE SELECTS ══ */
+function updateSub(){
+  const m=document.getElementById('main-zone').value;
+  const ss=document.getElementById('sub-zone');
+  const sp=document.getElementById('seat-price');
+  const sr=document.getElementById('seat-row');
+  const sn=document.getElementById('seat-num');
+  ss.innerHTML='';sp.innerHTML='';sr.innerHTML='';sn.innerHTML='';
+  const addDash=(el)=>{const ph=document.createElement('option');ph.value='';ph.disabled=true;ph.selected=true;ph.textContent='—';el.appendChild(ph);};
+  addDash(ss);addDash(sp);addDash(sr);addDash(sn);
+  if(!m){setSeatCheckMessage('','');return;}
+  ZONES[m].subs.forEach(z=>{
+    const o=document.createElement('option');o.value=z;
+    o.textContent=`${z} — ${ZONES[m].prices[z]}฿`;ss.appendChild(o);
+  });
+  updatePrice();
+  updateRowOptions();
+  checkSeatDuplicateRealtime();
+}
+function updatePrice(){
+  const sz=document.getElementById('sub-zone').value;
+  const sp=document.getElementById('seat-price');sp.innerHTML='';
+  const ph=document.createElement('option');
+  ph.value='';ph.disabled=true;ph.selected=true;ph.textContent='—';
+  sp.appendChild(ph);
+  if(!sz)return;
+  (SZ_PRICES[sz]||[]).forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p+'฿';sp.appendChild(o);});
+}
+
+function updateRowOptions(){
+  const sz=document.getElementById('sub-zone').value;
+  const mz=document.getElementById('main-zone').value;
+  const sr=document.getElementById('seat-row');
+  const sn=document.getElementById('seat-num');
+  sr.innerHTML='';sn.innerHTML='';
+  const addDash=(el)=>{const ph=document.createElement('option');ph.value='';ph.disabled=true;ph.selected=true;ph.textContent='—';el.appendChild(ph);};
+  addDash(sr);addDash(sn);
+  if(!sz||!mz)return;
+  const rows=SZ_ROWS[sz]||ZONE_ROWS[mz]||[];
+  rows.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sr.appendChild(o);});
+}
+
+function updateSeatOptions(){
+  const sz=document.getElementById('sub-zone').value;
+  const row=document.getElementById('seat-row').value;
+  const sn=document.getElementById('seat-num');
+  sn.innerHTML='';
+  const ph=document.createElement('option');
+  ph.value='';ph.disabled=true;ph.selected=true;ph.textContent='—';
+  sn.appendChild(ph);
+  if(!sz||!row)return;
+  const win=getRowSeatWindow(sz,row);
+  if(!win)return;
+  for(let s=win.start;s<=win.end;s++){
+    const o=document.createElement('option');
+    o.value=String(s);
+    o.textContent=s<10?'0'+s:String(s);
+    sn.appendChild(o);
+  }
+}
+
+function setSeatCheckMessage(type,msg){
+  const el=document.getElementById('seat-check-msg');
+  if(!el)return;
+  el.className='seat-check'+(type?` ${type}`:'');
+  el.textContent=msg||'';
+}
+
+/* ══ FANDOM CHIPS ══ */
+function buildFandomChips(){
+  const fw=document.getElementById('fandom-wrap');fw.innerHTML='';
+  const dd=document.createElement('div');dd.className='fc dd-fc';
+  dd.innerHTML=`<input type="checkbox" id="f-dd" value="dd"><label for="f-dd">💛 DD (ได้หมด)</label>`;
+  fw.appendChild(dd);
+  PAIRS.forEach(p=>{
+    const d=document.createElement('div');d.className='fc';
+    const lbl=lang==='th'?`${p.th} (${p.tag})`:p.tag;
+    d.innerHTML=`<input type="checkbox" id="f-${p.id}" value="${p.id}"><label for="f-${p.id}" style="border-color:${p.color}44">${lbl}</label>`;
+    fw.appendChild(d);
+  });
+}
+
+/* ══ D/E STRIP ══ */
+function buildDEStrip(){
+  ['D','E'].forEach(m=>{
+    const el=document.getElementById(`de-${m}-strip`);if(!el)return;
+    el.innerHTML=ZONES[m].subs.map(z=>`
+      <div class="de-btn" id="deb-${z}" onclick="openZone('${z}')"
+        style="background:${ZONES[m].colors[z]}22;border-color:${ZONES[m].colors[z]}55">
+        <div class="de-label">${z}</div>
+        <div class="de-prices">
+          <span style="color:${ZONES[m].colors[z]}">${m==='D'?'3,000':'2,000'}฿</span>
+          <span style="color:rgba(255,255,255,.3)"> / </span>
+          <span style="color:${ZONES[m].colorBack[z]}">${m==='D'?'2,500':'1,500'}฿</span>
+        </div>
+        <div class="de-cnt" id="dbc-${z}" style="color:${ZONES[m].colors[z]}">0</div>
+      </div>`).join('');
+  });
+}
+
+/* ══════════════════════════════════════
+   STORAGE & GOOGLE SHEETS
+══════════════════════════════════════ */
+const LOCAL_KEY='bb_v3';
+let DATA_CACHE=(()=>{try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}})();
+let lastSyncAt=0;
+
+function getData(){return Array.isArray(DATA_CACHE)?DATA_CACHE:[]}
+function saveLocal(d){
+  DATA_CACHE=Array.isArray(d)?d:[];
+  localStorage.setItem(LOCAL_KEY,JSON.stringify(DATA_CACHE));
+}
+function normalizeEntry(e){
+  const mainZone=String(e?.mainZone||'').toUpperCase();
+  return {
+    ...e,
+    mainZone,
+    subZone:String(e?.subZone||'').toUpperCase(),
+    row:normalizeRowForZone(mainZone,String(e?.row||'').toUpperCase()),
+    seatNum:Number(e?.seatNum||0),
+    days:getEntryDays(e)
+  };
+}
+async function fetchRemoteData(){
+  if(!GAS_URL)return null;
+  const url=`${GAS_URL}${GAS_URL.includes('?')?'&':'?'}action=read&t=${Date.now()}`;
+  const res=await fetch(url,{method:'GET'});
+  if(!res.ok) throw new Error(`Read failed: ${res.status}`);
+  const json=await res.json();
+  const arr=Array.isArray(json?.data)?json.data:[];
+  return arr.map(normalizeEntry);
+}
+async function syncData(force=false){
+  const now=Date.now();
+  if(!force&&(now-lastSyncAt)<10000&&getData().length) return getData();
+  if(GAS_URL){
+    try{
+      const remote=await fetchRemoteData();
+      if(Array.isArray(remote)){saveLocal(remote);lastSyncAt=now;return remote;}
+    }catch(err){console.warn('GAS read error',err)}
+  }
+  const local=(()=>{try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}})();
+  DATA_CACHE=Array.isArray(local)?local.map(normalizeEntry):[];
+  lastSyncAt=now;
+  return DATA_CACHE;
+}
+function isSeatTaken(data,{day,subZone,row,seatNum}){
+  return (data||[]).some(e=>
+    String(e?.subZone||'').toUpperCase()===String(subZone||'').toUpperCase()&&
+    String(e?.row||'').toUpperCase()===String(row||'').toUpperCase()&&
+    Number(e?.seatNum||0)===Number(seatNum||0)&&
+    getEntryDays(e).includes(String(day||''))
+  );
+}
+async function checkSeatDuplicateRealtime(){
+  const day=document.querySelector('.day-opt input:checked')?.value||'';
+  const mz=document.getElementById('main-zone').value;
+  const sz=document.getElementById('sub-zone').value;
+  const row=document.getElementById('seat-row').value;
+  const num=document.getElementById('seat-num').value;
+  if(!(day&&mz&&sz&&row&&num)){setSeatCheckMessage('','');return false;}
+  const seatNum=parseInt(num,10);
+  if(!Number.isInteger(seatNum)||seatNum<1){setSeatCheckMessage('','');return false;}
+  await syncData();
+  const dup=isSeatTaken(getData(),{day,subZone:sz,row,seatNum});
+  if(dup){
+    setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้มีคนลงแล้วในวันนี้':'⚠️ Seat already taken for this day');
+    return true;
+  }
+  setSeatCheckMessage('ok',lang==='th'?'✅ ที่นั่งนี้ยังว่าง':'✅ Seat is available');
+  return false;
+}
+
+async function submitForm(){
+  const day=document.querySelector('.day-opt input:checked')?.value||'';
+  if(!day){toast('❌ '+(lang==='th'?'กรุณาเลือกวันที่ไป':'Select day'));return}
+  const mz=document.getElementById('main-zone').value;
+  const sz=document.getElementById('sub-zone').value;
+  const pr=document.getElementById('seat-price').value;
+  const rowRaw=document.getElementById('seat-row').value.trim().toUpperCase();
+  const num=document.getElementById('seat-num').value.trim();
+  if(!mz){toast('❌ '+(lang==='th'?'กรุณาเลือกโซน':'Select zone'));return}
+  if(!sz){toast('❌ '+(lang==='th'?'กรุณาเลือกโซนย่อย':'Select sub-zone'));return}
+  if(!pr){toast('❌ '+(lang==='th'?'กรุณาเลือกราคา':'Select price'));return}
+  if(!rowRaw){toast('❌ '+(lang==='th'?'กรุณาเลือกแถว':'Select row'));return}
+  if(!num){toast('❌ '+(lang==='th'?'กรุณาเลือกเลขที่นั่ง':'Select seat no.'));return}
+  const row=normalizeRowForZone(mz,rowRaw);
+  const seatNum=parseInt(num,10);
+  if(!Number.isInteger(seatNum)||seatNum<1){toast('❌ '+(lang==='th'?'เลขที่นั่งไม่ถูกต้อง':'Invalid seat number'));return}
+  const validRows=SZ_ROWS[sz]||ZONE_ROWS[mz]||[];
+  if(!validRows.includes(row)){toast('❌ '+(lang==='th'?'แถวไม่ตรงกับโซนที่เลือก':'Row does not match selected zone'));return}
+  const rowWin=getRowSeatWindow(sz,row);
+  if(!rowWin){toast('❌ '+(lang==='th'?`แถว ${row} ไม่มีที่นั่งใน ${sz}`:`Row ${row} has no seats in ${sz}`));return}
+  if(seatNum<rowWin.start||seatNum>rowWin.end){toast('❌ '+(lang==='th'?`เลขที่นั่งของ ${sz} แถว ${row} ต้องอยู่ระหว่าง ${rowWin.start}-${rowWin.end}`:`Seat number for ${sz} row ${row} must be ${rowWin.start}-${rowWin.end}`));return}
+  await syncData(true);
+  if(isSeatTaken(getData(),{day,subZone:sz,row,seatNum})){
+    setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้ถูกลงทะเบียนแล้วในวันเดียวกัน':'⚠️ This seat is already registered for this day');
+    toast('❌ '+(lang==='th'?'ที่นั่งนี้มีคนลงไว้แล้ว (วันเดียวกัน)':'Seat already taken for this day'));
+    return;
+  }
+  const fandoms=[...document.querySelectorAll('#fandom-wrap input:checked')].map(c=>c.value);
+  if(!fandoms.length){toast('❌ '+(lang==='th'?'กรุณาเลือกคู่/ด้อม':'Select pair/fandom'));return}
+  const nickname=document.getElementById('nickname').value.trim()||'—';
+  const dayStr=day+' มิ.ย.';
+  const entry={id:Date.now(),days:[day],dayStr,mainZone:mz,subZone:sz,price:pr,row,seatNum,fandoms:normalizeFandoms(fandoms),nickname,ts:new Date().toISOString()};
+  const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='⏳...';
+  // Save to Google Sheets
+  let sheetOk=false;
+  if(GAS_URL){
+    try{
+      await fetch(GAS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(entry)});
+      sheetOk=true;
+    }catch(e){console.warn('GAS error',e)}
+  }
+  // Always save locally as backup
+  const data=[...getData(),normalizeEntry(entry)];saveLocal(data);
+  await syncData(true);
+  toast(sheetOk?'🌸 บันทึกสำเร็จ! (Google Sheets + Local)':'🌸 บันทึก Local แล้ว'+(GAS_URL?' · ตรวจสอบ Sheets URL':' · ยังไม่ได้เชื่อม Sheets'));
+  // Reset
+  document.querySelectorAll('.day-opt input,.fc input').forEach(c=>c.checked=false);
+  ['nickname'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('main-zone').value='';
+  document.getElementById('sub-zone').innerHTML='<option value="" disabled selected>—</option>';
+  document.getElementById('seat-price').innerHTML='<option value="" disabled selected>—</option>';
+  document.getElementById('seat-row').innerHTML='<option value="" disabled selected>—</option>';
+  document.getElementById('seat-num').innerHTML='<option value="" disabled selected>—</option>';
+  setSeatCheckMessage('','');
+  btn.disabled=false;btn.textContent=lang==='th'?'✦ บันทึก & ส่งข้อมูล':'✦ Save & Submit';
+}
+
+/* ══════════════════════════════════════
+   CENSUS RENDER
+══════════════════════════════════════ */
+let curZone=null,curFilter='all';
+let censusDayFilter='all';
+
+function getEntryDays(entry){
+  const out=[];
+  const add=(v)=>{const s=String(v||'').trim();if(s==='13'||s==='14')out.push(s)};
+  if(Array.isArray(entry?.days)) entry.days.forEach(add);
+  else if(entry?.days){
+    const parts=String(entry.days).split(/[^0-9]+/).filter(Boolean);
+    parts.forEach(add);
+  }
+  if(!out.length&&entry?.dayStr){
+    const m=String(entry.dayStr).match(/13|14/g)||[];
+    m.forEach(add);
+  }
+  return [...new Set(out)];
+}
+
+function getCensusFilteredData(){
+  const data=getData();
+  if(censusDayFilter==='all') return data;
+  return data.filter(e=>getEntryDays(e).includes(censusDayFilter));
+}
+
+function buildCensusDayFilter(){
+  const wrap=document.getElementById('census-day-filter');
+  if(!wrap) return;
+  wrap.innerHTML=`
+    <span class="cdf-lbl">${lang==='th'?'แยกวัน:':'Day Filter:'}</span>
+    <button class="cdf-chip ${censusDayFilter==='all'?'on':''}" onclick="setCensusDayFilter('all')">${lang==='th'?'ทั้งหมด':'All'}</button>
+    <button class="cdf-chip ${censusDayFilter==='13'?'on':''}" onclick="setCensusDayFilter('13')">13 ${lang==='th'?'มิ.ย.':'Jun'}</button>
+    <button class="cdf-chip ${censusDayFilter==='14'?'on':''}" onclick="setCensusDayFilter('14')">14 ${lang==='th'?'มิ.ย.':'Jun'}</button>
+  `;
+}
+
+function setCensusDayFilter(day){
+  censusDayFilter=day;
+  buildCensusDayFilter();
+  renderCensus();
+}
+
+async function renderCensus(){
+  await syncData();
+  buildCensusDayFilter();
+  const data=getCensusFilteredData();
+  document.getElementById('total-cnt').textContent=data.length;
+  const zoneCnt={},subCnt={},fanCnt={},dayCnt={'13':0,'14':0};
+  data.forEach(r=>{
+    zoneCnt[r.mainZone]=(zoneCnt[r.mainZone]||0)+1;
+    const sz=r.subZone||r.mainZone;subCnt[sz]=(subCnt[sz]||0)+1;
+    normalizeFandoms(r.fandoms).forEach(f=>{fanCnt[f]=(fanCnt[f]||0)+1});
+    getEntryDays(r).forEach(d=>{if(d in dayCnt)dayCnt[d]++});
+  });
+  const total=data.length||1;
+  const topZ=Object.entries(zoneCnt).sort((a,b)=>b[1]-a[1])[0];
+  const topF=Object.entries(fanCnt).sort((a,b)=>b[1]-a[1])[0];
+  const ddCnt=fanCnt['dd']||0;
+  document.getElementById('census-stats').innerHTML=`
+    <div class="stat-card" style="--ac:var(--lav)"><div class="stat-n">${data.length}</div><div class="stat-l">${lang==='th'?'ลงทะเบียนแล้ว':'Registered'}</div></div>
+    <div class="stat-card" style="--ac:${topZ?ZONES[topZ[0]]?.mainColor:'var(--pk)'}"><div class="stat-n">${topZ?'Zone '+topZ[0]:'—'}</div><div class="stat-l">${lang==='th'?'โซนยอดนิยม':'Top Zone'}</div><div class="stat-s">${topZ?.[1]||0}${lang==='th'?'คน':' fans'}</div></div>
+    <div class="stat-card" style="--ac:var(--rose)"><div class="stat-n">${topF?fandomName(topF[0]):'—'}</div><div class="stat-l">${lang==='th'?'ด้อมมากสุด':'Top Fandom'}</div><div class="stat-s">${topF?.[1]||0}${lang==='th'?'คน':' fans'}</div></div>
+    <div class="stat-card" style="--ac:var(--gold)"><div class="stat-n">${ddCnt}</div><div class="stat-l">💛 DD${lang==='th'?'(ได้หมด)':'(All-rounder)'}</div><div class="stat-s">${Math.round(ddCnt/total*100)}%</div></div>
+  `;
+  // Charts
+  const d13=dayCnt['13'],d14=dayCnt['14'];
+  document.getElementById('census-charts').innerHTML=`
+    <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:18px;box-shadow:0 4px 15px rgba(0,0,0,0.1)">
+      <div style="font-size:10px;font-weight:800;color:var(--lav);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">${lang==='th'?'วันที่ไป':'Attendance'}</div>
+      <div class="day-split-wrap">
+        <div class="dsb" style="flex:${d13||.01};background:linear-gradient(135deg,#7c3aed,#a855f7)">${d13>0?d13:''}</div>
+        <div class="dsb" style="flex:${d14||.01};background:linear-gradient(135deg,#ec4899,#f97316)">${d14>0?d14:''}</div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;font-weight:600">
+        <span><span style="color:#a855f7">●</span> 13 มิ.ย. (${d13})</span><span><span style="color:#f97316">●</span> 14 มิ.ย. (${d14})</span>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:18px;box-shadow:0 4px 15px rgba(0,0,0,0.1)">
+      <div style="font-size:10px;font-weight:800;color:var(--lav);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">${lang==='th'?'สัดส่วนโซน':'Zone Split'}</div>
+      ${Object.entries(ZONES).map(([k,v])=>{const c=zoneCnt[k]||0;return`<div style="display:grid;grid-template-columns:46px 1fr 28px;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:10px;color:${v.mainColor};font-weight:800">Zone ${k}</span><div class="bar-bg"><div class="bar-fg" style="background:${v.mainColor};width:${c/total*100}%;box-shadow:0 0 10px ${v.mainColor}"></div></div><span style="font-size:10px;font-weight:800;color:${v.mainColor};text-align:right">${c}</span></div>`;}).join('')}
+    </div>
+  `;
+  // SVG zone count labels
+  Object.keys(ZONES).forEach(m=>{
+    ZONES[m].subs.forEach(sz=>{
+      const el=document.getElementById('sc-'+sz);
+      if(el){
+        const reg=subCnt[sz]||0;
+        const cap=SUBZONE_CAPACITY[sz]||0;
+        el.textContent=cap?`${reg}/${cap}`:`${reg}`;
+      }
+    });
+  });
+  // D/E strip counts
+  [...ZONES.D.subs,...ZONES.E.subs].forEach(sz=>{
+    const el=document.getElementById('dbc-'+sz);
+    if(el){
+      const reg=subCnt[sz]||0;
+      const cap=SUBZONE_CAPACITY[sz]||0;
+      el.textContent=cap?`${reg}/${cap}`:`${reg}`;
+    }
+  });
+  // Fandom bars
+  const sortedF=Object.entries(fanCnt).sort((a,b)=>b[1]-a[1]);
+  const maxF=Math.max(...sortedF.map(f=>f[1]),1);
+  document.getElementById('census-fandoms').innerHTML=sortedF.slice(0,14).map(([id,c])=>{
+    const nm=fandomName(id);
+    const col=fandomColor(id);
+    return`<div class="fan-bar-row"><div class="fan-bar-name">${nm}</div><div class="bar-bg"><div class="bar-fg" style="background:${id==='dd'?'linear-gradient(90deg,var(--gold),#f97316)':'linear-gradient(90deg,'+col+','+col+'88)'};width:${c/maxF*100}%;box-shadow:0 0 8px ${col}"></div></div><div class="fan-cnt">${c}</div></div>`;
+  }).join('')||`<div style="color:rgba(255,255,255,.28);font-size:13px;text-align:center;padding:20px 0">${lang==='th'?'ยังไม่มีข้อมูล · ไปลงทะเบียนกันก่อนเลย 🌸':'No data yet · Go register! 🌸'}</div>`;
+  
+  if(curZone) openZone(curZone);
+}
+
+/* ══ ZONE DETAIL ══ */
+function openZone(zoneId){
+  curZone=zoneId;curFilter='all';
+  const m=zoneId[0];
+  const col=ZONES[m].colors[zoneId]||ZONES[m].mainColor;
+  const pr=ZONES[m].prices[zoneId]||'';
+  const cap=SUBZONE_CAPACITY[zoneId]||0;
+  document.querySelectorAll('.zblk').forEach(g=>{g.classList.toggle('sel',g.id==='zb-'+zoneId);g.classList.toggle('dim',g.id!=='zb-'+zoneId&&g.id.startsWith('zb-'))});
+  document.querySelectorAll('.de-btn').forEach(b=>b.classList.toggle('sel',b.id==='deb-'+zoneId));
+  const data=getCensusFilteredData();
+  const entries=data.filter(e=>e.subZone===zoneId||(e.mainZone===m&&!e.subZone));
+  const det=document.getElementById('zone-detail');
+  det.style.borderColor=col+'88';
+  det.style.boxShadow=`0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 20px ${col}22`;
+  det.classList.add('open');
+  det.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('zd-title').textContent=`Zone ${zoneId}`;
+  document.getElementById('zd-title').style.color=col;
+  document.getElementById('zd-meta').textContent=`${entries.length}/${cap||'—'} ${lang==='th'?'คนลงทะเบียน':'registered fans'} · ${pr}฿`;
+  const fanIds=[...new Set(entries.flatMap(e=>normalizeFandoms(e.fandoms)))];
+  document.getElementById('zd-filter').innerHTML=`
+    <span class="filter-label">${lang==='th'?'กรองด้อม:':'Filter:'}</span>
+    <button class="fchip on" onclick="filterZone('all',this)">${lang==='th'?'ทั้งหมด':'All'}</button>
+    <button class="fchip" onclick="filterZone('dd',this)">💛 DD</button>
+    ${fanIds.filter(f=>f!=='dd').map(f=>{const p=PAIR_BY_ID[f];return`<button class="fchip" onclick="filterZone('${f}',this)" style="border-color:${(p?.color||'var(--lav)')}44">${fandomName(f)}</button>`;}).join('')}
+  `;
+  buildSeatGrid(zoneId,entries,'all');
+}
+function closeZone(){
+  curZone=null;
+  document.getElementById('zone-detail').classList.remove('open');
+  document.querySelectorAll('.zblk').forEach(g=>{g.classList.remove('sel','dim')});
+  document.querySelectorAll('.de-btn').forEach(b=>b.classList.remove('sel'));
+}
+function filterZone(fid,btn){
+  curFilter=fid;
+  document.querySelectorAll('#zd-filter .fchip').forEach(b=>b.classList.remove('on','dd-on'));
+  btn.classList.add(fid==='dd'?'dd-on':'on');
+  const data=getCensusFilteredData();const m=curZone[0];
+  const entries=data.filter(e=>e.subZone===curZone||(e.mainZone===m&&!e.subZone));
+  buildSeatGrid(curZone,entries,fid);
+}
+function buildSeatGrid(zoneId,entries,filter){
+  const m=zoneId[0];
+  const range=SZ_RANGE[zoneId]||{r:[1,20]};
+  const [sMin,sMax]=range.r;
+  const rows=SZ_ROWS[zoneId]||ZONE_ROWS[m]||[];
+  const sMap={};
+  entries.forEach(e=>{
+    const rr=normalizeRowForZone(m,e.row);
+    const k=`${rr}-${e.seatNum}`;
+    if(!sMap[k])sMap[k]=[];
+    sMap[k].push(e);
+  });
+  const grid=document.getElementById('seat-grid');grid.innerHTML='';
+  rows.forEach((rowName,rowIdx)=>{
+    const line=document.createElement('div');line.className='row-line';
+    const lbl=document.createElement('div');lbl.className='row-lbl';lbl.textContent=rowName;line.appendChild(lbl);
+    const win=getRowSeatWindow(zoneId,rowName);
+    for(let s=sMin;s<=sMax;s++){
+      const k=`${rowName}-${s}`;const es=sMap[k]||[];
+      const btn=document.createElement('div');btn.className='seat';btn.textContent=s<10?'0'+s:s;
+      if(!win||s<win.start||s>win.end){
+        btn.style.visibility='hidden';
+        btn.style.pointerEvents='none';
+        btn.textContent='';
+        line.appendChild(btn);
+        continue;
+      }
+      let match=es;if(filter!=='all')match=es.filter(e=>normalizeFandoms(e.fandoms).includes(filter));
+      if(match.length>0){
+        btn.classList.add('taken');
+        const ff=normalizeFandoms(match[0].fandoms||[]);const isDD=ff.includes('dd')&&ff.length===1;
+        if(isDD){btn.classList.add('is-dd')}
+        else{
+          const mainF=ff.filter(f=>f!=='dd')[0];
+          const col=fandomColor(mainF).replace('var(--lav)','#a78bfa');
+          btn.style.background=col+'44';
+          btn.style.borderColor=col;
+          // Set CSS variable for glow effect
+          btn.style.setProperty('--glow-color', col);
+        }
+        const tip=document.createElement('div');tip.className='seat-tip';
+        const showDown=rowIdx<Math.ceil(rows.length*0.35);
+        if(showDown) tip.classList.add('tip-down');
+        const fn=ff.map(f=>fandomName(f)).join(', ');
+        tip.innerHTML=`<strong>${match[0].nickname||'—'}</strong><br>${fn}<br><span style="color:rgba(255,255,255,.4);font-size:9px">${match[0].dayStr||''} · ${match[0].price||''}฿</span>`;
+        btn.appendChild(tip);
+      } else if(es.length>0)btn.classList.add('dimmed');
+      line.appendChild(btn);
+    }
+    grid.appendChild(line);
+  });
+  // Fan summary
+  const fanCnt={};
+  (filter==='all'?entries:entries.filter(e=>normalizeFandoms(e.fandoms).includes(filter))).forEach(e=>normalizeFandoms(e.fandoms).forEach(f=>{fanCnt[f]=(fanCnt[f]||0)+1}));
+  document.getElementById('fan-sum').innerHTML=`<span style="font-size:11px;color:rgba(255,255,255,.5);margin-right:8px;font-weight:600">${lang==='th'?'ด้อมในโซนนี้:':'Fandoms here:'}</span>`+
+    Object.entries(fanCnt).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([id,c])=>{
+      const col=fandomColor(id);
+      return`<div class="fan-chip" style="border-color:${col}44"><div class="fan-dot" style="background:${col};box-shadow:0 0 5px ${col}"></div><span style="color:rgba(255,255,255,0.8)">${fandomName(id)}</span><strong style="color:${col}">${c}</strong></div>`;
+    }).join('');
+}
+
+/* ══ INIT ══ */
+buildHomePage();
+buildFandomChips();
+buildDEStrip();
+syncData(true);
+
+// Trigger initial fetch if GAS_URL is set
+if(GAS_URL) renderCensus();
+</script>
+</body>
+</html>
