@@ -203,6 +203,7 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5vw,46px);
 .cdf-chip{padding:6px 12px;border-radius:999px;border:1px solid rgba(167,139,250,.35);background:rgba(0,0,0,.25);color:rgba(255,255,255,.7);font-family:'Noto Sans Thai',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
 .cdf-chip:hover{border-color:var(--lav);color:#fff;background:rgba(167,139,250,.15)}
 .cdf-chip.on{background:rgba(167,139,250,.25);border-color:var(--lav);color:#fff;box-shadow:0 0 12px rgba(167,139,250,.3)}
+.cdf-note{width:100%;font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
 
 /* ══ ENHANCED SEAT MAP (BLUEPRINT STYLE) ══ */
 .map-wrap{
@@ -424,6 +425,12 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 }
 .seat-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--lav)}
 .seat-tip strong{font-size:12px;color:var(--lav2);letter-spacing:0.5px}
+.seat-tip.split-day{white-space:normal;min-width:220px;text-align:left}
+.seat-tip-days{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.seat-tip-day{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:6px 8px}
+.seat-tip-day-hd{font-size:10px;font-weight:800;color:var(--lav2);margin-bottom:4px}
+.seat-tip-day-list{font-size:9px;line-height:1.45;color:rgba(255,255,255,.86)}
+.seat-tip-day-empty{font-size:9px;color:rgba(255,255,255,.35)}
 
 .seat-tip.tip-down{
   top:calc(100% + 8px);
@@ -535,6 +542,7 @@ a,button,input,select,textarea,label{touch-action:manipulation}
   .stat-n{font-size:22px}
   .census-day-filter{gap:6px;margin:-4px 0 14px}
   .cdf-chip{padding:6px 10px;font-size:10px}
+  .cdf-note{font-size:9px}
   #census-charts{grid-template-columns:1fr !important;gap:10px !important}
 
   .map-wrap{padding:10px;border-radius:14px}
@@ -555,6 +563,8 @@ a,button,input,select,textarea,label{touch-action:manipulation}
   .row-lbl{width:24px;font-size:9px}
   .seat{width:26px;height:26px;font-size:8px;border-radius:6px}
   .seat-tip{font-size:9px;min-width:102px;padding:7px 10px}
+  .seat-tip.split-day{min-width:180px}
+  .seat-tip-days{grid-template-columns:1fr}
 
   .fan-bars{padding:14px}
   .fan-bar-row{grid-template-columns:88px 1fr 28px;gap:8px}
@@ -1630,7 +1640,7 @@ async function submitForm(){
    CENSUS RENDER
 ══════════════════════════════════════ */
 let curZone=null,curFilter='all';
-let censusDayFilter='all';
+let censusDayFilter='13';
 
 function getEntryDays(entry){
   const out=[];
@@ -1661,6 +1671,10 @@ function buildCensusDayFilter(){
     <button class="cdf-chip ${censusDayFilter==='all'?'on':''}" onclick="setCensusDayFilter('all')">${lang==='th'?'ทั้งหมด':'All'}</button>
     <button class="cdf-chip ${censusDayFilter==='13'?'on':''}" onclick="setCensusDayFilter('13')">13 ${lang==='th'?'มิ.ย.':'Jun'}</button>
     <button class="cdf-chip ${censusDayFilter==='14'?'on':''}" onclick="setCensusDayFilter('14')">14 ${lang==='th'?'มิ.ย.':'Jun'}</button>
+    <span class="cdf-note">${censusDayFilter==='all'
+      ? (lang==='th'?'โหมดทั้งหมดใช้ดูภาพรวม · ถ้าจะดูคนนั่งใกล้กันให้เลือกวัน':'All mode is for overview · select a day to inspect nearby seats')
+      : (lang==='th'?'กำลังดูข้อมูลรายวัน เหมาะสำหรับดูคนนั่งใกล้กัน':'Day view enabled for nearby-seat fandom analysis')}
+    </span>
   `;
 }
 
@@ -1753,6 +1767,7 @@ function openZone(zoneId){
   document.querySelectorAll('.de-btn').forEach(b=>b.classList.toggle('sel',b.id==='deb-'+zoneId));
   const data=getCensusFilteredData();
   const entries=data.filter(e=>e.subZone===zoneId||(e.mainZone===m&&!e.subZone));
+  const uniqueSeats=new Set(entries.map(e=>`${normalizeRowForZone(m,e.row)}-${Number(e.seatNum||0)}`)).size;
   const det=document.getElementById('zone-detail');
   det.style.borderColor=col+'88';
   det.style.boxShadow=`0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2), 0 0 20px ${col}22`;
@@ -1760,7 +1775,12 @@ function openZone(zoneId){
   det.scrollIntoView({behavior:'smooth',block:'center'});
   document.getElementById('zd-title').textContent=`Zone ${zoneId}`;
   document.getElementById('zd-title').style.color=col;
-  document.getElementById('zd-meta').textContent=`${entries.length}/${cap||'—'} ${lang==='th'?'คนลงทะเบียน':'registered fans'} · ${pr}฿`;
+  document.getElementById('zd-meta').textContent=
+    censusDayFilter==='all'
+      ? (lang==='th'
+          ? `${uniqueSeats}/${cap||'—'} ที่นั่ง · ${entries.length} รายการลงทะเบียน · ${pr}฿`
+          : `${uniqueSeats}/${cap||'—'} seats · ${entries.length} registrations · ${pr}฿`)
+      : `${entries.length}/${cap||'—'} ${lang==='th'?'คนลงทะเบียน':'registered fans'} · ${pr}฿`;
   const fanIds=[...new Set(entries.flatMap(e=>normalizeFandoms(e.fandoms)))];
   document.getElementById('zd-filter').innerHTML=`
     <span class="filter-label">${lang==='th'?'กรองด้อม:':'Filter:'}</span>
@@ -1815,7 +1835,12 @@ function buildSeatGrid(zoneId,entries,filter){
       if(match.length>0){
         btn.classList.add('taken');
         const ff=normalizeFandoms(match[0].fandoms||[]);const isDD=ff.includes('dd')&&ff.length===1;
-        if(isDD){btn.classList.add('is-dd')}
+        const isMulti=match.length>1;
+        if(isMulti){
+          btn.style.background='rgba(251,191,36,.28)';
+          btn.style.borderColor='#fbbf24';
+          btn.style.setProperty('--glow-color','#fbbf24');
+        }else if(isDD){btn.classList.add('is-dd')}
         else{
           const mainF=ff.filter(f=>f!=='dd')[0];
           const col=fandomColor(mainF).replace('var(--lav)','#a78bfa');
@@ -1827,8 +1852,36 @@ function buildSeatGrid(zoneId,entries,filter){
         const tip=document.createElement('div');tip.className='seat-tip';
         const showDown=rowIdx<Math.ceil(rows.length*0.35);
         if(showDown) tip.classList.add('tip-down');
-        const fn=ff.map(f=>fandomName(f)).join(', ');
-        tip.innerHTML=`<strong>${match[0].nickname||'—'}</strong><br>${fn}<br><span style="color:rgba(255,255,255,.4);font-size:9px">${match[0].dayStr||''} · ${match[0].price||''}฿</span>`;
+        if(isMulti){
+          tip.classList.add('split-day');
+          const by13=match.filter(e=>getEntryDays(e).includes('13'));
+          const by14=match.filter(e=>getEntryDays(e).includes('14'));
+          const renderDayList=(arr)=>{
+            if(!arr.length) return `<div class="seat-tip-day-empty">${lang==='th'?'ไม่มีข้อมูล':'No data'}</div>`;
+            const lines=arr.slice(0,3).map(e=>{
+              const ftxt=normalizeFandoms(e.fandoms||[]).map(f=>fandomName(f)).join(', ');
+              return `<div>${e.nickname||'—'} · ${ftxt}</div>`;
+            }).join('');
+            const more=arr.length>3?`<div>+${arr.length-3} ${lang==='th'?'รายการ':'more'}</div>`:'';
+            return `${lines}${more}`;
+          };
+          tip.innerHTML=`
+            <strong>${lang==='th'?'ที่นั่งซ้ำต่างวัน':'Same seat across days'} (${match.length})</strong>
+            <div class="seat-tip-days">
+              <div class="seat-tip-day">
+                <div class="seat-tip-day-hd">13 ${lang==='th'?'มิ.ย.':'Jun'} (${by13.length})</div>
+                <div class="seat-tip-day-list">${renderDayList(by13)}</div>
+              </div>
+              <div class="seat-tip-day">
+                <div class="seat-tip-day-hd">14 ${lang==='th'?'มิ.ย.':'Jun'} (${by14.length})</div>
+                <div class="seat-tip-day-list">${renderDayList(by14)}</div>
+              </div>
+            </div>`;
+        }else{
+          const fn=ff.map(f=>fandomName(f)).join(', ');
+          const singleDays=[...new Set(getEntryDays(match[0]))].sort().map(d=>`${d} ${lang==='th'?'มิ.ย.':'Jun'}`).join(', ');
+          tip.innerHTML=`<strong>${match[0].nickname||'—'}</strong><br>${fn}<br><span style="color:rgba(255,255,255,.4);font-size:9px">${singleDays||''} · ${match[0].price||''}฿</span>`;
+        }
         btn.appendChild(tip);
       } else if(es.length>0)btn.classList.add('dimmed');
       line.appendChild(btn);
