@@ -49,17 +49,26 @@ nav{position:sticky;top:0;z-index:100;background:rgba(8,4,18,.88);backdrop-filte
 .nav-logo{font-family:'Cinzel Decorative',serif;font-size:11px;
   background:linear-gradient(135deg,var(--lav),var(--rose));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  white-space:nowrap;flex-shrink:0}
-.nav-tabs{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  white-space:nowrap;flex-shrink:0;max-width:34vw;overflow:hidden;text-overflow:ellipsis}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex:1;min-width:0;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{height:0}
 .nav-tab{padding:5px 10px;border:none;background:transparent;color:rgba(255,255,255,.4);
   font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;
-  border-radius:7px;cursor:pointer;transition:all .2s;white-space:nowrap}
+  border-radius:7px;cursor:pointer;transition:all .2s;white-space:nowrap;flex:0 0 auto}
 .nav-tab.active{background:var(--card2);color:#fff}
 .nav-tab:not(.active):hover{color:var(--lav)}
 .lang-btn{padding:4px 10px;border:1px solid var(--bdr2);border-radius:100px;
   background:transparent;color:var(--lav2);font-family:'Noto Sans Thai',sans-serif;
   font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0}
 .lang-btn:hover{background:var(--card2)}
+
+@media(max-width:760px){
+  nav{height:auto;padding:8px 10px;display:grid;grid-template-columns:1fr auto;grid-template-areas:'logo lang' 'tabs tabs';row-gap:8px;align-items:center}
+  .nav-logo{grid-area:logo;max-width:100%;font-size:10px}
+  .lang-btn{grid-area:lang;justify-self:end}
+  .nav-tabs{grid-area:tabs;width:100%;padding-bottom:2px}
+  .nav-tab{font-size:11px;padding:6px 10px}
+}
 
 /* ── PAGES ── */
 .page{display:none;position:relative;z-index:1;animation:fadeUp .3s ease both}
@@ -486,19 +495,83 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,rgba(18,9,36,0.95),rgba(56,15,84,0.95));backdrop-filter:blur(20px);border:1px solid var(--lav);border-radius:100px;padding:12px 28px;color:#fff;font-size:13px;font-weight:700;z-index:999;transition:transform .5s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(167,139,250,0.3)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
+a,button,input,select,textarea,label{touch-action:manipulation}
+
 @media(max-width:580px){
+  .wrap{padding:0 10px 70px}
+  .fanmade-bar{padding:7px 10px;font-size:10px;line-height:1.5}
+  .hero{padding:28px 8px 24px}
+  .hero-badge{font-size:10px;padding:4px 12px;margin-bottom:12px}
+  .hero-pills{gap:6px}
+  .hero-pill{font-size:11px;padding:6px 10px}
+
+  .sec-hd{font-size:19px;gap:8px;line-height:1.25;flex-wrap:wrap}
+  .sec-hd small{width:100%}
+
   .frow{grid-template-columns:1fr;gap:12px}
-  .reg-card{padding:24px 16px}
+  .reg-card{padding:20px 14px;border-radius:16px}
+  .reg-title{font-size:22px;margin-bottom:18px}
+  .fg select,.fg input[type=text],.fg input[type=number]{min-height:44px;font-size:15px}
+  .day-grid{grid-template-columns:1fr 1fr}
+  .submit-btn{padding:13px 14px;font-size:15px}
+  .setup-banner{padding:12px 14px;gap:10px}
+
   .info-grid{grid-template-columns:1fr}
   .artists-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
   .de-strip{grid-template-columns:repeat(2,1fr)}
   .ls-grid{grid-template-columns:1fr}
   .census-title{font-size:20px}
-  .map-wrap{padding:12px;}
+
+  .maps-header{padding:12px 12px;align-items:flex-start}
+  .maps-link{width:100%;text-align:center}
+  .maps-iframe{height:220px}
+
+  .census-top{padding-top:14px;gap:10px}
+  .census-top>div:last-child{width:100%;justify-content:space-between}
+  .total-badge{padding:7px 12px;font-size:11px}
+  .total-badge strong{font-size:16px}
+  .stats-top{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stat-card{padding:14px}
+  .stat-n{font-size:22px}
+  .census-day-filter{gap:6px;margin:-4px 0 14px}
+  .cdf-chip{padding:6px 10px;font-size:10px}
+  #census-charts{grid-template-columns:1fr !important;gap:10px !important}
+
+  .map-wrap{padding:10px;border-radius:14px}
+  .map-wrap::before,.map-wrap::after{width:24px;height:24px}
+  .stage-lbl{margin-bottom:12px}
+  .stage-box{padding:7px 22px;font-size:11px;letter-spacing:.12em}
+  svg.smap{max-width:none}
+  .map-legend{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding:10px;gap:8px}
+  .leg-item{flex:0 0 auto;white-space:nowrap}
+
+  .zone-detail{padding:14px;border-radius:14px}
+  .zd-title{font-size:20px}
+  .zd-meta{font-size:11px}
+  .filter-bar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .filter-label,.fchip{flex:0 0 auto}
+
+  .seat-grid-wrap{padding:34px 2px 12px 2px;margin:0 -4px}
+  .row-lbl{width:24px;font-size:9px}
+  .seat{width:26px;height:26px;font-size:8px;border-radius:6px}
+  .seat-tip{font-size:9px;min-width:102px;padding:7px 10px}
+
+  .fan-bars{padding:14px}
+  .fan-bar-row{grid-template-columns:88px 1fr 28px;gap:8px}
+
+  .toast{max-width:calc(100vw - 20px);white-space:normal;line-height:1.5;text-align:center;padding:10px 14px;border-radius:14px}
 }
 
 @media(max-width:920px){
   .info-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:400px){
+  .nav-logo{font-size:9px}
+  .nav-tab{font-size:10px;padding:6px 8px}
+  .lang-btn{font-size:10px;padding:4px 8px}
+  .hero-pill{font-size:10px}
+  .stats-top{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -509,6 +582,10 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 <div class="fanmade-bar">
   ⚠️ <span data-th="นี่คือ Fan Guide ที่แฟนคลับสร้างขึ้น ไม่ใช่ข้อมูลทางการจาก GMMTV · ข้อมูลอ้างอิงจาก" data-en="This is a fan-made guide, not official GMMTV content · Info sourced from">นี่คือ Fan Guide ที่แฟนคลับสร้างขึ้น ไม่ใช่ข้อมูลทางการจาก GMMTV · ข้อมูลอ้างอิงจาก</span>
   <a href="https://www.thaiticketmajor.com/concert/blush-blossom-fan-fest-2026-midnight-bloom.html" target="_blank">ThaiTicketMajor</a>
+  <span> · </span>
+  <span>Made with heart by </span>
+  <a href="https://x.com/kisschup" target="_blank" rel="noopener noreferrer">@kisschup</a>
+  <span> (เอนี่S)</span>
 </div>
 
 <nav>
