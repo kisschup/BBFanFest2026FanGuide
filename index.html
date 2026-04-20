@@ -2240,12 +2240,17 @@ async function submitForm(){
     return;
   }
 
-  // Always save locally as backup
-  if(remoteStatus!=='ok'){
+  const remoteSaved=remoteStatus==='ok'||remoteStatus==='updated';
+
+  // Save local only when remote did not persist
+  if(!remoteSaved){
     const data=[...getData(),normalizeEntry(entry)];
     saveLocal(data);
+    // Keep recent local state hot to avoid immediate remote overwrite path.
+    lastSyncAt=Date.now();
+  }else{
+    await syncData(true);
   }
-  await syncData(true);
   if(remoteStatus==='ok'){
     toast(lang==='th'?'🌸 บันทึกสำเร็จ! (Google Sheets)':'🌸 Saved to Google Sheets');
   }else if(remoteStatus==='updated'){
