@@ -531,6 +531,24 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:linear-gradient(135deg,rgba(18,9,36,0.95),rgba(56,15,84,0.95));backdrop-filter:blur(20px);border:1px solid var(--lav);border-radius:100px;padding:12px 28px;color:#fff;font-size:13px;font-weight:700;z-index:999;transition:transform .5s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(167,139,250,0.3)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
+.confirm-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,8,20,.7);backdrop-filter:blur(6px)}
+.confirm-modal.open{display:flex}
+.confirm-modal-card{width:min(560px,100%);background:linear-gradient(165deg,rgba(21,9,48,.95),rgba(12,6,30,.96));border:1px solid rgba(167,139,250,.38);border-radius:16px;padding:18px;box-shadow:0 20px 48px rgba(0,0,0,.5),0 0 24px rgba(167,139,250,.15)}
+.confirm-modal-title{font-size:17px;font-weight:800;color:#fff;margin-bottom:8px}
+.confirm-modal-desc{font-size:12px;color:rgba(255,255,255,.78);line-height:1.6;margin-bottom:12px}
+.confirm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.confirm-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px}
+.confirm-key{display:block;font-size:10px;color:rgba(255,255,255,.55);margin-bottom:4px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.confirm-val{display:block;font-size:12px;color:#fff;font-weight:700;line-height:1.45;word-break:break-word}
+.confirm-actions{display:flex;gap:8px;justify-content:flex-end}
+.confirm-btn{border:none;border-radius:10px;padding:10px 14px;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:800;cursor:pointer}
+.confirm-btn.cancel{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.16)}
+.confirm-btn.ok{background:linear-gradient(135deg,#ec4899,#f97316);color:#fff;box-shadow:0 8px 20px rgba(236,72,153,.35)}
+.confirm-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none;filter:grayscale(.25)}
+.confirm-agree{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;margin:0 0 12px}
+.confirm-agree input{margin-top:2px}
+.confirm-agree label{font-size:11px;color:rgba(255,255,255,.86);line-height:1.5;cursor:pointer}
+
 a,button,input,select,textarea,label{touch-action:manipulation}
 
 @media(max-width:580px){
@@ -605,6 +623,8 @@ a,button,input,select,textarea,label{touch-action:manipulation}
   .fan-bar-row{grid-template-columns:88px 1fr 28px;gap:8px}
 
   .toast{max-width:calc(100vw - 20px);white-space:normal;line-height:1.5;text-align:center;padding:10px 14px;border-radius:14px}
+  .confirm-grid{grid-template-columns:1fr}
+  .confirm-modal-card{padding:14px}
 }
 
 @media(max-width:920px){
@@ -1169,11 +1189,34 @@ a,button,input,select,textarea,label{touch-action:manipulation}
 
 <div class="toast" id="toast"></div>
 
+<div class="confirm-modal" id="seat-overwrite-modal" aria-hidden="true">
+  <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="seat-overwrite-title">
+    <div class="confirm-modal-title" id="seat-overwrite-title">ยืนยันการลงทับข้อมูลที่นั่ง</div>
+    <div class="confirm-modal-desc" id="seat-overwrite-desc">การลงทะเบียนนี้เป็นการลงทับข้อมูลที่มีอยู่ โปรดแน่ใจว่าข้อมูลดังกล่าวเป็นข้อมูลของท่านเอง</div>
+    <div class="confirm-grid">
+      <div class="confirm-item"><span class="confirm-key">Day</span><span class="confirm-val" id="ow-day">-</span></div>
+      <div class="confirm-item"><span class="confirm-key">Zone</span><span class="confirm-val" id="ow-zone">-</span></div>
+      <div class="confirm-item"><span class="confirm-key">Row / Seat</span><span class="confirm-val" id="ow-seat">-</span></div>
+      <div class="confirm-item"><span class="confirm-key">Price</span><span class="confirm-val" id="ow-price">-</span></div>
+      <div class="confirm-item"><span class="confirm-key">Fandoms</span><span class="confirm-val" id="ow-fandoms">-</span></div>
+      <div class="confirm-item"><span class="confirm-key">Twitter / Nickname</span><span class="confirm-val" id="ow-nickname">-</span></div>
+    </div>
+    <div class="confirm-agree">
+      <input type="checkbox" id="ow-self-confirm">
+      <label for="ow-self-confirm" id="ow-self-confirm-label">ยืนยันว่าเป็นข้อมูลของตนเองและอนุญาตให้ลงทับข้อมูลที่นั่งนี้</label>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-btn cancel" id="ow-cancel" type="button">ยกเลิก</button>
+      <button class="confirm-btn ok" id="ow-confirm" type="button" disabled>ยืนยันลงทับ</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ══════════════════════════════════════
    CONFIG — แก้ตรงนี้เพียงจุดเดียว
 ══════════════════════════════════════ */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzV6CjDylkO-Hnc4jt1c0yns8wPv2wesoTRxcEWX4xzQA4l8AxcKT-3or0u-Jkso6pkGQ/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxM7qb34OBMz6mglki6smCaOiQnmK1oxmldkVk5P33j_NzxPeUgMsPpPUtSEBT8V59j/exec';
 // วาง URL ที่ได้จาก Google Apps Script "Deploy as Web App" ตรงนี้
 // ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb.../exec'
 
@@ -1438,6 +1481,64 @@ function goPage(id){
 
 /* ══ TOAST ══ */
 function toast(msg,dur=3200){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur)}
+
+function openSeatOverwriteModal(payload){
+  const modal=document.getElementById('seat-overwrite-modal');
+  if(!modal) return Promise.resolve(false);
+
+  const set=(id,v)=>{const el=document.getElementById(id);if(el) el.textContent=v||'-';};
+  const dayLabel=(payload?.day==='13'||payload?.day==='14')?`${payload.day} ${lang==='th'?'มิ.ย.':'Jun'}`:'-';
+  set('ow-day',dayLabel);
+  set('ow-zone',`${payload?.mainZone||'-'} / ${payload?.subZone||'-'}`);
+  set('ow-seat',`${payload?.row||'-'} / ${payload?.seatNum||'-'}`);
+  set('ow-price',payload?.price?`${payload.price}฿`:'-');
+  set('ow-fandoms',(payload?.fandomNames||[]).join(', ')||'-');
+  set('ow-nickname',payload?.nickname||'—');
+
+  const title=document.getElementById('seat-overwrite-title');
+  const desc=document.getElementById('seat-overwrite-desc');
+  const btnCancel=document.getElementById('ow-cancel');
+  const btnConfirm=document.getElementById('ow-confirm');
+  const chkOwn=document.getElementById('ow-self-confirm');
+  const chkOwnLabel=document.getElementById('ow-self-confirm-label');
+  if(title) title.textContent=lang==='th'?'ยืนยันการลงทับข้อมูลที่นั่ง':'Confirm seat overwrite';
+  if(desc) desc.textContent=lang==='th'
+    ? 'การลงทะเบียนนี้เป็นการลงทับข้อมูลที่มีอยู่ โปรดแน่ใจว่าข้อมูลดังกล่าวเป็นข้อมูลของท่านเอง'
+    : 'This submission will overwrite existing seat data. Please make sure this record belongs to you.';
+  if(btnCancel) btnCancel.textContent=lang==='th'?'ยกเลิก':'Cancel';
+  if(btnConfirm) btnConfirm.textContent=lang==='th'?'ยืนยันลงทับ':'Confirm overwrite';
+  if(chkOwnLabel) chkOwnLabel.textContent=lang==='th'
+    ? 'ยืนยันว่าเป็นข้อมูลของตนเองและอนุญาตให้ลงทับข้อมูลที่นั่งนี้'
+    : 'I confirm this is my own record and allow overwriting this seat entry.';
+  if(chkOwn){chkOwn.checked=false;}
+  if(btnConfirm){btnConfirm.disabled=true;}
+
+  return new Promise(resolve=>{
+    const cleanup=()=>{
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      modal.removeEventListener('click',onBackdrop);
+      document.removeEventListener('keydown',onEsc);
+      btnCancel?.removeEventListener('click',onCancel);
+      btnConfirm?.removeEventListener('click',onConfirm);
+      chkOwn?.removeEventListener('change',onAgreeChange);
+    };
+    const close=(ok)=>{cleanup();resolve(ok);};
+    const onCancel=()=>close(false);
+    const onConfirm=()=>close(true);
+    const onAgreeChange=()=>{if(btnConfirm) btnConfirm.disabled=!chkOwn?.checked;};
+    const onBackdrop=(ev)=>{if(ev.target===modal) close(false);};
+    const onEsc=(ev)=>{if(ev.key==='Escape') close(false);};
+
+    btnCancel?.addEventListener('click',onCancel);
+    btnConfirm?.addEventListener('click',onConfirm);
+    chkOwn?.addEventListener('change',onAgreeChange);
+    modal.addEventListener('click',onBackdrop);
+    document.addEventListener('keydown',onEsc);
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+  });
+}
 
 /* ══════════════════════════════════════
    HOME PAGE DATA
@@ -2092,17 +2193,27 @@ async function submitForm(){
   const rowWin=getRowSeatWindow(sz,row);
   if(!rowWin){toast('❌ '+(lang==='th'?`แถว ${row} ไม่มีที่นั่งใน ${sz}`:`Row ${row} has no seats in ${sz}`));return}
   if(seatNum<rowWin.start||seatNum>rowWin.end){toast('❌ '+(lang==='th'?`เลขที่นั่งของ ${sz} แถว ${row} ต้องอยู่ระหว่าง ${rowWin.start}-${rowWin.end}`:`Seat number for ${sz} row ${row} must be ${rowWin.start}-${rowWin.end}`));return}
-  await syncData(true);
-  if(isSeatTaken(getData(),{day,subZone:sz,row,seatNum})){
-    setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้ถูกลงทะเบียนแล้วในวันเดียวกัน':'⚠️ This seat is already registered for this day');
-    toast('❌ '+(lang==='th'?'ที่นั่งนี้มีคนลงไว้แล้ว (วันเดียวกัน)':'Seat already taken for this day'));
-    return;
-  }
   const fandoms=[...document.querySelectorAll('#fandom-wrap input:checked')].map(c=>c.value);
   if(!fandoms.length){toast('❌ '+(lang==='th'?'กรุณาเลือกคู่/ด้อม':'Select pair/fandom'));return}
+  const normalizedFandoms=normalizeFandoms(fandoms);
   const nickname=document.getElementById('nickname').value.trim()||'—';
+  await syncData(true);
+  let overwrite=false;
+  if(isSeatTaken(getData(),{day,subZone:sz,row,seatNum})){
+    setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้ถูกลงทะเบียนแล้วในวันเดียวกัน':'⚠️ This seat is already registered for this day');
+    const ok=await openSeatOverwriteModal({
+      day,mainZone:mz,subZone:sz,row,seatNum,price:pr,
+      fandomNames:normalizedFandoms.map(fid=>fandomName(fid)),
+      nickname
+    });
+    if(!ok){
+      toast('❌ '+(lang==='th'?'ยกเลิกการลงทับข้อมูล':'Overwrite cancelled'));
+      return;
+    }
+    overwrite=true;
+  }
   const dayStr=day+' มิ.ย.';
-  const entry={id:Date.now(),days:[day],dayStr,mainZone:mz,subZone:sz,price:pr,row,seatNum,fandoms:normalizeFandoms(fandoms),nickname,ts:new Date().toISOString()};
+  const entry={id:Date.now(),days:[day],dayStr,mainZone:mz,subZone:sz,price:pr,row,seatNum,fandoms:normalizedFandoms,nickname,overwrite,ts:new Date().toISOString()};
   const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='⏳...';
   // Save to Google Sheets
   let remoteStatus='none';
@@ -2137,6 +2248,8 @@ async function submitForm(){
   await syncData(true);
   if(remoteStatus==='ok'){
     toast(lang==='th'?'🌸 บันทึกสำเร็จ! (Google Sheets)':'🌸 Saved to Google Sheets');
+  }else if(remoteStatus==='updated'){
+    toast(lang==='th'?'🌸 ลงทับข้อมูลเดิมสำเร็จ (Google Sheets)':'🌸 Existing seat entry overwritten successfully (Google Sheets)');
   }else{
     const reason=remoteMessage?` (${remoteMessage})`:'';
     toast(lang==='th'
