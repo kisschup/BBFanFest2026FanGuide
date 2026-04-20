@@ -204,6 +204,19 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5vw,46px);
 .cdf-chip:hover{border-color:var(--lav);color:#fff;background:rgba(167,139,250,.15)}
 .cdf-chip.on{background:rgba(167,139,250,.25);border-color:var(--lav);color:#fff;box-shadow:0 0 12px rgba(167,139,250,.3)}
 .cdf-note{width:100%;font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.census-day-filter .cdf-lbl{font-size:13px;color:rgba(255,255,255,.7)}
+.census-day-filter .cdf-chip{padding:10px 16px;font-size:13px;border-color:rgba(167,139,250,.5)}
+.analysis-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-4px 0 18px}
+.analysis-filter .cdf-chip{padding:7px 12px;font-size:11px}
+.analysis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.analysis-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px;box-shadow:0 4px 15px rgba(0,0,0,0.18)}
+.analysis-hd{font-size:10px;font-weight:800;color:var(--lav2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.analysis-kpi-n{font-size:24px;font-weight:800;line-height:1}
+.analysis-kpi-l{font-size:10px;color:rgba(255,255,255,.6);margin-top:6px}
+.analysis-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.ana-row{display:grid;grid-template-columns:54px 1fr 74px;align-items:center;gap:8px;margin-bottom:6px}
+.ana-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.8)}
+.ana-val{font-size:9.5px;font-weight:800;color:var(--lav2);text-align:right;white-space:nowrap}
 
 /* ══ ENHANCED SEAT MAP (BLUEPRINT STYLE) ══ */
 .map-wrap{
@@ -492,6 +505,19 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 .submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(236,72,153,.5);filter:brightness(1.1)}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 .form-note{font-size:11px;color:rgba(255,255,255,.4);margin-top:16px;text-align:center;line-height:1.7}
+.live-subtitle{font-size:11px;color:rgba(255,255,255,.55);text-align:center;margin-top:-12px;margin-bottom:16px}
+.live-summary{margin-top:18px;background:rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.live-summary-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.live-mini{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px}
+.live-mini .n{font-size:16px;font-weight:800;line-height:1;color:#fff}
+.live-mini .l{font-size:10px;color:rgba(255,255,255,.55);margin-top:4px}
+.live-country-other{display:none}
+.register-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px auto 0;max-width:600px}
+.register-tab{padding:10px 16px;border-radius:999px;border:1px solid rgba(167,139,250,.35);background:rgba(0,0,0,.24);color:rgba(255,255,255,.7);font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s}
+.register-tab.on{background:rgba(167,139,250,.22);border-color:var(--lav);color:#fff;box-shadow:0 0 12px rgba(167,139,250,.25)}
+.register-pane{display:none}
+.register-pane.active{display:block}
+.analysis-live-note{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px}
 
 /* setup banner */
 .setup-banner{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.3);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:12px;display:flex;align-items:flex-start;gap:14px;box-shadow:0 4px 15px rgba(251,191,36,0.05)}
@@ -522,6 +548,9 @@ a,button,input,select,textarea,label{touch-action:manipulation}
   .day-grid{grid-template-columns:1fr 1fr}
   .submit-btn{padding:13px 14px;font-size:15px}
   .setup-banner{padding:12px 14px;gap:10px}
+  .live-summary-top{grid-template-columns:1fr}
+  .register-tabs{gap:6px}
+  .register-tab{padding:9px 12px;font-size:11px}
 
   .info-grid{grid-template-columns:1fr}
   .artists-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
@@ -541,7 +570,10 @@ a,button,input,select,textarea,label{touch-action:manipulation}
   .stat-card{padding:14px}
   .stat-n{font-size:22px}
   .census-day-filter{gap:6px;margin:-4px 0 14px}
-  .cdf-chip{padding:6px 10px;font-size:10px}
+  .census-day-filter .cdf-chip{padding:9px 14px;font-size:12px}
+  .analysis-filter{gap:6px;margin:-2px 0 14px}
+  .analysis-filter .cdf-chip{padding:6px 10px;font-size:10px}
+  .analysis-two-col{grid-template-columns:1fr}
   .cdf-note{font-size:9px}
   #census-charts{grid-template-columns:1fr !important;gap:10px !important}
 
@@ -606,6 +638,9 @@ a,button,input,select,textarea,label{touch-action:manipulation}
     </button>
     <button class="nav-tab" onclick="goPage('census')" data-page="census">
       <span data-th="🌸 ประชากร" data-en="🌸 Census">🌸 ประชากร</span>
+    </button>
+    <button class="nav-tab" onclick="goPage('analysis')" data-page="analysis">
+      <span data-th="📊 วิเคราะห์" data-en="📊 Analysis">📊 วิเคราะห์</span>
     </button>
     <button class="nav-tab" onclick="goPage('register')" data-page="register">
       <span data-th="✦ ลงทะเบียน" data-en="✦ Register">✦ ลงทะเบียน</span>
@@ -926,8 +961,69 @@ a,button,input,select,textarea,label{touch-action:manipulation}
 </div>
 </div>
 
+<div class="page" id="page-analysis">
+<div class="wrap">
+  <div class="census-top">
+    <div>
+      <div class="census-title" data-th="📊 วิเคราะห์ข้อมูลแฟน" data-en="📊 Fan Data Analysis">📊 วิเคราะห์ข้อมูลแฟน</div>
+      <span style="font-size:12px;color:rgba(255,255,255,.6);display:inline-block;margin-top:4px" data-th="กรองได้ทั้งวันและด้อม เพื่อดูภาพรวมเชิงลึก" data-en="Filter by both day and fandom for deeper insights">กรองได้ทั้งวันและด้อม เพื่อดูภาพรวมเชิงลึก</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button onclick="renderAnalysis()" style="padding:8px 16px;background:rgba(167,139,250,.15);border:1px solid var(--lav);border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 0 10px rgba(167,139,250,0.2);transition:all 0.2s"
+        onmouseover="this.style.background='rgba(167,139,250,0.3)';this.style.boxShadow='0 0 15px rgba(167,139,250,0.4)'"
+        onmouseout="this.style.background='rgba(167,139,250,0.15)';this.style.boxShadow='0 0 10px rgba(167,139,250,0.2)'"
+        data-th="↻ อัปเดตข้อมูล" data-en="↻ Refresh">↻ อัปเดตข้อมูล</button>
+    </div>
+  </div>
+
+  <div class="analysis-filter" id="analysis-filter"></div>
+  <div class="analysis-grid" id="analysis-kpis"></div>
+  <div class="analysis-two-col">
+    <div class="analysis-card">
+      <div class="analysis-hd" data-th="กระจายตามโซนหลัก" data-en="Main Zone Split">กระจายตามโซนหลัก</div>
+      <div id="analysis-zone-bars"></div>
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-hd" data-th="กระจายตามด้อม" data-en="Fandom Split">กระจายตามด้อม</div>
+      <div id="analysis-fandom-bars"></div>
+    </div>
+  </div>
+  <div class="analysis-two-col">
+    <div class="analysis-card">
+      <div class="analysis-hd" data-th="ตำแหน่งซ้าย/ขวา" data-en="Left/Right Position">ตำแหน่งซ้าย/ขวา</div>
+      <div id="analysis-side-bars"></div>
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-hd" data-th="ตำแหน่งหน้า/หลัง" data-en="Front/Back Position">ตำแหน่งหน้า/หลัง</div>
+      <div id="analysis-depth-bars"></div>
+    </div>
+  </div>
+  <div class="analysis-card">
+    <div class="analysis-hd" data-th="Top โซนย่อย" data-en="Top Sub-zones">Top โซนย่อย</div>
+    <div id="analysis-subzone-bars"></div>
+  </div>
+  <div class="analysis-two-col" style="margin-top:16px">
+    <div class="analysis-card">
+      <div class="analysis-hd" data-th="Live Streaming Insights" data-en="Live Streaming Insights">Live Streaming Insights</div>
+      <div class="analysis-live-note" data-th="ส่วนนี้ใช้ฟิลเตอร์วันร่วมกับหน้า Analysis แต่ไม่ใช้ฟิลเตอร์ด้อม" data-en="This section uses the day filter from Analysis, but not the fandom filter">ส่วนนี้ใช้ฟิลเตอร์วันร่วมกับหน้า Analysis แต่ไม่ใช้ฟิลเตอร์ด้อม</div>
+      <div class="analysis-grid" id="analysis-live-kpis"></div>
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-hd" data-th="ประเทศยอดนิยม (Live)" data-en="Top Countries (Live)">ประเทศยอดนิยม (Live)</div>
+      <div id="analysis-live-country-bars"></div>
+    </div>
+  </div>
+</div>
+</div>
+
 <div class="page" id="page-register">
 <div class="wrap">
+  <div class="register-tabs">
+    <button class="register-tab on" id="register-tab-seat" onclick="setRegisterTab('seat')" data-th="🎟 ที่นั่ง" data-en="🎟 Seat">🎟 ที่นั่ง</button>
+    <button class="register-tab" id="register-tab-live" onclick="setRegisterTab('live')" data-th="📡 Live Streaming" data-en="📡 Live Streaming">📡 Live Streaming</button>
+  </div>
+
+  <div class="register-pane active" id="register-pane-seat">
   <div class="reg-card">
     <div class="setup-banner" id="setup-banner">
       <div style="font-size:22px;flex-shrink:0">⚙️</div>
@@ -989,9 +1085,9 @@ a,button,input,select,textarea,label{touch-action:manipulation}
     <div class="fg" style="margin-bottom:16px">
       <label class="req" data-th="ด้อมของคุณ (เลือกได้หลายคน)" data-en="Your Fandom(s)">ด้อมของคุณ (เลือกได้หลายคน)</label>
       <div style="font-size:11px;color:rgba(251,191,36,.8);margin-bottom:10px"
-        data-th="💛 DD = ชอบทุกคน · ชื่อ Official Character อยู่ในวงเล็บ"
-        data-en="💛 DD = Love all · Official character names in brackets">
-        💛 DD = ชอบทุกคน · ชื่อ Official Character อยู่ในวงเล็บ
+        data-th="💛 DD = ชอบทุกคน"
+        data-en="💛 DD = Love all">
+        💛 DD = ชอบทุกคน
       </div>
       <div class="fandom-wrap" id="fandom-wrap"></div>
     </div>
@@ -1010,6 +1106,43 @@ a,button,input,select,textarea,label{touch-action:manipulation}
       data-en="Data saved to Google Sheets · No personally identifiable info · Fan-made for fans 🌸">
       ข้อมูลถูกส่งไปเก็บที่ Google Sheets · ไม่มีข้อมูลส่วนตัวที่ระบุตัวตนได้ · Fan-made เพื่อแฟนด้อม 🌸
     </p>
+  </div>
+  </div>
+
+  <div class="register-pane" id="register-pane-live">
+  <div class="reg-card">
+    <div class="reg-title" data-th="📡 สำรวจแฟนคลับ Live Streaming" data-en="📡 Live Streaming Fan Census">📡 สำรวจแฟนคลับ Live Streaming</div>
+    <div class="live-subtitle" data-th="ฟอร์มนี้แยกจากฟอร์มที่นั่งหลัก · ใช้ดูปริมาณผู้ชมสตรีมตามประเทศ" data-en="This form is separate from seat registration · Track streaming viewers by country">ฟอร์มนี้แยกจากฟอร์มที่นั่งหลัก · ใช้ดูปริมาณผู้ชมสตรีมตามประเทศ</div>
+
+    <div class="frow">
+      <div class="fg">
+        <label class="req" data-th="วันรับชม" data-en="Viewing Day">วันรับชม</label>
+        <select id="live-day">
+          <option value="13">13 Jun</option>
+          <option value="14">14 Jun</option>
+          <option value="both">Both Days</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="req" data-th="ประเทศ" data-en="Country">ประเทศ</label>
+        <select id="live-country" onchange="updateLiveCountryOtherVisibility()"></select>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg live-country-other" id="live-country-other-wrap">
+        <label class="req" data-th="ประเทศ (พิมพ์อังกฤษ)" data-en="Country (English only)">ประเทศ (พิมพ์อังกฤษ)</label>
+        <input type="text" id="live-country-other" placeholder="e.g. Argentina">
+      </div>
+      <div class="fg">
+        <label class="req" data-th="ชื่อทวิตเตอร์" data-en="Twitter Handle">ชื่อทวิตเตอร์</label>
+        <input type="text" id="live-twitter" placeholder="@fanclubTH">
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitLiveStreamingForm()" id="live-submit-btn" data-th="✦ บันทึก Live Streaming" data-en="✦ Save Live Streaming">✦ บันทึก Live Streaming</button>
+    <div class="live-summary" id="live-summary"></div>
+  </div>
   </div>
 </div>
 </div>
@@ -1188,7 +1321,7 @@ const SZ_WINDOWS = {
   B5:{BF:[73,83],BG:[70,83],BH:[68,83],BJ:[68,83],BK:[68,83],BL:[68,83],BM:[68,83],BN:[68,83],BP:[68,83],BQ:[68,83],BR:[68,83],BS:[68,83],BT:[68,83],BU:[68,83],BV:[68,83],BW:[68,83]},
 
   C1:{CA:[1,17],CB:[1,17],CC:[1,17],CD:[1,17],CE:[1,17],CF:[1,17],CG:[1,17],CH:[1,17],CJ:[1,17],CK:[1,17]},
-  C2:{CA:[18,32],CB:[18,32],CC:[18,32],CD:[18,34],CE:[18,35],CF:[18,36],CG:[18,37],CH:[18,37],CJ:[18,37],CK:[18,37]},
+  C2:{CA:[18,32],CB:[18,33],CC:[18,33],CD:[18,34],CE:[18,35],CF:[18,36],CG:[18,37],CH:[18,37],CJ:[18,37],CK:[18,37]},
   C3:{CA:[43,52],CB:[44,52],CC:[45,52],CD:[46,52],CE:[48,52],CF:[49,52],CG:[49,52],CH:[38,52],CJ:[38,52],CK:[38,52]},
   C4:{CA:[53,67],CB:[53,67],CC:[53,67],CD:[53,67],CE:[53,67],CF:[53,67],CG:[53,67],CH:[53,67],CJ:[53,67],CK:[53,67]},
   C5:{CA:[68,83],CB:[68,83],CC:[68,83],CD:[68,83],CE:[68,83],CF:[68,83],CG:[68,83],CH:[68,83],CJ:[68,83],CK:[68,83]},
@@ -1258,7 +1391,13 @@ function toggleLang(){
     if(['OPTION','SPAN','STRONG','SMALL','A','DIV','P'].includes(el.tagName)||!el.children.length)
       el.textContent=v;
   });
-  buildHomePage();buildFandomChips();buildDEStrip();buildCensusDayFilter();checkSeatDuplicateRealtime();
+  buildHomePage();buildFandomChips();buildDEStrip();buildCensusDayFilter();buildAnalysisFilter();buildLiveCountryOptions();renderLiveStreamingSummary();setRegisterTab(registerTab);checkSeatDuplicateRealtime();
+  syncLiveData().then(()=>{
+    renderLiveStreamingSummary();
+    if(document.getElementById('page-analysis')?.classList.contains('active')) renderAnalysis();
+  });
+  if(document.getElementById('page-census')?.classList.contains('active')) renderCensus();
+  if(document.getElementById('page-analysis')?.classList.contains('active')) renderAnalysis();
 }
 
 /* ══ NAV ══ */
@@ -1267,7 +1406,14 @@ function goPage(id){
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.nav-tab').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
   if(id==='census')renderCensus();
-  if(id==='register')syncData(true).then(()=>checkSeatDuplicateRealtime());
+  if(id==='analysis')renderAnalysis();
+  if(id==='register'){
+    Promise.all([syncData(true),syncLiveData(true)]).then(()=>{
+      setRegisterTab(registerTab);
+      checkSeatDuplicateRealtime();
+      renderLiveStreamingSummary();
+    });
+  }
 }
 
 /* ══ TOAST ══ */
@@ -1364,6 +1510,10 @@ const RULES={
     {i:'📷',t:'DSLR cameras allowed',d:'Lens must be 150mm or shorter',no:false},
   ]
 };
+
+const LIVE_COUNTRIES=[
+  'Thailand','Japan','China','Taiwan','Hong Kong','South Korea','Philippines','Vietnam','Indonesia','Malaysia','Singapore','Myanmar','Cambodia','Laos','India','United States','Canada','Mexico','Brazil','United Kingdom','France','Germany','Australia','New Zealand'
+];
 
 function buildHomePage(){
   document.getElementById('tl-wrap').innerHTML=TL[lang].map(t=>`
@@ -1491,6 +1641,221 @@ function buildFandomChips(){
     d.innerHTML=`<input type="checkbox" id="f-${p.id}" value="${p.id}"><label for="f-${p.id}" style="border-color:${p.color}44">${lbl}</label>`;
     fw.appendChild(d);
   });
+}
+
+/* ══ LIVE STREAMING (SEPARATE FORM) ══ */
+const LIVE_LOCAL_KEY='bb_live_stream_v1';
+let LIVE_DATA_CACHE=(()=>{try{return JSON.parse(localStorage.getItem(LIVE_LOCAL_KEY)||'[]')}catch{return[]}})();
+let LIVE_LAST_SYNC_AT=0;
+
+function normalizeLiveEntry(e){
+  const day=String(e?.day||'').trim().toLowerCase();
+  const safeDay=(day==='13'||day==='14'||day==='both')?day:'';
+  const country=normalizeCountryName(e?.country||'');
+  const twitter=normalizeTwitterHandle(e?.twitter||'');
+  return {
+    id:Number(e?.id||Date.now()),
+    day:safeDay,
+    country,
+    twitter,
+    ts:String(e?.ts||new Date().toISOString())
+  };
+}
+
+function dedupeLiveEntries(list){
+  const arr=Array.isArray(list)?list:[];
+  const map=new Map();
+  arr.forEach(raw=>{
+    const e=normalizeLiveEntry(raw);
+    if(!e.day||!e.country||!e.twitter) return;
+    const key=`${e.day}|${e.twitter}`;
+    const prev=map.get(key);
+    if(!prev){map.set(key,e);return;}
+    const tPrev=Date.parse(prev?.ts||'')||0;
+    const tCur=Date.parse(e?.ts||'')||0;
+    if(tCur>=tPrev) map.set(key,e);
+  });
+  return [...map.values()];
+}
+
+function getLiveData(){
+  const clean=dedupeLiveEntries(Array.isArray(LIVE_DATA_CACHE)?LIVE_DATA_CACHE:[]);
+  if(clean.length!==((Array.isArray(LIVE_DATA_CACHE)?LIVE_DATA_CACHE:[]).length)){
+    LIVE_DATA_CACHE=clean;
+    localStorage.setItem(LIVE_LOCAL_KEY,JSON.stringify(LIVE_DATA_CACHE));
+  }
+  return clean;
+}
+
+function saveLiveData(list){
+  LIVE_DATA_CACHE=dedupeLiveEntries(Array.isArray(list)?list:[]);
+  localStorage.setItem(LIVE_LOCAL_KEY,JSON.stringify(LIVE_DATA_CACHE));
+}
+
+async function fetchRemoteLiveData(){
+  if(!GAS_URL) return null;
+  const url=`${GAS_URL}${GAS_URL.includes('?')?'&':'?'}action=read_live&t=${Date.now()}`;
+  const res=await fetch(url,{method:'GET'});
+  if(!res.ok) throw new Error(`Live read failed: ${res.status}`);
+  const json=await res.json();
+  const arr=Array.isArray(json?.data)?json.data:[];
+  return dedupeLiveEntries(arr.map(normalizeLiveEntry));
+}
+
+async function syncLiveData(force=false){
+  const now=Date.now();
+  if(!force&&(now-LIVE_LAST_SYNC_AT)<10000&&getLiveData().length) return getLiveData();
+  if(GAS_URL){
+    try{
+      const remote=await fetchRemoteLiveData();
+      if(Array.isArray(remote)){
+        saveLiveData(remote);
+        LIVE_LAST_SYNC_AT=now;
+        return remote;
+      }
+    }catch(err){console.warn('GAS live read error',err)}
+  }
+  const local=(()=>{try{return JSON.parse(localStorage.getItem(LIVE_LOCAL_KEY)||'[]')}catch{return[]}})();
+  LIVE_DATA_CACHE=dedupeLiveEntries(Array.isArray(local)?local.map(normalizeLiveEntry):[]);
+  LIVE_LAST_SYNC_AT=now;
+  return LIVE_DATA_CACHE;
+}
+
+function buildLiveCountryOptions(){
+  const sel=document.getElementById('live-country');
+  if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML=`<option value="" disabled selected>${lang==='th'?'เลือกประเทศ':'Select country'}</option>`+
+    LIVE_COUNTRIES.map(c=>`<option value="${c}">${c}</option>`).join('')+
+    `<option value="OTHER">${lang==='th'?'Other (พิมพ์อังกฤษ)':'Other (type in English)'}</option>`;
+  if(cur&&[...sel.options].some(o=>o.value===cur)) sel.value=cur;
+  updateLiveCountryOtherVisibility();
+}
+
+function updateLiveCountryOtherVisibility(){
+  const sel=document.getElementById('live-country');
+  const wrap=document.getElementById('live-country-other-wrap');
+  const inp=document.getElementById('live-country-other');
+  if(!sel||!wrap||!inp) return;
+  const isOther=sel.value==='OTHER';
+  wrap.style.display=isOther?'flex':'none';
+  if(!isOther) inp.value='';
+}
+
+function normalizeCountryName(v){
+  return String(v||'').trim().replace(/\s+/g,' ');
+}
+
+function isEnglishCountryName(v){
+  return /^[A-Za-z][A-Za-z .'-]{1,39}$/.test(String(v||'').trim());
+}
+
+function normalizeTwitterHandle(v){
+  const raw=String(v||'').trim().replace(/^@+/,'').toLowerCase();
+  return raw?`@${raw}`:'';
+}
+
+function isValidTwitterHandle(v){
+  return /^@[A-Za-z0-9_]{1,15}$/.test(String(v||'').trim());
+}
+
+function getLiveDaySet(day){
+  if(day==='both') return new Set(['13','14']);
+  return new Set([String(day||'')]);
+}
+
+function hasLiveTwitterDuplicate(handle,day){
+  const targetHandle=normalizeTwitterHandle(handle);
+  const targetDays=getLiveDaySet(day);
+  return getLiveData().some(e=>{
+    if(normalizeTwitterHandle(e?.twitter)!==targetHandle) return false;
+    const existingDays=getLiveDaySet(e?.day);
+    return [...targetDays].some(d=>existingDays.has(d));
+  });
+}
+
+function renderLiveStreamingSummary(){
+  const box=document.getElementById('live-summary');
+  if(!box) return;
+  const data=getLiveData();
+  if(!data.length){
+    box.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:12px;text-align:center;padding:8px 4px">${lang==='th'?'ยังไม่มีข้อมูล Live Streaming':'No live streaming data yet'}</div>`;
+    return;
+  }
+  const totalQty=data.length;
+  const dayCnt={13:0,14:0};
+  const countryCnt={};
+  data.forEach(e=>{
+    const day=String(e.day||'both');
+    if(day==='13'||day==='both') dayCnt[13]+=1;
+    if(day==='14'||day==='both') dayCnt[14]+=1;
+    const c=String(e.country||'Unknown');
+    countryCnt[c]=(countryCnt[c]||0)+1;
+  });
+  const sorted=Object.entries(countryCnt).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const max=Math.max(...sorted.map(([,v])=>v),1);
+  box.innerHTML=`
+    <div class="live-summary-top">
+      <div class="live-mini"><div class="n">${totalQty}</div><div class="l">${lang==='th'?'รวมทั้งหมด':'Total Fans'}</div></div>
+      <div class="live-mini"><div class="n">${dayCnt[13]}</div><div class="l">13 Jun</div></div>
+      <div class="live-mini"><div class="n">${dayCnt[14]}</div><div class="l">14 Jun</div></div>
+    </div>
+    ${sorted.map(([c,v])=>`<div class="ana-row"><div class="ana-lbl">${c}</div><div class="bar-bg"><div class="bar-fg" style="width:${v/max*100}%;background:linear-gradient(90deg,#06b6d4,#3b82f6)"></div></div><div class="ana-val">${v} (${Math.round(v/Math.max(totalQty,1)*100)}%)</div></div>`).join('')}
+  `;
+}
+
+async function submitLiveStreamingForm(){
+  const day=document.getElementById('live-day')?.value||'';
+  const countrySel=document.getElementById('live-country')?.value||'';
+  const otherRaw=document.getElementById('live-country-other')?.value||'';
+  const twitter=normalizeTwitterHandle(document.getElementById('live-twitter')?.value||'');
+  if(!day){toast('❌ '+(lang==='th'?'กรุณาเลือกวัน':'Please select day'));return}
+  if(!countrySel){toast('❌ '+(lang==='th'?'กรุณาเลือกประเทศ':'Please select country'));return}
+  let country=countrySel;
+  if(countrySel==='OTHER'){
+    country=normalizeCountryName(otherRaw);
+    if(!isEnglishCountryName(country)){
+      toast('❌ '+(lang==='th'?'ประเทศอื่นๆ กรุณาพิมพ์เป็นภาษาอังกฤษ':'Other country must be English text'));
+      return;
+    }
+  }
+  if(!isValidTwitterHandle(twitter)){
+    toast('❌ '+(lang==='th'?'กรุณาใส่ชื่อทวิตให้ถูกต้อง เช่น @fanclubTH':'Please enter a valid Twitter handle, e.g. @fanclubTH'));
+    return;
+  }
+  await syncLiveData(true);
+  if(hasLiveTwitterDuplicate(twitter,day)){
+    toast('❌ '+(lang==='th'?'ชื่อทวิตนี้เคยส่งแล้วในวันเดียวกัน':'This Twitter handle was already submitted for the same day.'));
+    return;
+  }
+  const entry={id:Date.now(),day,country,twitter,ts:new Date().toISOString()};
+  const btn=document.getElementById('live-submit-btn');
+  if(btn){btn.disabled=true;btn.textContent='⏳...';}
+
+  let remoteSaved=false;
+  if(GAS_URL){
+    try{
+      await fetch(GAS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({...entry,action:'save_live',type:'live'})});
+      remoteSaved=true;
+      await syncLiveData(true);
+    }catch(err){console.warn('GAS live write error',err)}
+  }
+
+  if(!remoteSaved){
+    saveLiveData([...getLiveData(),entry]);
+  }
+
+  renderLiveStreamingSummary();
+  if(document.getElementById('page-analysis')?.classList.contains('active')) renderAnalysis();
+  document.getElementById('live-day').value='13';
+  document.getElementById('live-country').value='';
+  document.getElementById('live-country-other').value='';
+  document.getElementById('live-twitter').value='';
+  updateLiveCountryOtherVisibility();
+  if(btn){btn.disabled=false;btn.textContent=lang==='th'?'✦ บันทึก Live Streaming':'✦ Save Live Streaming';}
+  toast(remoteSaved
+    ? (lang==='th'?'📡 บันทึก Live ลง Sheets แล้ว':'📡 Live data saved to Sheets')
+    : (lang==='th'?'📡 บันทึก Live แบบ Local (fallback) แล้ว':'📡 Live data saved locally (fallback)'));
 }
 
 /* ══ D/E STRIP ══ */
@@ -1668,6 +2033,18 @@ async function submitForm(){
 ══════════════════════════════════════ */
 let curZone=null,curFilter='all';
 let censusDayFilter='all';
+let analysisDayFilter='all';
+let analysisFandomFilter='all';
+let registerTab='seat';
+
+function setRegisterTab(tab){
+  registerTab=tab;
+  const isSeat=tab==='seat';
+  document.getElementById('register-tab-seat')?.classList.toggle('on',isSeat);
+  document.getElementById('register-tab-live')?.classList.toggle('on',!isSeat);
+  document.getElementById('register-pane-seat')?.classList.toggle('active',isSeat);
+  document.getElementById('register-pane-live')?.classList.toggle('active',!isSeat);
+}
 
 function getEntryDays(entry){
   const out=[];
@@ -1709,6 +2086,176 @@ function setCensusDayFilter(day){
   censusDayFilter=day;
   buildCensusDayFilter();
   renderCensus();
+}
+
+function getAnalysisFilteredData(){
+  let data=getData();
+  if(analysisDayFilter!=='all') data=data.filter(e=>getEntryDays(e).includes(analysisDayFilter));
+  if(analysisFandomFilter!=='all') data=data.filter(e=>normalizeFandoms(e.fandoms).includes(analysisFandomFilter));
+  return data;
+}
+
+function getFilteredLiveData(){
+  const data=getLiveData();
+  if(analysisDayFilter==='all') return data;
+  return data.filter(e=>getLiveDaySet(e?.day).has(analysisDayFilter));
+}
+
+function buildAnalysisFilter(){
+  const wrap=document.getElementById('analysis-filter');
+  if(!wrap) return;
+  const chips=[{id:'all',label:lang==='th'?'ทุกด้อม':'All fandoms'},{id:'dd',label:'DD'}];
+  PAIRS.forEach(p=>chips.push({id:p.id,label:fandomName(p.id)}));
+  wrap.innerHTML=`
+    <span class="cdf-lbl">${lang==='th'?'วัน:':'Day:'}</span>
+    <button class="cdf-chip ${analysisDayFilter==='all'?'on':''}" onclick="setAnalysisDayFilter('all')">${lang==='th'?'ทั้งหมด':'All'}</button>
+    <button class="cdf-chip ${analysisDayFilter==='13'?'on':''}" onclick="setAnalysisDayFilter('13')">13 ${lang==='th'?'มิ.ย.':'Jun'}</button>
+    <button class="cdf-chip ${analysisDayFilter==='14'?'on':''}" onclick="setAnalysisDayFilter('14')">14 ${lang==='th'?'มิ.ย.':'Jun'}</button>
+    <span class="cdf-lbl" style="margin-left:8px">${lang==='th'?'ด้อม:':'Fandom:'}</span>
+    ${chips.map(c=>`<button class="cdf-chip ${analysisFandomFilter===c.id?'on':''}" onclick="setAnalysisFandomFilter('${c.id}')">${c.label}</button>`).join('')}
+  `;
+}
+
+function setAnalysisDayFilter(day){
+  analysisDayFilter=day;
+  buildAnalysisFilter();
+  renderAnalysis();
+}
+
+function setAnalysisFandomFilter(fid){
+  analysisFandomFilter=fid;
+  buildAnalysisFilter();
+  renderAnalysis();
+}
+
+function resolveEntrySubZone(entry){
+  const main=String(entry?.mainZone||'').toUpperCase();
+  const explicit=String(entry?.subZone||'').toUpperCase();
+  if(explicit) return explicit;
+  if(!ZONES[main]) return main;
+  const row=normalizeRowForZone(main,String(entry?.row||'').toUpperCase());
+  const seatNum=Number(entry?.seatNum||0);
+  const hit=ZONES[main].subs.find(sz=>{
+    const win=getRowSeatWindow(sz,row);
+    return !!(win&&Number.isInteger(seatNum)&&seatNum>=win.start&&seatNum<=win.end);
+  });
+  return hit||main;
+}
+
+function getSideBucket(subZone){
+  const main=String(subZone||'')[0];
+  const subs=ZONES[main]?.subs||[];
+  const idx=subs.indexOf(subZone);
+  if(idx<0) return 'unknown';
+  const mid=Math.floor(subs.length/2);
+  if(subs.length%2===1&&idx===mid) return 'center';
+  return idx<subs.length/2?'left':'right';
+}
+
+function getDepthBucket(mainZone){
+  return ['A','B','C'].includes(mainZone)?'front':'back';
+}
+
+async function renderAnalysis(){
+  await syncData();
+  await syncLiveData();
+  buildAnalysisFilter();
+  const data=getAnalysisFilteredData();
+  const total=data.length;
+  const zoneCnt={},subCnt={},fanCnt={},sideCnt={},depthCnt={};
+  data.forEach(r=>{
+    const mz=String(r.mainZone||'').toUpperCase();
+    zoneCnt[mz]=(zoneCnt[mz]||0)+1;
+    const sz=resolveEntrySubZone(r);
+    subCnt[sz]=(subCnt[sz]||0)+1;
+    const side=getSideBucket(sz);
+    sideCnt[side]=(sideCnt[side]||0)+1;
+    const depth=getDepthBucket(mz);
+    depthCnt[depth]=(depthCnt[depth]||0)+1;
+    normalizeFandoms(r.fandoms).forEach(f=>{fanCnt[f]=(fanCnt[f]||0)+1});
+  });
+  const topZone=Object.entries(zoneCnt).sort((a,b)=>b[1]-a[1])[0];
+  const topFandom=Object.entries(fanCnt).sort((a,b)=>b[1]-a[1])[0];
+  const leftCnt=sideCnt.left||0;
+  const rightCnt=sideCnt.right||0;
+  const frontCnt=depthCnt.front||0;
+  const backCnt=depthCnt.back||0;
+  const sideLead=leftCnt===rightCnt
+    ? (lang==='th'?'ซ้าย-ขวาเท่ากัน':'Left/Right Tie')
+    : (leftCnt>rightCnt
+      ? (lang==='th'?'ฝั่งซ้ายมากกว่า':'Left side leads')
+      : (lang==='th'?'ฝั่งขวามากกว่า':'Right side leads'));
+  const depthLead=frontCnt===backCnt
+    ? (lang==='th'?'หน้า-หลังเท่ากัน':'Front/Back Tie')
+    : (frontCnt>backCnt
+      ? (lang==='th'?'โซนหน้ามากกว่า':'Front zones lead')
+      : (lang==='th'?'โซนหลังมากกว่า':'Back zones lead'));
+  const seatKeys=new Set(data.map(e=>`${resolveEntrySubZone(e)}|${normalizeRowForZone(e.mainZone,e.row)}|${Number(e.seatNum||0)}|${getEntryDays(e).sort().join(',')}`));
+  document.getElementById('analysis-kpis').innerHTML=`
+    <div class="analysis-card"><div class="analysis-kpi-n">${total}</div><div class="analysis-kpi-l">${lang==='th'?'รายการหลังกรอง':'Filtered entries'}</div></div>
+    <div class="analysis-card"><div class="analysis-kpi-n">${seatKeys.size}</div><div class="analysis-kpi-l">${lang==='th'?'ที่นั่งไม่ซ้ำ':'Unique seats'}</div></div>
+    <div class="analysis-card"><div class="analysis-kpi-n">${topZone?('Zone '+topZone[0]):'—'}</div><div class="analysis-kpi-l">${lang==='th'?'โซนหลักนำ':'Leading main zone'}</div></div>
+    <div class="analysis-card"><div class="analysis-kpi-n">${topFandom?fandomName(topFandom[0]):'—'}</div><div class="analysis-kpi-l">${lang==='th'?'ด้อมนำ':'Leading fandom'}</div></div>
+    <div class="analysis-card"><div class="analysis-kpi-n" style="font-size:16px;line-height:1.3">${sideLead}</div><div class="analysis-kpi-l">${lang==='th'?'เปรียบเทียบซ้าย/ขวา':'Left vs Right'}</div></div>
+    <div class="analysis-card"><div class="analysis-kpi-n" style="font-size:16px;line-height:1.3">${depthLead}</div><div class="analysis-kpi-l">${lang==='th'?'เปรียบเทียบหน้า/หลัง':'Front vs Back'}</div></div>
+  `;
+
+  const renderRows=(obj,getLabel,getColor,maxCount=10,showPct=false)=>{
+    const entries=Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,maxCount);
+    const max=Math.max(...entries.map(e=>e[1]),1);
+    const sum=Math.max(entries.reduce((acc,[,v])=>acc+v,0),1);
+    if(!entries.length) return `<div style="color:rgba(255,255,255,.35);font-size:12px;padding:8px 0">${lang==='th'?'ยังไม่มีข้อมูล':'No data'}</div>`;
+    return entries.map(([k,c])=>{
+      const pct=Math.round((c/sum)*100);
+      const val=showPct?`${c} (${pct}%)`:`${c}`;
+      return `<div class="ana-row"><div class="ana-lbl" style="color:${getColor(k)}">${getLabel(k)}</div><div class="bar-bg"><div class="bar-fg" style="width:${c/max*100}%;background:${getColor(k)};box-shadow:0 0 8px ${getColor(k)}"></div></div><div class="ana-val">${val}</div></div>`;
+    }).join('');
+  };
+
+  document.getElementById('analysis-zone-bars').innerHTML=renderRows(zoneCnt,k=>'Zone '+k,k=>ZONES[k]?.mainColor||'var(--lav)',8);
+  document.getElementById('analysis-fandom-bars').innerHTML=renderRows(fanCnt,k=>fandomName(k),k=>fandomColor(k),12);
+  document.getElementById('analysis-side-bars').innerHTML=renderRows(
+    sideCnt,
+    k=>k==='left'?(lang==='th'?'ซ้าย':'Left'):k==='right'?(lang==='th'?'ขวา':'Right'):k==='center'?(lang==='th'?'กลาง':'Center'):(lang==='th'?'ไม่ทราบ':'Unknown'),
+    k=>k==='left'?'#60a5fa':k==='right'?'#f472b6':k==='center'?'#c084fc':'#94a3b8',
+    4,
+    true
+  );
+  document.getElementById('analysis-depth-bars').innerHTML=renderRows(
+    depthCnt,
+    k=>k==='front'?(lang==='th'?'หน้า':'Front'):(lang==='th'?'หลัง':'Back'),
+    k=>k==='front'?'#f59e0b':'#22d3ee',
+    2,
+    true
+  );
+  document.getElementById('analysis-subzone-bars').innerHTML=renderRows(subCnt,k=>k,k=>ZONES[k[0]]?.colors?.[k]||ZONES[k[0]]?.mainColor||'var(--lav)',20);
+
+  const live=getFilteredLiveData();
+  const liveKpis=document.getElementById('analysis-live-kpis');
+  const liveCountries=document.getElementById('analysis-live-country-bars');
+  if(liveKpis&&liveCountries){
+    if(!live.length){
+      liveKpis.innerHTML='';
+      liveCountries.innerHTML=`<div style="color:rgba(255,255,255,.35);font-size:12px;padding:8px 0">${lang==='th'?'ยังไม่มีข้อมูล Live Streaming':'No live streaming data'}</div>`;
+    }else{
+      const liveCountryCnt={}, liveDayCnt={13:0,14:0};
+      live.forEach(e=>{
+        const country=String(e.country||'Unknown');
+        liveCountryCnt[country]=(liveCountryCnt[country]||0)+1;
+        const day=String(e.day||'both');
+        if(day==='13'||day==='both') liveDayCnt[13]+=1;
+        if(day==='14'||day==='both') liveDayCnt[14]+=1;
+      });
+      const topCountry=Object.entries(liveCountryCnt).sort((a,b)=>b[1]-a[1])[0];
+      liveKpis.innerHTML=`
+        <div class="analysis-card"><div class="analysis-kpi-n">${live.length}</div><div class="analysis-kpi-l">${lang==='th'?'บัญชี Live ที่ตรงฟิลเตอร์วัน':'Live accounts matching day filter'}</div></div>
+        <div class="analysis-card"><div class="analysis-kpi-n">${topCountry?topCountry[0]:'—'}</div><div class="analysis-kpi-l">${lang==='th'?'ประเทศนำ':'Top country'}</div></div>
+        <div class="analysis-card"><div class="analysis-kpi-n">${liveDayCnt[13]}</div><div class="analysis-kpi-l">13 Jun</div></div>
+        <div class="analysis-card"><div class="analysis-kpi-n">${liveDayCnt[14]}</div><div class="analysis-kpi-l">14 Jun</div></div>
+      `;
+      liveCountries.innerHTML=renderRows(liveCountryCnt,k=>k,()=>'#38bdf8',10,true);
+    }
+  }
 }
 
 async function renderCensus(){
@@ -1759,6 +2306,7 @@ async function renderCensus(){
         const reg=subCnt[sz]||0;
         const cap=SUBZONE_CAPACITY[sz]||0;
         el.textContent=cap?`${reg}/${cap}`:`${reg}`;
+        el.removeAttribute('title');
       }
     });
   });
@@ -1769,6 +2317,7 @@ async function renderCensus(){
       const reg=subCnt[sz]||0;
       const cap=SUBZONE_CAPACITY[sz]||0;
       el.textContent=cap?`${reg}/${cap}`:`${reg}`;
+      el.removeAttribute('title');
     }
   });
   // Fandom bars
@@ -1968,7 +2517,10 @@ function buildSeatGrid(zoneId,entries,filter){
 buildHomePage();
 buildFandomChips();
 buildDEStrip();
+buildLiveCountryOptions();
+renderLiveStreamingSummary();
 syncData(true);
+syncLiveData(true).then(()=>renderLiveStreamingSummary());
 
 // Trigger initial fetch if GAS_URL is set
 if(GAS_URL) renderCensus();
