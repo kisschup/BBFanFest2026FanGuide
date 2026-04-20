@@ -1153,7 +1153,7 @@ a,button,input,select,textarea,label{touch-action:manipulation}
 /* ══════════════════════════════════════
    CONFIG — แก้ตรงนี้เพียงจุดเดียว
 ══════════════════════════════════════ */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyt4A0-RqRitolVC0Qn58u5LrWJJcGbVMxiNCRI2r_0b7E5XJLQj8sAPZRAQFIkPure0A/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx-VTxDXq71uZAqAo7KBEwHR4imSIVtgsIcRm8llTxFgyR-hWa3FvjWmwIn9L-wO26pLw/exec';
 // วาง URL ที่ได้จาก Google Apps Script "Deploy as Web App" ตรงนี้
 // ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb.../exec'
 
@@ -1832,16 +1832,33 @@ async function submitLiveStreamingForm(){
   const btn=document.getElementById('live-submit-btn');
   if(btn){btn.disabled=true;btn.textContent='⏳...';}
 
-  let remoteSaved=false;
+  let remoteStatus='none';
+  let remoteMessage='';
   if(GAS_URL){
     try{
-      await fetch(GAS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify({...entry,action:'save_live',type:'live'})});
-      remoteSaved=true;
-      await syncLiveData(true);
+      const res=await fetch(GAS_URL,{
+        method:'POST',
+        mode:'cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({...entry,action:'save_live',type:'live'})
+      });
+      if(!res.ok) throw new Error(`Live write failed: ${res.status}`);
+      const json=await res.json();
+      remoteStatus=String(json?.status||'').toLowerCase();
+      remoteMessage=String(json?.message||'').trim();
+      if(remoteStatus==='ok'){
+        await syncLiveData(true);
+      }
     }catch(err){console.warn('GAS live write error',err)}
   }
 
-  if(!remoteSaved){
+  if(remoteStatus==='skipped'){
+    if(btn){btn.disabled=false;btn.textContent=lang==='th'?'✦ บันทึก Live Streaming':'✦ Save Live Streaming';}
+    toast('❌ '+(lang==='th'?'ชื่อทวิตนี้เคยส่งแล้วในวันเดียวกัน':'This Twitter handle was already submitted for the same day.'));
+    return;
+  }
+
+  if(remoteStatus!=='ok'){
     saveLiveData([...getLiveData(),entry]);
   }
 
@@ -1853,9 +1870,14 @@ async function submitLiveStreamingForm(){
   document.getElementById('live-twitter').value='';
   updateLiveCountryOtherVisibility();
   if(btn){btn.disabled=false;btn.textContent=lang==='th'?'✦ บันทึก Live Streaming':'✦ Save Live Streaming';}
-  toast(remoteSaved
-    ? (lang==='th'?'📡 บันทึก Live ลง Sheets แล้ว':'📡 Live data saved to Sheets')
-    : (lang==='th'?'📡 บันทึก Live แบบ Local (fallback) แล้ว':'📡 Live data saved locally (fallback)'));
+  if(remoteStatus==='ok'){
+    toast(lang==='th'?'📡 บันทึก Live ลง Sheets แล้ว':'📡 Live data saved to Sheets');
+  }else{
+    const reason=remoteMessage?` (${remoteMessage})`:'';
+    toast((lang==='th'
+      ? `📡 บันทึก Live แบบ Local (fallback) แล้ว · กรุณาเช็กการ Deploy Apps Script${reason}`
+      : `📡 Live data saved locally (fallback) · Please verify Apps Script deployment${reason}`));
+  }
 }
 
 /* ══ D/E STRIP ══ */
