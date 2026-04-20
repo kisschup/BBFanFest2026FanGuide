@@ -1216,7 +1216,7 @@ a,button,input,select,textarea,label{touch-action:manipulation}
 /* ══════════════════════════════════════
    CONFIG — แก้ตรงนี้เพียงจุดเดียว
 ══════════════════════════════════════ */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxM7qb34OBMz6mglki6smCaOiQnmK1oxmldkVk5P33j_NzxPeUgMsPpPUtSEBT8V59j/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyfL4j3sDE7jnavXeXO-e6oS8ZizalvhMSozH75vh2muZwdx8acjAXLGeUwmsJd4PE0Pg/exec';
 // วาง URL ที่ได้จาก Google Apps Script "Deploy as Web App" ตรงนี้
 // ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb.../exec'
 
@@ -2230,7 +2230,20 @@ async function submitForm(){
       const json=await res.json();
       remoteStatus=String(json?.status||'').toLowerCase();
       remoteMessage=String(json?.message||'').trim();
-    }catch(e){console.warn('GAS error',e)}
+    }catch(e){
+      console.warn('GAS cors write error',e);
+      // Some deployments reject CORS POST but still accept no-cors writes.
+      try{
+        await fetch(GAS_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(entry)});
+        await syncData(true);
+        if(isSeatTaken(getData(),{day,subZone:sz,row,seatNum})){
+          remoteStatus='ok';
+          remoteMessage='Written via no-cors fallback';
+        }
+      }catch(e2){
+        console.warn('GAS no-cors fallback error',e2);
+      }
+    }
   }
 
   if(remoteStatus==='skipped'){
