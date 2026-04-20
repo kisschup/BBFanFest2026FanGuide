@@ -152,7 +152,7 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5vw,46px);
 .ls-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .ls-tier{text-align:center;padding:16px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.18);border-radius:11px;transition:all 0.3s}
 .ls-tier:hover{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.4);transform:translateY(-2px)}
-.ls-price{font-size:26px;font-weight:700;color:#06b6d4;text-shadow:0 0 15px rgba(6,182,212,0.4)}
+.ls-price{font-size:16px;font-weight:700;color:#06b6d4;text-shadow:0 0 15px rgba(6,182,212,0.4)}
 .ls-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:7px;letter-spacing:0.05em}
 .ls-benefit{font-size:11px;color:rgba(255,255,255,.7);line-height:1.7}
 
@@ -631,6 +631,11 @@ a,button,input,select,textarea,label{touch-action:manipulation}
     </div>
   </div>
 
+  <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;justify-content:center">
+    <button onclick="goPage('census')" style="padding:12px 24px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(124,58,237,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(124,58,237,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(124,58,237,0.3)'" data-th="🗺 เช็คประชากร" data-en="🗺 Census">🗺 เช็คประชากร</button>
+    <button onclick="goPage('register')" style="padding:12px 24px;background:linear-gradient(135deg,#ec4899,#f472b6);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(236,72,153,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(236,72,153,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(236,72,153,0.3)'" data-th="📝 ลงทะเบียนที่นั่ง" data-en="📝 Register Seat">📝 ลงทะเบียนที่นั่ง</button>
+  </div>
+
   <div class="sec-hd"><span data-th="⏰ กำหนดการงาน" data-en="⏰ Day Schedule">⏰ กำหนดการงาน</span></div>
   <div class="timeline" id="tl-wrap"></div>
 
@@ -812,10 +817,10 @@ a,button,input,select,textarea,label{touch-action:manipulation}
         <text class="zprice" x="173" y="292">4,500฿</text>
         <text class="zcnt-svg" x="173" y="306" id="sc-C2"></text>
       </g>
-      <g class="zblk" id="zb-C3" onclick="openZone('C3')" style="color:var(--cC135)">
-        <rect x="244" y="258" width="34" height="60" rx="4" fill="rgba(147, 51, 234, 0.5)"/>
+      <g class="zblk" id="zb-C3" onclick="openZone('C3')" style="color:var(--cC24)">
+        <rect x="244" y="258" width="34" height="60" rx="4" fill="rgba(192, 38, 211, 0.4)"/>
         <text class="zlbl" x="261" y="286">C3</text>
-        <text class="zprice" x="261" y="298">3,500฿</text>
+        <text class="zprice" x="261" y="298">4,500฿</text>
         <text class="zcnt-svg" x="261" y="310" id="sc-C3"></text>
       </g>
       <g class="zblk" id="zb-C4" onclick="openZone('C4')" style="color:var(--cC24)">
@@ -894,8 +899,8 @@ a,button,input,select,textarea,label{touch-action:manipulation}
       <div class="leg-item"><div class="leg-dot" style="background:var(--cA2);box-shadow:0 0 8px var(--cA2)"></div>A2/A3 — 7,900฿</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--cB23);box-shadow:0 0 8px var(--cB23)"></div>B2/B3/B4 — 5,900฿</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--cA1);box-shadow:0 0 8px var(--cA1)"></div>A1/A4 — 5,000฿</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--cB15);box-shadow:0 0 8px var(--cB15)"></div>B1/B5/C2/C4 — 4,500฿</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--cC135);box-shadow:0 0 8px var(--cC135)"></div>C1/C3/C5 — 3,500฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cB15);box-shadow:0 0 8px var(--cB15)"></div>B1/B5/C2/C3/C4 — 4,500฿</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--cC135);box-shadow:0 0 8px var(--cC135)"></div>C1/C5 — 3,500฿</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--cDfront);box-shadow:0 0 8px var(--cDfront)"></div>D — 3,000฿ (หน้า)</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--cDback);box-shadow:0 0 8px var(--cDback)"></div>D — 2,500฿ (หลัง)</div>
       <div class="leg-item"><div class="leg-dot" style="background:var(--cEfront);box-shadow:0 0 8px var(--cEfront)"></div>E — 2,000฿ (หน้า)</div>
@@ -1110,8 +1115,8 @@ const ZONES = {
      colors:{B1:'#c026d3',B2:'#16a34a',B3:'#16a34a',B4:'#16a34a',B5:'#c026d3'},
      mainColor:'#16a34a'},
   C:{subs:['C1','C2','C3','C4','C5'],
-     prices:{C1:'3,500',C2:'4,500',C3:'3,500',C4:'4,500',C5:'3,500'},
-     colors:{C1:'#9333ea',C2:'#c026d3',C3:'#9333ea',C4:'#c026d3',C5:'#9333ea'},
+     prices:{C1:'3,500',C2:'4,500',C3:'4,500',C4:'4,500',C5:'3,500'},
+     colors:{C1:'#9333ea',C2:'#c026d3',C3:'#c026d3',C4:'#c026d3',C5:'#9333ea'},
      mainColor:'#9333ea'},
   D:{subs:['D1','D2','D3','D4'],
      prices:{D1:'3,000/2,500',D2:'3,000/2,500',D3:'3,000/2,500',D4:'3,000/2,500'},
@@ -1165,7 +1170,7 @@ const SZ_RANGE = {
   A1:{r:[1,17]},A2:{r:[18,50]},A3:{r:[52,67]},A4:{r:[68,83]},
   B1:{r:[1,17]},B2:{r:[18,35]},B3:{r:[39,52]},B4:{r:[53,67]},B5:{r:[68,83]},
   C1:{r:[1,17]},C2:{r:[18,37]},C3:{r:[38,52]},C4:{r:[53,67]},C5:{r:[68,83]},
-  D1:{r:[1,12]},D2:{r:[14,29]},D3:{r:[45,60]},D4:{r:[61,72]},
+  D1:{r:[1,12]},D2:{r:[13,28]},D3:{r:[45,60]},D4:{r:[61,72]},
   E1:{r:[1,16]},E2:{r:[17,36]},E3:{r:[37,56]},E4:{r:[57,72]},
 };
 
@@ -1189,7 +1194,7 @@ const SZ_WINDOWS = {
   C5:{CA:[68,83],CB:[68,83],CC:[68,83],CD:[68,83],CE:[68,83],CF:[68,83],CG:[68,83],CH:[68,83],CJ:[68,83],CK:[68,83]},
 
   D1:{DA:[1,12],DB:[1,12],DC:[1,12],DD:[1,12],DE:[1,12],DF:[1,12],DG:[1,12],DH:[1,12],DJ:[1,12],DK:[1,12],DL:[1,12],DM:[1,12]},
-  D2:{DA:[14,29],DB:[14,29],DC:[14,29],DD:[14,29],DE:[14,29],DF:[14,29],DG:[14,29],DH:[14,29],DJ:[14,29],DK:[14,29],DL:[14,29],DM:[14,29]},
+  D2:{DA:[13,28],DB:[13,28],DC:[13,28],DD:[13,28],DE:[13,28],DF:[13,28],DG:[13,28],DH:[13,28],DJ:[13,28],DK:[13,28],DL:[13,28],DM:[13,28]},
   D3:{DA:[45,60],DB:[45,60],DC:[45,60],DD:[45,60],DE:[45,60],DF:[45,60],DG:[45,60],DH:[45,60],DJ:[45,60],DK:[45,60],DL:[45,60],DM:[45,60]},
   D4:{DA:[61,72],DB:[61,72],DC:[61,72],DD:[61,72],DE:[61,72],DF:[61,72],DG:[61,72],DH:[61,72],DJ:[61,72],DK:[61,72],DL:[61,72],DM:[61,72]},
 
@@ -1232,7 +1237,7 @@ function normalizeRowForZone(mainZone,rowRaw){
 const SZ_PRICES = {
   A1:['5,000'],A2:['7,900'],A3:['7,900'],A4:['5,000'],
   B1:['4,500'],B2:['5,900'],B3:['5,900'],B4:['5,900'],B5:['4,500'],
-  C1:['3,500'],C2:['4,500'],C3:['3,500'],C4:['4,500'],C5:['3,500'],
+  C1:['3,500'],C2:['4,500'],C3:['4,500'],C4:['4,500'],C5:['3,500'],
   D1:['3,000','2,500'],D2:['3,000','2,500'],D3:['3,000','2,500'],D4:['3,000','2,500'],
   E1:['2,000','1,500'],E2:['2,000','1,500'],E3:['2,000','1,500'],E4:['2,000','1,500'],
 };
