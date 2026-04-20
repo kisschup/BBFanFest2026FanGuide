@@ -1032,8 +1032,8 @@ const ARTISTS = [
   {id:'love',   name:'เลิฟ',    nameEn:'Love',     full:'ภัทรานิษฐ์ ลิ้มปติยากร',   glPair:'milk',    pairTag:'Milk Love',      charTh:'MuvMuv (เมิฟเมิฟ)', charEn:'MuvMuv', color:'#c084fc'},
   {id:'namtan', name:'น้ำตาล',  nameEn:'Namtan',   full:'ทิพนารี วีรวัฒโนดม',        glPair:'film',    pairTag:'Namtan Film',    charTh:'Lunar (ลูน่า)',      charEn:'Lunar',  color:'#fb923c'},
   {id:'film',   name:'ฟิล์ม',   nameEn:'Film',     full:'รชานันท์ มหาวรรณ์',         glPair:'namtan',  pairTag:'Namtan Film',    charTh:'Lunar (ลูน่า)',      charEn:'Lunar',  color:'#f472b6'},
-  {id:'amy',    name:'เอมี่',    nameEn:'Emi',      full:'ทสร กลิ่นเนียม',             glPair:'bonnie',  pairTag:'Emi Bonnie',     charTh:'Any (เอนี่)',        charEn:'Any',    color:'#38bdf8'},
-  {id:'bonnie', name:'บอนนี่',  nameEn:'Bonnie',   full:'ภัทราภัสร์ โบรัชตะสุวรรณ์', glPair:'amy',     pairTag:'Emi Bonnie',     charTh:'Any (เอนี่)',        charEn:'Any',    color:'#fb7185'},
+  {id:'emi',    name:'เอมี่',    nameEn:'Emi',      full:'ทสร กลิ่นเนียม',             glPair:'bonnie',  pairTag:'Emi Bonnie',     charTh:'Any (เอนี่)',        charEn:'Any',    color:'#38bdf8'},
+  {id:'bonnie', name:'บอนนี่',  nameEn:'Bonnie',   full:'ภัทราภัสร์ โบรัชตะสุวรรณ์', glPair:'emi',     pairTag:'Emi Bonnie',     charTh:'Any (เอนี่)',        charEn:'Any',    color:'#fb7185'},
   {id:'view',   name:'วิว',     nameEn:'View',     full:'เบญญาภา จีนประสม',          glPair:'mim',     pairTag:'View Mim',       charTh:null, charEn:null, color:'#34d399'},
   {id:'mim',    name:'มิ้ม',    nameEn:'Mim',      full:'รัตนวดี วงค์ทอง',            glPair:'view',    pairTag:'View Mim',       charTh:null, charEn:null, color:'#f9a8d4'},
   {id:'june',   name:'จูน',     nameEn:'June',     full:'วรรณวิมล เจนอัศวเมธี',      glPair:'munich',  pairTag:'June Mewnich',   charTh:null, charEn:null, color:'#fde68a'},
@@ -1071,7 +1071,7 @@ const PAIR_BY_ID = Object.fromEntries(PAIRS.map(p=>[p.id,p]));
 const ARTIST_TO_PAIR = {
   milk:'milklove',love:'milklove',
   namtan:'namtanfilm',film:'namtanfilm',
-  amy:'emibonnie',bonnie:'emibonnie',
+  emi:'emibonnie',bonnie:'emibonnie',
   view:'viewmim',mim:'viewmim',
   june:'junemewnich',munich:'junemewnich',
   jan:'janjingjing',jing:'janjingjing',
@@ -1188,7 +1188,7 @@ const SZ_WINDOWS = {
   B5:{BF:[73,83],BG:[70,83],BH:[68,83],BJ:[68,83],BK:[68,83],BL:[68,83],BM:[68,83],BN:[68,83],BP:[68,83],BQ:[68,83],BR:[68,83],BS:[68,83],BT:[68,83],BU:[68,83],BV:[68,83],BW:[68,83]},
 
   C1:{CA:[1,17],CB:[1,17],CC:[1,17],CD:[1,17],CE:[1,17],CF:[1,17],CG:[1,17],CH:[1,17],CJ:[1,17],CK:[1,17]},
-  C2:{CA:[18,32],CB:[18,32],CC:[18,32],CD:[18,32],CE:[18,35],CF:[18,36],CG:[18,37],CH:[18,37],CJ:[18,37],CK:[18,37]},
+  C2:{CA:[18,32],CB:[18,32],CC:[18,32],CD:[18,34],CE:[18,35],CF:[18,36],CG:[18,37],CH:[18,37],CJ:[18,37],CK:[18,37]},
   C3:{CA:[43,52],CB:[44,52],CC:[45,52],CD:[46,52],CE:[48,52],CF:[49,52],CG:[49,52],CH:[38,52],CJ:[38,52],CK:[38,52]},
   C4:{CA:[53,67],CB:[53,67],CC:[53,67],CD:[53,67],CE:[53,67],CF:[53,67],CG:[53,67],CH:[53,67],CJ:[53,67],CK:[53,67]},
   C5:{CA:[68,83],CB:[68,83],CC:[68,83],CD:[68,83],CE:[68,83],CF:[68,83],CG:[68,83],CH:[68,83],CJ:[68,83],CK:[68,83]},
@@ -1518,9 +1518,31 @@ const LOCAL_KEY='bb_v3';
 let DATA_CACHE=(()=>{try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}})();
 let lastSyncAt=0;
 
-function getData(){return Array.isArray(DATA_CACHE)?DATA_CACHE:[]}
+function dedupeEntries(list){
+  const arr=Array.isArray(list)?list:[];
+  const map=new Map();
+  arr.forEach(raw=>{
+    const e=normalizeEntry(raw);
+    const days=getEntryDays(e).sort().join(',');
+    const key=`${days}|${String(e?.subZone||'').toUpperCase()}|${String(e?.row||'').toUpperCase()}|${Number(e?.seatNum||0)}`;
+    const prev=map.get(key);
+    if(!prev){map.set(key,e);return;}
+    const tPrev=Date.parse(prev?.ts||prev?.submittedAt||'')||0;
+    const tCur=Date.parse(e?.ts||e?.submittedAt||'')||0;
+    if(tCur>=tPrev) map.set(key,e);
+  });
+  return [...map.values()];
+}
+function getData(){
+  const clean=dedupeEntries(Array.isArray(DATA_CACHE)?DATA_CACHE:[]);
+  if(clean.length!==((Array.isArray(DATA_CACHE)?DATA_CACHE:[]).length)){
+    DATA_CACHE=clean;
+    localStorage.setItem(LOCAL_KEY,JSON.stringify(DATA_CACHE));
+  }
+  return clean;
+}
 function saveLocal(d){
-  DATA_CACHE=Array.isArray(d)?d:[];
+  DATA_CACHE=dedupeEntries(Array.isArray(d)?d:[]);
   localStorage.setItem(LOCAL_KEY,JSON.stringify(DATA_CACHE));
 }
 function normalizeEntry(e){
@@ -1553,7 +1575,7 @@ async function syncData(force=false){
     }catch(err){console.warn('GAS read error',err)}
   }
   const local=(()=>{try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]')}catch{return[]}})();
-  DATA_CACHE=Array.isArray(local)?local.map(normalizeEntry):[];
+  DATA_CACHE=dedupeEntries(Array.isArray(local)?local.map(normalizeEntry):[]);
   lastSyncAt=now;
   return DATA_CACHE;
 }
@@ -1762,6 +1784,17 @@ async function renderCensus(){
 }
 
 /* ══ ZONE DETAIL ══ */
+function entryBelongsToZone(entry,zoneId){
+  const main=zoneId[0];
+  if(String(entry?.mainZone||'').toUpperCase()!==main) return false;
+  const sub=String(entry?.subZone||'').toUpperCase();
+  if(sub) return sub===zoneId;
+  const row=normalizeRowForZone(main,String(entry?.row||'').toUpperCase());
+  const seatNum=Number(entry?.seatNum||0);
+  const win=getRowSeatWindow(zoneId,row);
+  return !!(win&&Number.isInteger(seatNum)&&seatNum>=win.start&&seatNum<=win.end);
+}
+
 function openZone(zoneId){
   curZone=zoneId;curFilter='all';
   const m=zoneId[0];
@@ -1771,7 +1804,7 @@ function openZone(zoneId){
   document.querySelectorAll('.zblk').forEach(g=>{g.classList.toggle('sel',g.id==='zb-'+zoneId);g.classList.toggle('dim',g.id!=='zb-'+zoneId&&g.id.startsWith('zb-'))});
   document.querySelectorAll('.de-btn').forEach(b=>b.classList.toggle('sel',b.id==='deb-'+zoneId));
   const data=getCensusFilteredData();
-  const entries=data.filter(e=>e.subZone===zoneId||(e.mainZone===m&&!e.subZone));
+  const entries=data.filter(e=>entryBelongsToZone(e,zoneId));
   const uniqueSeats=new Set(entries.map(e=>`${normalizeRowForZone(m,e.row)}-${Number(e.seatNum||0)}`)).size;
   const det=document.getElementById('zone-detail');
   det.style.borderColor=col+'88';
@@ -1806,7 +1839,7 @@ function filterZone(fid,btn){
   document.querySelectorAll('#zd-filter .fchip').forEach(b=>b.classList.remove('on','dd-on'));
   btn.classList.add(fid==='dd'?'dd-on':'on');
   const data=getCensusFilteredData();const m=curZone[0];
-  const entries=data.filter(e=>e.subZone===curZone||(e.mainZone===m&&!e.subZone));
+  const entries=data.filter(e=>entryBelongsToZone(e,curZone));
   buildSeatGrid(curZone,entries,fid);
 }
 function buildSeatGrid(zoneId,entries,filter){
@@ -1839,12 +1872,19 @@ function buildSeatGrid(zoneId,entries,filter){
       let match=es;if(filter!=='all')match=es.filter(e=>normalizeFandoms(e.fandoms).includes(filter));
       if(match.length>0){
         btn.classList.add('taken');
+        const by13=match.filter(e=>getEntryDays(e).includes('13'));
+        const by14=match.filter(e=>getEntryDays(e).includes('14'));
+        const sameDayCollision=by13.length>1||by14.length>1;
+        const crossDayOnly=!sameDayCollision&&by13.length>0&&by14.length>0;
         const ff=normalizeFandoms(match[0].fandoms||[]);const isDD=ff.includes('dd')&&ff.length===1;
-        const isMulti=match.length>1;
-        if(isMulti){
+        if(sameDayCollision){
           btn.style.background='rgba(251,191,36,.28)';
           btn.style.borderColor='#fbbf24';
           btn.style.setProperty('--glow-color','#fbbf24');
+        }else if(crossDayOnly){
+          btn.style.background='rgba(59,130,246,.22)';
+          btn.style.borderColor='#60a5fa';
+          btn.style.setProperty('--glow-color','#60a5fa');
         }else if(isDD){btn.classList.add('is-dd')}
         else{
           const mainF=ff.filter(f=>f!=='dd')[0];
@@ -1857,10 +1897,8 @@ function buildSeatGrid(zoneId,entries,filter){
         const tip=document.createElement('div');tip.className='seat-tip';
         const showDown=rowIdx<Math.ceil(rows.length*0.35);
         if(showDown) tip.classList.add('tip-down');
-        if(isMulti){
+        if(sameDayCollision){
           tip.classList.add('split-day');
-          const by13=match.filter(e=>getEntryDays(e).includes('13'));
-          const by14=match.filter(e=>getEntryDays(e).includes('14'));
           const renderDayList=(arr)=>{
             if(!arr.length) return `<div class="seat-tip-day-empty">${lang==='th'?'ไม่มีข้อมูล':'No data'}</div>`;
             const lines=arr.slice(0,3).map(e=>{
@@ -1871,7 +1909,30 @@ function buildSeatGrid(zoneId,entries,filter){
             return `${lines}${more}`;
           };
           tip.innerHTML=`
-            <strong>${lang==='th'?'ที่นั่งซ้ำต่างวัน':'Same seat across days'} (${match.length})</strong>
+            <strong>${lang==='th'?'ที่นั่งซ้ำในวันเดียวกัน':'Same seat conflict in the same day'} (${match.length})</strong>
+            <div class="seat-tip-days">
+              <div class="seat-tip-day">
+                <div class="seat-tip-day-hd">13 ${lang==='th'?'มิ.ย.':'Jun'} (${by13.length})</div>
+                <div class="seat-tip-day-list">${renderDayList(by13)}</div>
+              </div>
+              <div class="seat-tip-day">
+                <div class="seat-tip-day-hd">14 ${lang==='th'?'มิ.ย.':'Jun'} (${by14.length})</div>
+                <div class="seat-tip-day-list">${renderDayList(by14)}</div>
+              </div>
+            </div>`;
+        }else if(crossDayOnly){
+          tip.classList.add('split-day');
+          const renderDayList=(arr)=>{
+            if(!arr.length) return `<div class="seat-tip-day-empty">${lang==='th'?'ไม่มีข้อมูล':'No data'}</div>`;
+            const lines=arr.slice(0,3).map(e=>{
+              const ftxt=normalizeFandoms(e.fandoms||[]).map(f=>fandomName(f)).join(', ');
+              return `<div>${e.nickname||'—'} · ${ftxt}</div>`;
+            }).join('');
+            const more=arr.length>3?`<div>+${arr.length-3} ${lang==='th'?'รายการ':'more'}</div>`:'';
+            return `${lines}${more}`;
+          };
+          tip.innerHTML=`
+            <strong>${lang==='th'?'ที่นั่งนี้มีผู้ลงทะเบียนคนละวัน':'Seat used on different days'}</strong>
             <div class="seat-tip-days">
               <div class="seat-tip-day">
                 <div class="seat-tip-day-hd">13 ${lang==='th'?'มิ.ย.':'Jun'} (${by13.length})</div>
