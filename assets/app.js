@@ -267,12 +267,25 @@ function goPage(id){
 /* ══ TOAST ══ */
 function toast(msg,dur=3200){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur)}
 
+function formatShowDateTime(day,{locale=lang,includeYear=true,includeTime=true}={}){
+  const d=String(day||'').trim();
+  if(d!=='13'&&d!=='14') return '-';
+  if(locale==='th'){
+    let out=`${d} มิถุนายน${includeYear?' 2569':''}`;
+    if(includeTime) out+=' เวลา 17:00 น.';
+    return out;
+  }
+  let out=`June ${d}${includeYear?', 2026':''}`;
+  if(includeTime) out+=' at 5:00 PM';
+  return out;
+}
+
 function openSeatOverwriteModal(payload){
   const modal=document.getElementById('seat-overwrite-modal');
   if(!modal) return Promise.resolve(false);
 
   const set=(id,v)=>{const el=document.getElementById(id);if(el) el.textContent=v||'-';};
-  const dayLabel=(payload?.day==='13'||payload?.day==='14')?`${payload.day} ${lang==='th'?'มิ.ย.':'Jun'}`:'-';
+  const dayLabel=formatShowDateTime(payload?.day,{locale:lang,includeYear:true,includeTime:true});
   set('ow-day',dayLabel);
   set('ow-zone',`${payload?.mainZone||'-'} / ${payload?.subZone||'-'}`);
   set('ow-seat',`${payload?.row||'-'} / ${payload?.seatNum||'-'}`);
@@ -323,6 +336,625 @@ function openSeatOverwriteModal(payload){
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
   });
+}
+
+/* ══════════════════════════════════════
+   SHARE CARD (CANVAS API)
+══════════════════════════════════════ */
+function fitLineWithEllipsis(ctx,text,maxWidth){
+  let out=String(text||'');
+  if(ctx.measureText(out).width<=maxWidth) return out;
+  while(out&&ctx.measureText(out+'…').width>maxWidth) out=out.slice(0,-1);
+  return (out||'').trimEnd()+'…';
+}
+
+function wrapTextByWidth(ctx,text,maxWidth){
+  const chars=[...String(text||'')];
+  const lines=[];
+  let line='';
+  chars.forEach(ch=>{
+    const test=line+ch;
+    if(!line||ctx.measureText(test).width<=maxWidth){
+      line=test;
+      return;
+    }
+    lines.push(line.trimEnd());
+    line=ch;
+  });
+  if(line) lines.push(line.trimEnd());
+  return lines.filter(Boolean);
+}
+
+function drawCenteredMultiline(ctx,text,{x,startY,lineHeight,maxWidth,maxLines=2}){
+  const allLines=wrapTextByWidth(ctx,text,maxWidth);
+  const truncated=allLines.length>maxLines;
+  const lines=allLines.slice(0,maxLines);
+  if(truncated&&lines.length){
+    lines[lines.length-1]=fitLineWithEllipsis(ctx,lines[lines.length-1],maxWidth);
+  }
+  lines.forEach((line,idx)=>ctx.fillText(line,x,startY+idx*lineHeight));
+  const used=Math.max(lines.length,1);
+  return {lines:used,lastY:startY+(used-1)*lineHeight,truncated};
+}
+
+const SHARE_DECOR_IMAGE_CANDIDATES=[
+  // Put your free Canva export in assets with one of these names.
+  'assets/canva-night-flower.png',
+  'assets/canva-night-flower.webp',
+  'assets/canva-bloom-overlay.png',
+];
+let shareDecorImageCache=null;
+let shareDecorImageResolved=false;
+
+function loadImageSafe(src){
+  return new Promise(resolve=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>resolve(null);
+    img.src=src;
+  });
+}
+
+async function getShareDecorImage(){
+  if(shareDecorImageResolved) return shareDecorImageCache;
+  shareDecorImageResolved=true;
+  for(const src of SHARE_DECOR_IMAGE_CANDIDATES){
+    const img=await loadImageSafe(src);
+    if(img){
+      console.log('✅ Image loaded:', src, 'Size:', img.width, 'x', img.height);
+      shareDecorImageCache=img;
+      break;
+    } else {
+      console.warn('❌ Failed to load:', src);
+    }
+  }
+  if(!shareDecorImageCache) console.warn('⚠️ No decorative image found in assets');
+  return shareDecorImageCache;
+}
+
+function drawImageCover(ctx,img,dx,dy,dw,dh){
+  const srcW=img.width||1;
+  const srcH=img.height||1;
+  const srcRatio=srcW/srcH;
+  const dstRatio=dw/dh;
+  let sx=0,sy=0,sw=srcW,sh=srcH;
+  if(srcRatio>dstRatio){
+    sw=srcH*dstRatio;
+    sx=(srcW-sw)/2;
+  }else{
+    sh=srcW/dstRatio;
+    sy=(srcH-sh)/2;
+  }
+  ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+}
+
+function hexToRgb(hex){
+  const raw=String(hex||'').trim().replace('#','');
+  if(!/^[0-9a-fA-F]{6}$/.test(raw)) return {r:168,g:139,b:250};
+  return {
+    r:parseInt(raw.slice(0,2),16),
+    g:parseInt(raw.slice(2,4),16),
+    b:parseInt(raw.slice(4,6),16),
+  };
+}
+
+function rgbaFromHex(hex,a){
+  const c=hexToRgb(hex);
+  return `rgba(${c.r},${c.g},${c.b},${a})`;
+}
+
+function makeSeededRandom(seedText){
+  let h=2166136261;
+  const src=String(seedText||'BBFanFest2026');
+  for(let i=0;i<src.length;i++){
+    h^=src.charCodeAt(i);
+    h=Math.imul(h,16777619);
+  }
+  let state=(h>>>0)||1;
+  return ()=>{
+    state=(Math.imul(state,1664525)+1013904223)>>>0;
+    return state/4294967296;
+  };
+}
+
+function resolveShareFandomIds(data){
+  if(Array.isArray(data?.fandomIds)&&data.fandomIds.length){
+    return normalizeFandoms(data.fandomIds);
+  }
+  const names=Array.isArray(data?.fandomNames)?data.fandomNames:[];
+  return normalizeFandoms(names.map(name=>{
+    const n=String(name||'').trim().toLowerCase();
+    const hit=PAIRS.find(p=>p.tag.toLowerCase()===n||p.th.toLowerCase()===n);
+    return hit?hit.id:name;
+  }));
+}
+
+function getShareToneColors(data){
+  const ids=resolveShareFandomIds(data).filter(id=>id!=='dd');
+  const sub=String(data?.subZone||'').toUpperCase();
+  const main=sub.slice(0,1);
+  const zoneAccent=(ZONES[main]?.colors?.[sub]||ZONES[main]?.mainColor||'#38bdf8');
+  if(!ids.length) return [zoneAccent,'#a78bfa'];
+  const primary=PAIR_BY_ID[ids[0]]?.color||'#a78bfa';
+  const secondary=PAIR_BY_ID[ids[1]]?.color||zoneAccent;
+  return [primary,secondary];
+}
+
+function drawShareToneOverlay(ctx,W,H,data){
+  const [c1,c2]=getShareToneColors(data);
+  const seedKey=[data?.dayStr,data?.subZone,data?.row,data?.seatNum,(data?.fandomIds||[]).join(','),(data?.fandomNames||[]).join(',')].join('|');
+  const rand=makeSeededRandom(seedKey);
+  ctx.save();
+
+  const tint=ctx.createLinearGradient(0,0,W,H);
+  tint.addColorStop(0,rgbaFromHex(c1,0.30));
+  tint.addColorStop(0.52,rgbaFromHex(c2,0.22));
+  tint.addColorStop(1,'rgba(10,14,30,0.16)');
+  ctx.fillStyle=tint;
+  ctx.fillRect(0,0,W,H);
+
+  ctx.globalCompositeOperation='screen';
+  const glow1=ctx.createRadialGradient(W*(0.22+rand()*0.16),H*(0.2+rand()*0.14),30,W*(0.22+rand()*0.16),H*(0.2+rand()*0.14),420);
+  glow1.addColorStop(0,rgbaFromHex(c1,0.36));
+  glow1.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow1;
+  ctx.fillRect(0,0,W,H);
+
+  const glow2=ctx.createRadialGradient(W*(0.62+rand()*0.2),H*(0.62+rand()*0.16),40,W*(0.62+rand()*0.2),H*(0.62+rand()*0.16),440);
+  glow2.addColorStop(0,rgbaFromHex(c2,0.30));
+  glow2.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=glow2;
+  ctx.fillRect(0,0,W,H);
+
+  // Seeded diagonal light ribbons to make variations visible at a glance.
+  for(let i=0;i<3;i++){
+    const left=rand()*W*0.55;
+    const top=rand()*H*0.7;
+    const width=280+rand()*360;
+    const height=90+rand()*170;
+    const col=i%2===0?c1:c2;
+    const g=ctx.createLinearGradient(left,top,left+width,top+height);
+    g.addColorStop(0,rgbaFromHex(col,0.00));
+    g.addColorStop(0.5,rgbaFromHex(col,0.18));
+    g.addColorStop(1,rgbaFromHex(col,0.00));
+    ctx.fillStyle=g;
+    ctx.beginPath();
+    ctx.moveTo(left,top);
+    ctx.lineTo(left+width,top+height*0.12);
+    ctx.lineTo(left+width*0.9,top+height);
+    ctx.lineTo(left-width*0.12,top+height*0.88);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  ctx.globalCompositeOperation='source-over';
+
+  // Deterministic bokeh/petal dots so each card has unique texture.
+  for(let i=0;i<64;i++){
+    const x=rand()*W;
+    const y=rand()*H;
+    const r=6+rand()*22;
+    const useFirst=i%2===0;
+    const a=0.055+rand()*0.07;
+    ctx.fillStyle=rgbaFromHex(useFirst?c1:c2,a);
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  // Fine grain to break repetition while keeping text legible.
+  for(let i=0;i<180;i++){
+    const x=rand()*W;
+    const y=rand()*H;
+    const w=1+Math.floor(rand()*2);
+    const h=1+Math.floor(rand()*2);
+    const useFirst=rand()>0.5;
+    const a=0.03+rand()*0.03;
+    ctx.fillStyle=rgbaFromHex(useFirst?c1:c2,a);
+    ctx.fillRect(x,y,w,h);
+  }
+  ctx.restore();
+}
+
+function drawMidnightBloomDecor(ctx,W,H,decorImage){
+  // If user provides a custom background, do not add generated floral/texture layers.
+  if(decorImage){
+    ctx.save();
+    drawImageCover(ctx,decorImage,26,26,W-52,H-52);
+    ctx.restore();
+    return;
+  }
+
+  const topGlow=ctx.createRadialGradient(W*0.5,H*0.08,30,W*0.5,H*0.08,340);
+  topGlow.addColorStop(0,'rgba(95, 223, 255, 0.32)');
+  topGlow.addColorStop(1,'rgba(95, 223, 255, 0)');
+  ctx.fillStyle=topGlow;
+  ctx.fillRect(0,0,W,H);
+
+  const moonGlow=ctx.createRadialGradient(W*0.5,H*0.2,25,W*0.5,H*0.2,210);
+  moonGlow.addColorStop(0,'rgba(175,235,255,0.55)');
+  moonGlow.addColorStop(0.45,'rgba(111,213,255,0.22)');
+  moonGlow.addColorStop(1,'rgba(111,213,255,0)');
+  ctx.fillStyle=moonGlow;
+  ctx.fillRect(0,0,W,H);
+
+  ctx.save();
+  ctx.strokeStyle='rgba(255,215,170,0.12)';
+  ctx.lineWidth=16;
+  for(const centerX of [170,W/2,W-170]){
+    ctx.beginPath();
+    ctx.arc(centerX,350,170,Math.PI,0,false);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(centerX,350,125,Math.PI,0,false);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  const bridgeY=760;
+  ctx.save();
+  ctx.strokeStyle='rgba(244,213,170,0.42)';
+  ctx.lineWidth=10;
+  ctx.beginPath();
+  ctx.arc(W/2,bridgeY,330,Math.PI*1.08,Math.PI*1.92,false);
+  ctx.stroke();
+  ctx.strokeStyle='rgba(255,245,230,0.18)';
+  ctx.lineWidth=4;
+  for(let i=-270;i<=270;i+=54){
+    ctx.beginPath();
+    ctx.moveTo(W/2+i,bridgeY-10);
+    ctx.lineTo(W/2+i,bridgeY-68+Math.abs(i)*0.08);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // Fountain / waterfall glow
+  for(const sideX of [170,W-170]){
+    const water=ctx.createLinearGradient(sideX,940,sideX,1370);
+    water.addColorStop(0,'rgba(180,245,255,0.30)');
+    water.addColorStop(1,'rgba(180,245,255,0)');
+    ctx.strokeStyle=water;
+    ctx.lineWidth=18;
+    ctx.beginPath();
+    ctx.moveTo(sideX,940);
+    ctx.bezierCurveTo(sideX-40,1060,sideX+50,1190,sideX-20,1380);
+    ctx.stroke();
+  }
+
+  // Mist layers near the bottom like the poster
+  for(const [y,alpha] of [[1120,0.16],[1230,0.24],[1330,0.2]]){
+    const mist=ctx.createRadialGradient(W/2,y,80,W/2,y,500);
+    mist.addColorStop(0,`rgba(255,245,255,${alpha})`);
+    mist.addColorStop(1,'rgba(255,245,255,0)');
+    ctx.fillStyle=mist;
+    ctx.fillRect(0,y-180,W,320);
+  }
+
+  // Blossom particles biased toward edges
+  const petals=['rgba(249,168,212,0.34)','rgba(196,181,253,0.28)','rgba(251,191,36,0.18)','rgba(143,233,255,0.22)'];
+  for(let i=0;i<54;i++){
+    const edgeBias=Math.random()<0.5?Math.random()*240:W-(Math.random()*240);
+    const x=(Math.random()<0.68)?edgeBias:Math.random()*W;
+    const y=80+Math.random()*(H-120);
+    const w=8+Math.random()*22;
+    const h=4+Math.random()*12;
+    const r=Math.random()*Math.PI;
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(r);
+    ctx.fillStyle=petals[i%petals.length];
+    ctx.beginPath();
+    ctx.ellipse(0,0,w,h,0,0,Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Floral clusters bottom corners
+  for(const originX of [120,W-120]){
+    for(let i=0;i<15;i++){
+      const px=originX+(originX<W/2?1:-1)*(Math.random()*190);
+      const py=1170+Math.random()*180;
+      const size=10+Math.random()*22;
+      ctx.fillStyle=i%3===0?'rgba(255,216,230,0.78)':i%3===1?'rgba(244,190,226,0.62)':'rgba(199,167,251,0.58)';
+      ctx.beginPath();
+      ctx.arc(px,py,size*0.46,0,Math.PI*2);
+      ctx.arc(px+size*0.5,py-3,size*0.42,0,Math.PI*2);
+      ctx.arc(px+size*0.25,py-size*0.45,size*0.4,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  // Small sparkles and luxury glyph accents
+  ctx.fillStyle='rgba(255,242,210,0.9)';
+  ctx.font='38px "Playpen Sans", sans-serif';
+  ctx.fillText('✦',130,130);
+  ctx.fillText('✦',W-140,142);
+  ctx.fillText('❀',152,H-90);
+  ctx.fillText('❀',W-170,H-84);
+}
+
+let _lastShareData=null;
+
+async function generateShareCard(data,{zoneOnly=false}={}){
+  if(data) _lastShareData=data;
+  data=data||_lastShareData;
+  if(!data) return;
+  const canvas=document.getElementById('share-canvas');
+  const preview=document.getElementById('share-preview');
+  const dlBtn=document.getElementById('share-download-btn');
+  if(!canvas||!preview||!dlBtn) return;
+  const ctx=canvas.getContext('2d');
+  if(!ctx) return;
+
+  // 1080x1440 keeps a clean portrait 3:4 layout for poster-style share cards.
+  const W=1080;
+  const H=1440;
+  canvas.width=W;
+  canvas.height=H;
+
+  const gradient=ctx.createLinearGradient(0,0,W,H);
+  gradient.addColorStop(0,'#051b2b');
+  gradient.addColorStop(0.32,'#0b2c44');
+  gradient.addColorStop(0.62,'#1b2349');
+  gradient.addColorStop(1,'#190c2f');
+  ctx.fillStyle=gradient;
+  ctx.fillRect(0,0,W,H);
+
+  const vignette=ctx.createRadialGradient(W/2,H/2,320,W/2,H/2,980);
+  vignette.addColorStop(0,'rgba(0,0,0,0)');
+  vignette.addColorStop(1,'rgba(1,8,18,0.60)');
+  ctx.fillStyle=vignette;
+  ctx.fillRect(0,0,W,H);
+
+  const decorImage=await getShareDecorImage();
+  drawMidnightBloomDecor(ctx,W,H,decorImage);
+
+  // Darken the whole background area so text pops over detailed artwork.
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,0.30)';
+  ctx.fillRect(0,0,W,H);
+  ctx.restore();
+
+  drawShareToneOverlay(ctx,W,H,data);
+
+  if(!decorImage){
+    ctx.fillStyle='rgba(255,255,255,0.3)';
+    for(let i=0;i<60;i++){
+      ctx.beginPath();
+      ctx.arc(Math.random()*W,Math.random()*H,Math.random()*3,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  ctx.strokeStyle='rgba(247,217,176,0.9)';
+  ctx.lineWidth=9;
+  ctx.strokeRect(46,46,W-92,H-92);
+  ctx.strokeStyle='rgba(141,225,255,0.22)';
+  ctx.lineWidth=2;
+  ctx.strokeRect(62,62,W-124,H-124);
+
+  ctx.textAlign='center';
+  ctx.shadowBlur=18;
+  ctx.shadowColor='rgba(106,228,255,0.32)';
+
+  // ═══ GLAM INVITE CARD ═══
+  // "ขอเชิญ" + nickname
+  ctx.fillStyle='#f8d7b0';
+  ctx.font='500 38px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.fillText(lang==='th'?'ขอเชิญ':'You Are Invited',W/2,160);
+
+  const nicknameOrAccount=data.nickname&&data.nickname!=='—'?data.nickname:'BBFanFest Lover';
+  ctx.fillStyle='#fbfbfb';
+  ctx.font='700 52px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=16;
+  ctx.shadowColor='rgba(251,168,212,0.35)';
+  ctx.fillText(nicknameOrAccount,W/2,250);
+
+  // Decorative line
+  ctx.strokeStyle='rgba(247,217,176,0.4)';
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(150,290);
+  ctx.lineTo(W-150,290);
+  ctx.stroke();
+
+  // "เป็นเกียรติร่วมงาน"
+  ctx.fillStyle='#f2d7b0';
+  ctx.font='500 40px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=14;
+  ctx.shadowColor='rgba(175,235,255,0.25)';
+  ctx.fillText(lang==='th'?'เป็นเกียรติร่วมงาน':'to join us at',W/2,370);
+
+  // EVENT NAME + "Midnight Bloom"
+  ctx.fillStyle='#f6d8b5';
+  ctx.font='700 58px "Cinzel Decorative", serif';
+  ctx.shadowBlur=22;
+  ctx.shadowColor='rgba(251,191,36,0.4)';
+  ctx.fillText('BLUSH BLOSSOM',W/2,460);
+  ctx.fillText('FAN FEST 2026',W/2,530);
+
+  ctx.fillStyle='#fbf4df';
+  ctx.font='italic 68px "Cormorant Garamond", serif';
+  ctx.shadowBlur=20;
+  ctx.shadowColor='rgba(175,235,255,0.35)';
+  ctx.fillText('Midnight Bloom',W/2,615);
+
+  // Decorative line
+  ctx.strokeStyle='rgba(247,217,176,0.3)';
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(180,650);
+  ctx.lineTo(W-180,650);
+  ctx.stroke();
+
+  // Seat information
+  ctx.fillStyle='#fbfbfb';
+  ctx.font='500 38px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=12;
+  ctx.shadowColor='rgba(175,235,255,0.2)';
+  ctx.fillText(lang==='th'?`ในวันที่ ${data.dayStr}`:`On ${data.dayStr}`,W/2,720);
+
+  ctx.fillStyle='#f2d7a9';
+  ctx.font='600 42px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=14;
+  ctx.shadowColor='rgba(141,225,255,0.28)';
+  ctx.fillText(lang==='th'?'ที่นั่งของคุณคือ':'Your Seat',W/2,808);
+
+  ctx.fillStyle='#c4f2ff';
+  ctx.font='700 58px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=18;
+  ctx.shadowColor='rgba(111,223,255,0.4)';
+  if(zoneOnly){
+    ctx.fillText(lang==='th'?`โซน ${data.subZone}`:`Zone ${data.subZone}`,W/2,900);
+  }else{
+    ctx.fillText(lang==='th'?`โซน ${data.subZone} | แถว ${data.row} | เลขที่ ${data.seatNum}`:`Zone ${data.subZone} | Row ${data.row} | Seat ${data.seatNum}`,W/2,900);
+  }
+
+  // Fandom celebration section
+  ctx.fillStyle='#fbfbfb';
+  ctx.font='500 40px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=12;
+  ctx.shadowColor='rgba(175,235,255,0.2)';
+  ctx.fillText(lang==='th'?'มาร่วมชื่นชมความงามของ':"Let's celebrate",W/2,990);
+
+  const fandomTxt=(data.fandomNames||[]).join(', ')||(lang==='th'?'ชื่นชมศิลปินที่รัก':'our beloved artists');
+  ctx.fillStyle='#f6d8b5';
+  ctx.font='700 36px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=18;
+  ctx.shadowColor='rgba(251,168,212,0.38)';
+  const fandomDraw=drawCenteredMultiline(ctx,fandomTxt,{
+    x:W/2,
+    startY:1060,
+    lineHeight:44,
+    maxWidth:820,
+    maxLines:3,
+  });
+
+  // "ไปด้วยกัน"
+  ctx.fillStyle='#f8eef9';
+  ctx.font='600 48px "Playpen Sans Thai", "Noto Sans Thai", sans-serif';
+  ctx.shadowBlur=14;
+  ctx.shadowColor='rgba(251,168,212,0.3)';
+  const nextY=Math.min(1330,fandomDraw.lastY+78);
+  ctx.fillText(lang==='th'?'ไปด้วยกัน ✨':'Together ✨',W/2,nextY);
+
+  // Hashtag
+  ctx.fillStyle='#f6d1a1';
+  ctx.font='700 58px serif';
+  ctx.shadowBlur=16;
+  ctx.shadowColor='rgba(251,168,212,0.3)';
+  ctx.fillText('#BBFanFest2026',W/2,1364);
+
+  const imgUrl=canvas.toDataURL('image/png');
+  preview.src=imgUrl;
+  dlBtn.href=imgUrl;
+}
+
+async function onSharePrivacyChange(){
+  if(!_lastShareData) return;
+  const zoneOnly=document.getElementById('share-zone-only')?.checked||false;
+  await generateShareCard(null,{zoneOnly});
+}
+
+async function openShareModal(data){
+  const zoneOnly=document.getElementById('share-zone-only')?.checked||false;
+  await generateShareCard(data,{zoneOnly});
+  const modal=document.getElementById('share-modal');
+  const shareNowBtn=document.getElementById('share-now-btn');
+  const xBtn=document.getElementById('share-x-btn');
+  if(shareNowBtn){
+    const supportsShare=typeof navigator!=='undefined'&&typeof navigator.share==='function';
+    shareNowBtn.disabled=!supportsShare;
+    shareNowBtn.style.opacity=supportsShare?'1':'0.6';
+  }
+  if(xBtn){
+    const fandomTxt=(data?.fandomNames||[]).join(', ')||'-';
+    const seatLine=lang==='th'
+      ? `ไปวันที่ ${data?.dayStr||'-'} | โซน ${data?.subZone||'-'} แถว ${data?.row||'-'} ที่นั่ง ${data?.seatNum||'-'}`
+      : `Attending ${data?.dayStr||'-'} | Zone ${data?.subZone||'-'} Row ${data?.row||'-'} Seat ${data?.seatNum||'-'}`;
+    const tweetText=[
+      lang==='th'?'เจอกันในงาน BLUSH BLOSSOM FAN FEST 2026!':'See you at BLUSH BLOSSOM FAN FEST 2026!',
+      seatLine,
+      `${lang==='th'?'ด้อม:':'Fandom:'} ${fandomTxt}`,
+      '#BBFanFest2026',
+    ].filter(Boolean).join('\n');
+    const intentUrl=`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
+    // Remove old listeners by cloning
+    const xBtnNew=xBtn.cloneNode(true);
+    xBtn.parentNode.replaceChild(xBtnNew,xBtn);
+    xBtnNew.removeAttribute('href');
+    xBtnNew.addEventListener('click',async(e)=>{
+      e.preventDefault();
+      const canvas=document.getElementById('share-canvas');
+      const canUseShare=typeof navigator!=='undefined'&&typeof navigator.share==='function';
+      if(canUseShare&&canvas){
+        const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));
+        if(blob){
+          const file=new File([blob],'BBFanFest2026_Seat.png',{type:'image/png'});
+          const shareData={files:[file],title:'BLUSH BLOSSOM FAN FEST 2026',text:tweetText};
+          const canShareFile=typeof navigator.canShare!=='function'||navigator.canShare({files:[file]});
+          if(canShareFile){
+            try{ await navigator.share(shareData); return; }catch(err){ if(err?.name==='AbortError') return; }
+          }
+        }
+      }
+      window.open(intentUrl,'_blank','noopener,noreferrer');
+    });
+  }
+  if(!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+}
+
+async function shareCardNow(){
+  const canvas=document.getElementById('share-canvas');
+  const dlBtn=document.getElementById('share-download-btn');
+  if(!canvas||!dlBtn) return;
+
+  const fallbackDownload=()=>{
+    dlBtn.click();
+    toast(lang==='th'
+      ? '📥 อุปกรณ์นี้ยังแชร์ไฟล์ภาพตรงไม่ได้ · ดาวน์โหลดรูปให้แล้ว'
+      : '📥 Direct image sharing is not available on this device · Download started');
+  };
+
+  if(typeof navigator==='undefined'||typeof navigator.share!=='function'){
+    fallbackDownload();
+    return;
+  }
+
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+  if(!blob){
+    fallbackDownload();
+    return;
+  }
+
+  const file=new File([blob],'BBFanFest2026_Seat.png',{type:'image/png'});
+  const shareData={
+    files:[file],
+    title:'BLUSH BLOSSOM FAN FEST 2026',
+    text:lang==='th'?'มาเจอกันในงาน BB FanFest 2026! #BBFanFest2026':'See you at BB FanFest 2026! #BBFanFest2026',
+  };
+
+  if(typeof navigator.canShare==='function'&&!navigator.canShare({files:[file]})){
+    fallbackDownload();
+    return;
+  }
+
+  try{
+    await navigator.share(shareData);
+  }catch(err){
+    if(err?.name==='AbortError') return;
+    console.warn('Web Share API failed',err);
+    fallbackDownload();
+  }
+}
+
+function closeShareModal(){
+  const modal=document.getElementById('share-modal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
 }
 
 /* ══════════════════════════════════════
@@ -997,7 +1629,7 @@ async function submitForm(){
     }
     overwrite=true;
   }
-  const dayStr=day+' มิ.ย.';
+  const dayStr=formatShowDateTime(day,{locale:lang,includeYear:true,includeTime:true});
   const entry={id:Date.now(),days:[day],dayStr,mainZone:mz,subZone:sz,price:pr,row,seatNum,fandoms:normalizedFandoms,nickname,overwrite,ts:new Date().toISOString()};
   const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='⏳...';
   // Save to Google Sheets
@@ -1059,6 +1691,18 @@ async function submitForm(){
       ? `🌸 บันทึก Local แล้ว · Responses ยังไม่เข้า${reason}`
       : `🌸 Saved locally · Responses sheet not updated${reason}`);
   }
+
+  const fandomNamesForShare=normalizedFandoms.map(fid=>fandomName(fid));
+  openShareModal({
+    dayStr,
+    subZone:sz,
+    row,
+    seatNum,
+    fandomIds:normalizedFandoms,
+    fandomNames:fandomNamesForShare,
+    nickname
+  });
+
   // Reset
   document.querySelectorAll('.day-opt input,.fc input').forEach(c=>c.checked=false);
   ['nickname'].forEach(id=>document.getElementById(id).value='');

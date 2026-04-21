@@ -530,6 +530,10 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 .confirm-agree input{margin-top:2px}
 .confirm-agree label{font-size:11px;color:rgba(255,255,255,.86);line-height:1.5;cursor:pointer}
 
+/* Share Card Modal Styles */
+.share-modal-card{width:min(420px,100%);text-align:center}
+.share-modal-card .confirm-btn{display:block;text-align:center;text-decoration:none}
+
 a,button,input,select,textarea,label{touch-action:manipulation}
 
 @media(max-width:580px){

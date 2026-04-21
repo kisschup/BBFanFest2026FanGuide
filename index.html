@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blush Blossom Fan Fest 2026 — Fan Guide (Fan-made)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;700&family=Playpen+Sans+Thai:wght@400;500;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -575,6 +575,31 @@
     <div class="confirm-actions">
       <button class="confirm-btn cancel" id="ow-cancel" type="button">ยกเลิก</button>
       <button class="confirm-btn ok" id="ow-confirm" type="button" disabled>ยืนยันลงทับ</button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-modal" id="share-modal" aria-hidden="true">
+  <div class="confirm-modal-card share-modal-card" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="confirm-modal-title" id="share-modal-title" data-th="🌸 สร้าง Share Card สำเร็จ!" data-en="🌸 Share Card Generated!">🌸 สร้าง Share Card สำเร็จ!</div>
+    <div class="confirm-modal-desc" data-th="เซฟรูปแล้วนำไปแชร์ใน X (Twitter) หรือ IG เพื่อหาเพื่อนร่วมโซนได้เลย! #BBFanFest2026" data-en="Save this image and share it on Twitter (X) or IG to find your zone neighbors! #BBFanFest2026">เซฟรูปแล้วนำไปแชร์ใน X (Twitter) หรือ IG เพื่อหาเพื่อนร่วมโซนได้เลย! #BBFanFest2026</div>
+
+    <canvas id="share-canvas" width="1080" height="1440" style="display:none;"></canvas>
+
+    <label id="share-privacy-wrap" style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:12px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.06);font-size:14px;color:rgba(255,255,255,0.75);">
+      <input type="checkbox" id="share-zone-only" onchange="onSharePrivacyChange()" style="accent-color:#a78bfa;width:16px;height:16px;cursor:pointer;">
+      <span data-th="🔒 แสดงเฉพาะโซน (ซ่อนแถว + เลขที่นั่ง)" data-en="🔒 Zone only (hide row &amp; seat number)">🔒 แสดงเฉพาะโซน (ซ่อนแถว + เลขที่นั่ง)</span>
+    </label>
+
+    <img id="share-preview" src="" alt="Share Card Preview" style="width:100%;border-radius:12px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+
+    <div class="confirm-actions" style="justify-content:center;flex-direction:column;gap:10px;">
+      <a id="share-download-btn" class="submit-btn" style="text-align:center;text-decoration:none;display:block;margin:0;" download="BBFanFest2026_Seat.png">
+        📥 โหลดรูปภาพ (Download Image)
+      </a>
+      <button id="share-now-btn" class="confirm-btn ok" type="button" onclick="shareCardNow()" style="width:100%;padding:12px;" data-th="📲 Share รูปทันที (มือถือ)" data-en="📲 Share Image Now (Mobile)">📲 Share รูปทันที (มือถือ)</button>
+      <a id="share-x-btn" class="confirm-btn ok" style="width:100%;padding:12px;text-decoration:none;display:block;" target="_blank" rel="noopener noreferrer" data-th="🐦 แชร์ไป X พร้อม #BBFanFest2026" data-en="🐦 Share to X with #BBFanFest2026">🐦 แชร์ไป X พร้อม #BBFanFest2026</a>
+      <button class="confirm-btn cancel" onclick="closeShareModal()" style="width:100%;padding:12px;">ปิด (Close)</button>
     </div>
   </div>
 </div>
