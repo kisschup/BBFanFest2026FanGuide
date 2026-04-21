@@ -83,6 +83,47 @@ function fandomColor(fid){
   return PAIR_BY_ID[fid]?.color||'var(--lav)';
 }
 
+function shareFandomHashtags(data){
+  const ids=resolveShareFandomIds(data);
+  const tags=[];
+  ids.forEach(fid=>{
+    if(fid==='dd'){
+      tags.push('#DD');
+      return;
+    }
+    const pair=PAIR_BY_ID[fid];
+    if(!pair) return;
+    const pairTags=(PAIR_HASHTAGS[pair.tag]||'').split(' ').filter(Boolean);
+    if(pairTags.length){
+      tags.push(...pairTags);
+      return;
+    }
+    tags.push(`#${pair.tag.replace(/\s+/g,'')}`);
+  });
+  tags.push('#BBFanFest2026');
+  return [...new Set(tags)].join(' ');
+}
+
+function getShareDayNoTime(data){
+  const byDay=formatShowDateTime(data?.day,{locale:lang,includeYear:true,includeTime:false});
+  if(byDay!=='-') return byDay;
+  return String(data?.dayStr||'-')
+    .replace(/\sเวลา\s.*$/,'')
+    .replace(/\sat\s.*$/,'');
+}
+
+function buildShareSeatLine(data,{zoneOnly=false}={}){
+  const dayLabel=getShareDayNoTime(data);
+  if(zoneOnly){
+    return lang==='th'
+      ? `ไปวันที่ ${dayLabel} | โซน ${data?.subZone||'-'}`
+      : `Attending ${dayLabel} | Zone ${data?.subZone||'-'}`;
+  }
+  return lang==='th'
+    ? `ไปวันที่ ${dayLabel} | โซน ${data?.subZone||'-'} แถว ${data?.row||'-'} ที่นั่ง ${data?.seatNum||'-'}`
+    : `Attending ${dayLabel} | Zone ${data?.subZone||'-'} Row ${data?.row||'-'} Seat ${data?.seatNum||'-'}`;
+}
+
 /* ══════════════════════════════════════
    ZONE CONFIG — corrected prices
 ══════════════════════════════════════ */
@@ -868,23 +909,21 @@ async function openShareModal(data){
     shareNowBtn.style.opacity=supportsShare?'1':'0.6';
   }
   if(xBtn){
-    const fandomTxt=(data?.fandomNames||[]).join(', ')||'-';
-    const seatLine=lang==='th'
-      ? `ไปวันที่ ${data?.dayStr||'-'} | โซน ${data?.subZone||'-'} แถว ${data?.row||'-'} ที่นั่ง ${data?.seatNum||'-'}`
-      : `Attending ${data?.dayStr||'-'} | Zone ${data?.subZone||'-'} Row ${data?.row||'-'} Seat ${data?.seatNum||'-'}`;
-    const tweetText=[
-      lang==='th'?'เจอกันในงาน BLUSH BLOSSOM FAN FEST 2026!':'See you at BLUSH BLOSSOM FAN FEST 2026!',
-      seatLine,
-      `${lang==='th'?'ด้อม:':'Fandom:'} ${fandomTxt}`,
-      '#BBFanFest2026',
-    ].filter(Boolean).join('\n');
-    const intentUrl=`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
     // Remove old listeners by cloning
     const xBtnNew=xBtn.cloneNode(true);
     xBtn.parentNode.replaceChild(xBtnNew,xBtn);
     xBtnNew.removeAttribute('href');
     xBtnNew.addEventListener('click',async(e)=>{
       e.preventDefault();
+      const currentZoneOnly=document.getElementById('share-zone-only')?.checked||false;
+      const hashLine=shareFandomHashtags(data);
+      const seatLine=buildShareSeatLine(data,{zoneOnly:currentZoneOnly});
+      const tweetText=[
+        lang==='th'?'เจอกันในงาน BLUSH BLOSSOM FAN FEST 2026!':'See you at BLUSH BLOSSOM FAN FEST 2026!',
+        seatLine,
+        hashLine,
+      ].filter(Boolean).join('\n');
+      const intentUrl=`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
       const canvas=document.getElementById('share-canvas');
       const canUseShare=typeof navigator!=='undefined'&&typeof navigator.share==='function';
       if(canUseShare&&canvas){
@@ -910,6 +949,7 @@ async function shareCardNow(){
   const canvas=document.getElementById('share-canvas');
   const dlBtn=document.getElementById('share-download-btn');
   if(!canvas||!dlBtn) return;
+  const hashLine=shareFandomHashtags(_lastShareData);
 
   const fallbackDownload=()=>{
     dlBtn.click();
@@ -933,7 +973,10 @@ async function shareCardNow(){
   const shareData={
     files:[file],
     title:'BLUSH BLOSSOM FAN FEST 2026',
-    text:lang==='th'?'มาเจอกันในงาน BB FanFest 2026! #BBFanFest2026':'See you at BB FanFest 2026! #BBFanFest2026',
+    text:[
+      lang==='th'?'มาเจอกันในงาน BB FanFest 2026!':'See you at BB FanFest 2026!',
+      hashLine,
+    ].filter(Boolean).join('\n'),
   };
 
   if(typeof navigator.canShare==='function'&&!navigator.canShare({files:[file]})){
@@ -1694,6 +1737,7 @@ async function submitForm(){
 
   const fandomNamesForShare=normalizedFandoms.map(fid=>fandomName(fid));
   openShareModal({
+    day,
     dayStr,
     subZone:sz,
     row,
