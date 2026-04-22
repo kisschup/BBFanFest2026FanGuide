@@ -36,8 +36,11 @@
     <button class="nav-tab" onclick="goPage('register')" data-page="register">
       <span data-th="✦ ลงทะเบียน" data-en="✦ Register">✦ ลงทะเบียน</span>
     </button>
+    <button class="nav-tab" onclick="goPage('marketplace')" data-page="marketplace">
+      <span data-th="🛒 ประกาศ" data-en="🛒 Listings">🛒 ประกาศ</span>
+    </button>
   </div>
-  <button class="lang-btn" onclick="toggleLang()" id="lang-btn">EN</button>
+  <button class="lang-btn" onclick="toggleLang()" id="lang-btn">🇬🇧 ENG</button>
 </nav>
 
 <div class="page active" id="page-home">
@@ -60,6 +63,7 @@
   <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;justify-content:center">
     <button onclick="goPage('census')" style="padding:12px 24px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(124,58,237,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(124,58,237,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(124,58,237,0.3)'" data-th="🗺 เช็คประชากร" data-en="🗺 Census">🗺 เช็คประชากร</button>
     <button onclick="goPage('register')" style="padding:12px 24px;background:linear-gradient(135deg,#ec4899,#f472b6);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(236,72,153,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(236,72,153,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(236,72,153,0.3)'" data-th="📝 ลงทะเบียนที่นั่ง" data-en="📝 Register Seat">📝 ลงทะเบียนที่นั่ง</button>
+    <button onclick="goPage('marketplace')" style="padding:12px 24px;background:linear-gradient(135deg,#0d9488,#2dd4bf);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(13,148,136,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(13,148,136,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(13,148,136,0.3)'" data-th="🛒 ตลาดซื้อขาย/เทรด" data-en="🛒 Marketplace">🛒 ตลาดซื้อขาย/เทรด</button>
   </div>
 
   <div class="sec-hd"><span data-th="⏰ กำหนดการงาน" data-en="⏰ Day Schedule">⏰ กำหนดการงาน</span></div>
@@ -416,6 +420,7 @@
   <div class="register-tabs">
     <button class="register-tab on" id="register-tab-seat" onclick="setRegisterTab('seat')" data-th="🎟 ที่นั่ง" data-en="🎟 Seat">🎟 ที่นั่ง</button>
     <button class="register-tab" id="register-tab-live" onclick="setRegisterTab('live')" data-th="📡 Live Streaming" data-en="📡 Live Streaming">📡 Live Streaming</button>
+    <button class="register-tab" id="register-tab-marketplace" onclick="setRegisterTab('marketplace')" data-th="🛒 ลงประกาศ" data-en="🛒 List Ticket">🛒 ลงประกาศ</button>
   </div>
 
   <div class="register-pane active" id="register-pane-seat">
@@ -494,6 +499,20 @@
       </div>
     </div>
 
+    <div class="frow full" style="margin-top:6px">
+      <div class="fg">
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.65);display:block;margin-bottom:6px">
+          🔑 <span data-th="Transfer Code (ถ้ามี — สำหรับผู้รับซื้อ/เทรดจาก Marketplace)" data-en="Transfer Code (optional — for buyers/traders from Marketplace)">Transfer Code (ถ้ามี — สำหรับผู้รับซื้อ/เทรดจาก Marketplace)</span>
+        </label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input type="text" id="reg-mp-tc" placeholder="TR-xxxxxxxxxx" style="flex:1;min-width:160px;font-family:monospace;font-size:13px;letter-spacing:.04em" oninput="clearMpTCStatus()">
+          <button type="button" onclick="verifyMpTC()" id="reg-mp-tc-btn" style="padding:8px 14px;background:rgba(13,148,136,.15);border:1px solid rgba(13,148,136,.4);border-radius:10px;color:#2dd4bf;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap" data-th="ตรวจสอบ" data-en="Verify">🔍 ตรวจสอบ</button>
+        </div>
+        <div id="reg-mp-tc-status" style="margin-top:6px;font-size:11px;line-height:1.6"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:4px" data-th="ใส่เฉพาะถ้าได้รับ Transfer Code จากผู้ขาย/เทรด — ระบบจะยืนยันสิทธิ์และลงทะเบียนให้อัตโนมัติ" data-en="Fill in only if you received a Transfer Code — the system will verify ownership and register automatically">ใส่เฉพาะถ้าได้รับ Transfer Code จากผู้ขาย/เทรด — ระบบจะยืนยันสิทธิ์และลงทะเบียนให้อัตโนมัติ</div>
+      </div>
+    </div>
+
     <button class="submit-btn" onclick="submitForm()" id="submit-btn"
       data-th="✦ บันทึก & ส่งข้อมูล" data-en="✦ Save & Submit">✦ บันทึก & ส่งข้อมูล</button>
     <p class="form-note"
@@ -501,6 +520,135 @@
       data-en="Data saved to Google Sheets · No personally identifiable info · Fan-made for fans 🌸">
       ข้อมูลถูกส่งไปเก็บที่ Google Sheets · ไม่มีข้อมูลส่วนตัวที่ระบุตัวตนได้ · Fan-made เพื่อแฟนด้อม 🌸
     </p>
+  </div>
+  </div>
+
+  <div class="register-pane" id="register-pane-marketplace">
+  <div class="reg-card">
+    <div class="setup-banner" id="setup-banner-mp">
+      <div style="font-size:22px;flex-shrink:0">⚙️</div>
+      <p>
+        <strong style="color:var(--gold);font-size:14px;display:block;margin-bottom:4px">ตั้งค่า Google Sheets:</strong>
+        ฟีเจอร์นี้ต้องการ Google Apps Script URL เพื่อบันทึกข้อมูล
+        <br><span style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:4px;display:inline-block">· ดูไฟล์ apps-script-code.gs และ SETUP_GUIDE.md ที่แนบมา</span>
+      </p>
+    </div>
+    <div class="reg-title" data-th="🛒 ลงประกาศขาย / เทรดบัตร" data-en="🛒 List Ticket — Resell or Trade">🛒 ลงประกาศขาย / เทรดบัตร</div>
+
+    <div class="fg" style="margin-bottom:16px">
+      <label class="req" data-th="ประเภทประกาศ" data-en="Listing Type">ประเภทประกาศ</label>
+      <div class="day-grid">
+        <div class="day-opt">
+          <input type="radio" name="mp-type" id="mp-resell" value="resell" onchange="onMpTypeChange()">
+          <label for="mp-resell"><strong>📤</strong> <span data-th="ขายต่อ (Resell)" data-en="Resell">ขายต่อ (Resell)</span></label>
+        </div>
+        <div class="day-opt">
+          <input type="radio" name="mp-type" id="mp-trade" value="trade" onchange="onMpTypeChange()">
+          <label for="mp-trade"><strong>🔄</strong> <span data-th="แลกบัตร (Trade)" data-en="Trade">แลกบัตร (Trade)</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg" style="margin-bottom:16px">
+      <label class="req" data-th="วันที่แสดง" data-en="Show Day">วันที่แสดง</label>
+      <div class="day-grid">
+        <div class="day-opt"><input type="radio" name="mp-day" id="mp-d13" value="13"><label for="mp-d13"><strong>13</strong> <span data-th="มิ.ย." data-en="Jun">มิ.ย.</span></label></div>
+        <div class="day-opt"><input type="radio" name="mp-day" id="mp-d14" value="14"><label for="mp-d14"><strong>14</strong> <span data-th="มิ.ย." data-en="Jun">มิ.ย.</span></label></div>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label class="req" data-th="โซนหลัก" data-en="Zone">โซนหลัก</label>
+        <select id="mp-main-zone" onchange="updateMpSub()">
+          <option value="" disabled selected data-th="เลือกโซน" data-en="Select zone">เลือกโซน</option>
+          <option value="A">A (5,000–7,900฿)</option>
+          <option value="B">B (4,500–5,900฿)</option>
+          <option value="C">C (3,500–4,500฿)</option>
+          <option value="D">D (2,500–3,000฿)</option>
+          <option value="E">E Grand Stand (1,500–2,000฿)</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="req" data-th="โซนย่อย" data-en="Sub-Zone">โซนย่อย</label>
+        <select id="mp-sub-zone" onchange="updateMpPrice();updateMpRowOptions()"><option value="" disabled selected>—</option></select>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label class="req" data-th="ราคาบัตร (Original เท่านั้น)" data-en="Ticket Price (Original only)">ราคาบัตร (Original เท่านั้น)</label>
+        <div id="mp-price-lock-wrap">
+          <div id="mp-price-display" style="padding:10px 14px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);border-radius:10px;font-size:14px;font-weight:700;color:#a78bfa;min-height:42px;display:flex;align-items:center;gap:6px">
+            <span id="mp-price-text" style="color:rgba(255,255,255,.35)" data-th="เลือกโซนก่อน" data-en="Select zone first">เลือกโซนก่อน</span>
+          </div>
+          <select id="mp-price-tier" style="display:none;margin-top:8px">
+            <option value="" disabled selected data-th="เลือก tier ราคาของคุณ" data-en="Select your price tier">เลือก tier ราคาของคุณ</option>
+          </select>
+          <input type="hidden" id="mp-price-value">
+        </div>
+        <div style="font-size:11px;color:rgba(251,191,36,.7);margin-top:6px" data-th="🔒 ราคาถูกล็อกตามโซน — ห้ามปรับขึ้นหรือลด" data-en="🔒 Price locked to zone — no markups or discounts">🔒 ราคาถูกล็อกตามโซน — ห้ามปรับขึ้นหรือลด</div>
+      </div>
+      <div class="fg" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="fg">
+          <label class="req" data-th="แถว" data-en="Row">แถว</label>
+          <select id="mp-row" onchange="updateMpSeatOptions()"><option value="" disabled selected>—</option></select>
+        </div>
+        <div class="fg">
+          <label class="req" data-th="ที่นั่ง" data-en="Seat">ที่นั่ง</label>
+          <select id="mp-seat-num"><option value="" disabled selected>—</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="seat-check" id="mp-seat-check-msg"></div>
+
+    <div class="divider"></div>
+
+    <div class="fg" id="mp-looking-for-wrap" style="display:none;margin-bottom:16px">
+      <label data-th="Looking for โซน (เลือกได้หลายโซน)" data-en="Looking for Zone(s)">Looking for โซน (เลือกได้หลายโซน)</label>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-bottom:8px" data-th="ระบุโซนที่อยากได้ — ไม่บังคับ" data-en="Specify desired zones — optional">ระบุโซนที่อยากได้ — ไม่บังคับ</div>
+      <div class="fandom-wrap" id="mp-lf-wrap"></div>
+    </div>
+
+    <div class="frow full">
+      <div class="fg">
+        <label class="req" data-th="ลิงก์รูปหลักฐานเจ้าของบัตร (Google Drive)" data-en="Proof Image Link (Google Drive)">ลิงก์รูปหลักฐานเจ้าของบัตร (Google Drive)</label>
+        <input type="text" id="mp-proof-url" placeholder="https://drive.google.com/file/d/..." style="font-size:12px">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:6px;line-height:1.7">
+          <span style="color:#fde68a;font-weight:700">⚠️ ต้องตั้งเป็น "Anyone with the link" เท่านั้น — ถ้าลิงก์เปิดไม่ได้ผู้ซื้อจะไม่สามารถตรวจสอบได้</span><br>
+          <span data-th="📌 วิธีแชร์: Google Drive → คลิกขวารูป → Share → Change to Anyone with the link → Copy link" data-en="📌 How to share: Google Drive → right-click image → Share → Change to Anyone with the link → Copy link">📌 วิธีแชร์: Google Drive → คลิกขวารูป → Share → Change to "Anyone with the link" → Copy link</span><br>
+          <span data-th="🔒 แนะนำ blur เลขบัตร/ชื่อ/ข้อมูลส่วนตัวที่ไม่จำเป็นออกก่อนแชร์" data-en="🔒 Blur your ID/name/personal info before sharing">🔒 แนะนำ blur เลขบัตร/ชื่อ/ข้อมูลส่วนตัวที่ไม่จำเป็นออกก่อนแชร์</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label data-th="Twitter / X (@handle)" data-en="Twitter / X (@handle)">Twitter / X (@handle)</label>
+        <input type="text" id="mp-twitter" placeholder="@yourname">
+      </div>
+      <div class="fg">
+        <label data-th="LINE ID" data-en="LINE ID">LINE ID</label>
+        <input type="text" id="mp-line-id" placeholder="your.line.id">
+      </div>
+    </div>
+    <div style="font-size:11px;color:rgba(251,191,36,.7);margin-bottom:14px" data-th="⚡ ต้องกรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง" data-en="⚡ Twitter or LINE ID — at least one required">⚡ ต้องกรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง</div>
+
+    <div class="frow full">
+      <div class="fg">
+        <label data-th="หมายเหตุ (ไม่บังคับ)" data-en="Note (optional)">หมายเหตุ (ไม่บังคับ)</label>
+        <input type="text" id="mp-note" placeholder="เช่น มือสอง สภาพดี / Only trading for Day 13" maxlength="300">
+      </div>
+    </div>
+
+    <div class="seat-check" id="mp-dup-msg"></div>
+
+    <button class="submit-btn" onclick="submitMarketplaceForm()" id="mp-submit-btn" data-th="🛒 ลงประกาศ" data-en="🛒 Post Listing">🛒 ลงประกาศ</button>
+    <p class="form-note" data-th="ลงประกาศแล้วจะได้ Owner Key สำหรับปิดประกาศ · ข้อมูลติดต่อจะแสดงสาธารณะ · ห้ามตั้งราคาเกิน Original" data-en="After posting you'll receive an Owner Key to close the listing · Contact info will be public · No markups allowed">ลงประกาศแล้วจะได้ Owner Key สำหรับปิดประกาศ · ข้อมูลติดต่อจะแสดงสาธารณะ · ห้ามตั้งราคาเกิน Original</p>
+
+    <div style="margin-top:12px;text-align:center">
+      <button onclick="goPage('marketplace')" style="padding:8px 20px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:100px;color:#a78bfa;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer" data-th="📋 ดูประกาศทั้งหมด →" data-en="📋 View all listings →">📋 ดูประกาศทั้งหมด →</button>
+    </div>
   </div>
   </div>
 
@@ -554,6 +702,57 @@
 </div>
 </div>
 
+<div class="page" id="page-marketplace">
+<div class="wrap">
+  <div class="census-top">
+    <div>
+      <div class="census-title" data-th="🛒 ประกาศขาย / เทรดบัตร" data-en="🛒 Ticket Listings — Resell &amp; Trade">🛒 ประกาศขาย / เทรดบัตร</div>
+      <span style="font-size:12px;color:rgba(255,255,255,.6);display:inline-block;margin-top:4px">
+        <span class="live-dot"></span>
+        <span data-th="ประกาศจากแฟนคลับที่ลงทะเบียนจริง" data-en="Listings from registered fans">ประกาศจากแฟนคลับที่ลงทะเบียนจริง</span>
+      </span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="total-badge">
+        <strong id="mkt-total">0</strong>
+        <span data-th="ประกาศ" data-en="listings">ประกาศ</span>
+      </div>
+      <button onclick="syncMarketplaceData(true).then(renderMarketplaceListings)" style="padding:8px 16px;background:rgba(244,114,182,.15);border:1px solid #f472b6;border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer" data-th="↻ อัปเดต" data-en="↻ Refresh">↻ อัปเดต</button>
+      <button onclick="setRegisterTab('marketplace');goPage('register')" style="padding:8px 16px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer" data-th="+ ลงประกาศใหม่" data-en="+ New listing">+ ลงประกาศใหม่</button>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
+    <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:600" data-th="กรอง:" data-en="Filter:">กรอง:</span>
+    <button class="cdf-chip on" id="mkt-f-day-all" onclick="setMktFilter('day','all')" data-th="ทุกวัน" data-en="All days">ทุกวัน</button>
+    <button class="cdf-chip" id="mkt-f-day-13" onclick="setMktFilter('day','13')" data-th="13 มิ.ย." data-en="13 Jun">13 มิ.ย.</button>
+    <button class="cdf-chip" id="mkt-f-day-14" onclick="setMktFilter('day','14')" data-th="14 มิ.ย." data-en="14 Jun">14 มิ.ย.</button>
+    <span style="color:rgba(255,255,255,.2)">|</span>
+    <button class="cdf-chip on" id="mkt-f-type-all" onclick="setMktFilter('type','all')" data-th="ทุกประเภท" data-en="All types">ทุกประเภท</button>
+    <button class="cdf-chip" id="mkt-f-type-resell" onclick="setMktFilter('type','resell')" data-th="ขายต่อ" data-en="Resell">ขายต่อ</button>
+    <button class="cdf-chip" id="mkt-f-type-trade" onclick="setMktFilter('type','trade')" data-th="เทรด" data-en="Trade">เทรด</button>
+    <span style="color:rgba(255,255,255,.2)">|</span>
+    <select id="mkt-f-zone" onchange="setMktFilter('zone',this.value)" style="padding:5px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px">
+      <option value="all" data-th="ทุกโซน" data-en="All zones">ทุกโซน</option>
+      <option value="A">Zone A</option>
+      <option value="B">Zone B</option>
+      <option value="C">Zone C</option>
+      <option value="D">Zone D</option>
+      <option value="E">Zone E</option>
+    </select>
+  </div>
+
+  <div id="mkt-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
+    <div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px" data-th="กำลังโหลดประกาศ..." data-en="Loading listings...">กำลังโหลดประกาศ...</div>
+  </div>
+
+  <div style="margin-top:24px;padding:14px 18px;border-radius:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);font-size:12px;color:rgba(255,255,255,.5);line-height:1.8">
+    <strong style="color:#fde68a">⚠️ ข้อควรระวัง:</strong>
+    <span data-th="ข้อมูลในประกาศเป็นข้อมูลที่ผู้ลงประกาศกรอกเอง ระบบไม่ได้ยืนยันตัวตน · ตรวจสอบหลักฐานก่อนดำเนินการ · อย่าโอนเงินก่อนได้รับบัตรและตรวจสอบแล้ว" data-en="Listing info is self-reported and not verified by this system · Check proof before proceeding · Never transfer money before receiving and verifying the ticket">ข้อมูลในประกาศเป็นข้อมูลที่ผู้ลงประกาศกรอกเอง ระบบไม่ได้ยืนยันตัวตน · ตรวจสอบหลักฐานก่อนดำเนินการ · อย่าโอนเงินก่อนได้รับบัตรและตรวจสอบแล้ว</span>
+  </div>
+</div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <div class="confirm-modal" id="seat-overwrite-modal" aria-hidden="true">
@@ -600,6 +799,120 @@
       <button id="share-now-btn" class="confirm-btn ok" type="button" onclick="shareCardNow()" style="width:100%;padding:12px;" data-th="📲 Share รูปทันที (มือถือ)" data-en="📲 Share Image Now (Mobile)">📲 Share รูปทันที (มือถือ)</button>
       <a id="share-x-btn" class="confirm-btn ok" style="width:100%;padding:12px;text-decoration:none;display:block;" target="_blank" rel="noopener noreferrer" data-th="🐦 แชร์ไป X พร้อม #BBFanFest2026" data-en="🐦 Share to X with #BBFanFest2026">🐦 แชร์ไป X พร้อม #BBFanFest2026</a>
       <button class="confirm-btn cancel" onclick="closeShareModal()" style="width:100%;padding:12px;">ปิด (Close)</button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-modal" id="owner-transfer-modal" aria-hidden="true" onclick="if(event.target===this)closeOwnerTransferModal()">
+  <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="owner-transfer-title">
+    <div class="confirm-modal-title" id="owner-transfer-title">🔐 Owner Key &amp; Transfer Code</div>
+    <div class="confirm-modal-desc" id="owner-transfer-desc">บันทึกรหัสนี้ทันที ใช้สำหรับจัดการประกาศขาย/เทรด และยืนยันการโอนที่นั่ง</div>
+    <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key" id="owner-key-label">Owner Key</span>
+        <span class="confirm-val" id="owner-key-value">-</span>
+      </div>
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key" id="transfer-code-label">Transfer Code</span>
+        <span class="confirm-val" id="transfer-code-value">-</span>
+      </div>
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key" id="transfer-exp-label">หมดอายุ</span>
+        <span class="confirm-val" id="transfer-exp-value">-</span>
+      </div>
+    </div>
+    <div id="owner-transfer-howto" style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
+      วิธีใช้: 1) ใช้ Owner Key เพื่อปิด/แก้ไขประกาศ 2) ส่ง Transfer Code ให้ผู้รับสิทธิ์ตอนปิดดีล 3) ผู้รับสิทธิ์ใช้ Transfer Code ตอนลงข้อมูลที่นั่ง
+    </div>
+    <div id="owner-transfer-warning" style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+      ⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง
+    </div>
+    <div class="confirm-actions" style="flex-wrap:wrap">
+      <button class="confirm-btn ok" id="copy-owner-btn" type="button" onclick="copyOwnerTransferField('owner-key-value')">คัดลอก Owner Key</button>
+      <button class="confirm-btn ok" id="copy-transfer-btn" type="button" onclick="copyOwnerTransferField('transfer-code-value')">คัดลอก Transfer Code</button>
+      <button class="confirm-btn cancel" id="owner-transfer-close-btn" type="button" onclick="closeOwnerTransferModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- Marketplace listing success modal -->
+<div class="confirm-modal" id="mp-success-modal" aria-hidden="true" onclick="if(event.target===this)closeMpSuccessModal()">
+  <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="mp-success-title">
+    <div class="confirm-modal-title" id="mp-success-title">🛒 ลงประกาศสำเร็จ!</div>
+    <div class="confirm-modal-desc" id="mp-success-desc">บันทึก Listing ID และ Owner Key ไว้ให้ดี — ใช้สำหรับปิดประกาศ</div>
+    <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key">Listing ID</span>
+        <span class="confirm-val" id="mp-success-listing-id">-</span>
+      </div>
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key">Owner Key</span>
+        <span class="confirm-val" id="mp-success-owner-key">-</span>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
+      วิธีใช้: ใช้ Listing ID + Owner Key เมื่อต้องการปิดประกาศ (เช่น ขาย/เทรดสำเร็จแล้ว)
+    </div>
+    <div style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+      ⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง
+    </div>
+    <div class="confirm-actions" style="flex-wrap:wrap">
+      <button class="confirm-btn ok" type="button" onclick="copyMpField('mp-success-listing-id')" data-th="คัดลอก Listing ID" data-en="Copy Listing ID">คัดลอก Listing ID</button>
+      <button class="confirm-btn ok" type="button" onclick="copyMpField('mp-success-owner-key')" data-th="คัดลอก Owner Key" data-en="Copy Owner Key">คัดลอก Owner Key</button>
+      <button class="confirm-btn cancel" type="button" onclick="closeMpSuccessModal()" data-th="ปิด" data-en="Close">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- Marketplace Transfer Code modal (แสดงหลังปิดประกาศ — สำหรับผู้ขาย/เทรด) -->
+<div class="confirm-modal" id="mp-tc-modal" aria-hidden="true" onclick="if(event.target===this)closeMpTCModal()">
+  <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="mp-tc-title">
+    <div class="confirm-modal-title" id="mp-tc-title">🔑 Transfer Code — ส่งให้ผู้รับสิทธิ์</div>
+    <div class="confirm-modal-desc" id="mp-tc-desc">ประกาศถูกปิดแล้ว — ส่ง Transfer Code นี้ให้ผู้ซื้อหรือผู้รับเทรด เพื่อให้เขาใช้ตอนลงทะเบียนที่นั่ง</div>
+    <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key">Transfer Code</span>
+        <span class="confirm-val" id="mp-tc-value" style="font-size:13px;letter-spacing:.05em">-</span>
+      </div>
+      <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="confirm-key" data-th="หมดอายุใน" data-en="Expires">หมดอายุใน</span>
+        <span class="confirm-val" id="mp-tc-expires" style="font-size:12px;color:rgba(255,255,255,.55)">-</span>
+      </div>
+      <div id="mp-tc-listing-info" style="font-size:12px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);border-radius:8px;padding:10px 12px;line-height:1.8"></div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.8">
+      <strong style="color:#a78bfa">วิธีใช้:</strong><br>
+      1️⃣ คัดลอก Transfer Code แล้วส่งให้ผู้รับสิทธิ์<br>
+      2️⃣ ผู้รับสิทธิ์นำ TC ไปกรอกในฟอร์มลงทะเบียนที่นั่ง<br>
+      3️⃣ ระบบจะยืนยันการโอนสิทธิ์และลงทะเบียนที่นั่งให้อัตโนมัติ
+    </div>
+    <div style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+      ⚠️ TC ใช้ได้ <strong>48 ชั่วโมง</strong> — ส่งให้ผู้รับโดยตรง อย่าเผยแพร่สาธารณะ
+    </div>
+    <div class="confirm-actions" style="flex-wrap:wrap">
+      <button class="confirm-btn ok" type="button" onclick="copyMpTCField('mp-tc-value')" data-th="คัดลอก Transfer Code" data-en="Copy Transfer Code">📋 คัดลอก TC</button>
+      <button class="confirm-btn cancel" type="button" onclick="closeMpTCModal()" data-th="ปิด" data-en="Close">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- Close listing modal -->
+<div class="confirm-modal" id="close-listing-modal" aria-hidden="true" onclick="if(event.target===this)closeCloseListingModal()">
+  <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="cl-title">
+    <div class="confirm-modal-title" id="cl-title" data-th="🔐 ปิดประกาศ" data-en="🔐 Close Listing">🔐 ปิดประกาศ</div>
+    <div class="confirm-modal-desc" data-th="กรอก Listing ID และ Owner Key เพื่อปิดประกาศ" data-en="Enter Listing ID and Owner Key to close this listing">กรอก Listing ID และ Owner Key เพื่อปิดประกาศ</div>
+    <div class="fg" style="margin-bottom:12px">
+      <label style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:6px;display:block">Listing ID</label>
+      <input type="text" id="cl-listing-id" placeholder="ML-xxxxxxxxxxxx" style="width:100%;box-sizing:border-box">
+    </div>
+    <div class="fg" style="margin-bottom:12px">
+      <label style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:6px;display:block">Owner Key</label>
+      <input type="text" id="cl-owner-key" placeholder="OWN-xxxxxxxxxxxxxxxxxxxx" style="width:100%;box-sizing:border-box">
+    </div>
+    <div class="seat-check" id="cl-status-msg" style="margin-bottom:10px"></div>
+    <div class="confirm-actions">
+      <button class="confirm-btn ok" type="button" id="cl-submit-btn" onclick="submitCloseListing()" data-th="ยืนยันปิดประกาศ" data-en="Confirm Close">ยืนยันปิดประกาศ</button>
+      <button class="confirm-btn cancel" type="button" onclick="closeCloseListingModal()" data-th="ยกเลิก" data-en="Cancel">ยกเลิก</button>
     </div>
   </div>
 </div>

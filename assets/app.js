@@ -1,7 +1,7 @@
 ﻿/* ══════════════════════════════════════
    CONFIG — แก้ตรงนี้เพียงจุดเดียว
 ══════════════════════════════════════ */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyfL4j3sDE7jnavXeXO-e6oS8ZizalvhMSozH75vh2muZwdx8acjAXLGeUwmsJd4PE0Pg/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxLohEFkh2R4tbKHjm0_QpUBOOAP2kmITDYd-27cfTITMTYemgeyZboMd_P63EXccgmtA/exec';
 // วาง URL ที่ได้จาก Google Apps Script "Deploy as Web App" ตรงนี้
 // ตัวอย่าง: 'https://script.google.com/macros/s/AKfycb.../exec'
 
@@ -268,16 +268,20 @@ const SZ_PRICES = {
 (()=>{const se=document.getElementById('stars');for(let i=0;i<120;i++){const s=document.createElement('div');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';const sz=Math.random()<.15?3:2;s.style.width=s.style.height=sz+'px';s.style.setProperty('--d',(2+Math.random()*5)+'s');s.style.setProperty('--dl',(-Math.random()*7)+'s');s.style.setProperty('--b',(0.3+Math.random()*.7).toFixed(2));se.appendChild(s);}})();
 
 /* ══ SETUP BANNER ══ */
-if(GAS_URL) document.getElementById('setup-banner').style.display='none';
+if(GAS_URL){
+  document.getElementById('setup-banner').style.display='none';
+  const mpBanner=document.getElementById('setup-banner-mp');
+  if(mpBanner) mpBanner.style.display='none';
+}
 
 /* ══ LANG ══ */
 let lang='th';
 function toggleLang(){
   lang=lang==='th'?'en':'th';
-  document.getElementById('lang-btn').textContent=lang==='th'?'EN':'ไทย';
+  document.getElementById('lang-btn').textContent=lang==='th'?'🇬🇧 ENG':'🇹🇭 ไทย';
   document.querySelectorAll('[data-th]').forEach(el=>{
     const v=el.dataset[lang]||el.dataset.th;
-    if(['OPTION','SPAN','STRONG','SMALL','A','DIV','P'].includes(el.tagName)||!el.children.length)
+    if(['OPTION','SPAN','STRONG','SMALL','A','P','BUTTON','LABEL'].includes(el.tagName)||!el.children.length)
       el.textContent=v;
   });
   buildHomePage();buildFandomChips();buildDEStrip();buildCensusDayFilter();buildAnalysisFilter();buildLiveCountryOptions();buildLiveFandomChips();renderLiveStreamingSummary();setRegisterTab(registerTab);checkSeatDuplicateRealtime();
@@ -287,6 +291,7 @@ function toggleLang(){
   });
   if(document.getElementById('page-census')?.classList.contains('active')) renderCensus();
   if(document.getElementById('page-analysis')?.classList.contains('active')) renderAnalysis();
+  if(document.getElementById('page-marketplace')?.classList.contains('active')) renderMarketplaceListings();
 }
 
 /* ══ NAV ══ */
@@ -301,6 +306,12 @@ function goPage(id){
       setRegisterTab(registerTab);
       checkSeatDuplicateRealtime();
       renderLiveStreamingSummary();
+    });
+  }
+  if(id==='marketplace'){
+    syncMarketplaceData().then(()=>{
+      buildMarketplaceSeatMap();
+      renderMarketplaceListings();
     });
   }
 }
@@ -1000,6 +1011,95 @@ function closeShareModal(){
   modal.setAttribute('aria-hidden','true');
 }
 
+function randomTokenChars(len){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  let out='';
+  for(let i=0;i<len;i++) out+=chars.charAt(Math.floor(Math.random()*chars.length));
+  return out;
+}
+
+function createOwnerKey(){
+  return `OWN-${randomTokenChars(20)}`;
+}
+
+function createTransferCode(){
+  return `TR-${randomTokenChars(10)}`;
+}
+
+function formatIsoForDisplay(v){
+  const s=String(v||'').trim();
+  if(!s) return '-';
+  const d=new Date(s);
+  if(Number.isNaN(d.getTime())) return s;
+  try{
+    return d.toLocaleString(lang==='th'?'th-TH':'en-US',{hour12:false});
+  }catch(_){
+    return d.toISOString();
+  }
+}
+
+function closeOwnerTransferModal(){
+  const modal=document.getElementById('owner-transfer-modal');
+  if(!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+}
+
+async function copyOwnerTransferField(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const text=String(el.textContent||'').trim();
+  if(!text||text==='-') return;
+  try{
+    await navigator.clipboard.writeText(text);
+    toast(lang==='th'?'📋 คัดลอกแล้ว':'📋 Copied');
+  }catch(_){
+    toast(lang==='th'?'❌ คัดลอกไม่สำเร็จ กรุณาคัดลอกเอง':'❌ Copy failed. Please copy manually');
+  }
+}
+
+function openOwnerTransferModal({ownerKey,transferCode,transferCodeExpiresAt}={}){
+  const modal=document.getElementById('owner-transfer-modal');
+  if(!modal) return;
+  const ownerEl=document.getElementById('owner-key-value');
+  const transferEl=document.getElementById('transfer-code-value');
+  const expEl=document.getElementById('transfer-exp-value');
+  if(ownerEl) ownerEl.textContent=ownerKey||'-';
+  if(transferEl) transferEl.textContent=transferCode||'-';
+  if(expEl) expEl.textContent=formatIsoForDisplay(transferCodeExpiresAt);
+
+  const title=document.getElementById('owner-transfer-title');
+  const desc=document.getElementById('owner-transfer-desc');
+  const warning=document.getElementById('owner-transfer-warning');
+  const howto=document.getElementById('owner-transfer-howto');
+  const ownerLabel=document.getElementById('owner-key-label');
+  const transferLabel=document.getElementById('transfer-code-label');
+  const expLabel=document.getElementById('transfer-exp-label');
+  const copyOwnerBtn=document.getElementById('copy-owner-btn');
+  const copyTransferBtn=document.getElementById('copy-transfer-btn');
+  const closeBtn=document.getElementById('owner-transfer-close-btn');
+
+  if(title) title.textContent=lang==='th'?'🔐 Owner Key & Transfer Code':'🔐 Owner Key & Transfer Code';
+  if(desc) desc.textContent=lang==='th'
+    ? 'บันทึกรหัสนี้ทันที ใช้สำหรับจัดการประกาศขาย/เทรด และยืนยันการโอนที่นั่ง'
+    : 'Save these credentials now. They are required to manage listings and confirm seat transfer.';
+  if(warning) warning.textContent=lang==='th'
+    ? '⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง'
+    : '⚠️ Keep these credentials safe. Do not lose or share with unrelated people.';
+  if(howto) howto.textContent=lang==='th'
+    ? 'วิธีใช้: 1) ใช้ Owner Key เพื่อปิด/แก้ไขประกาศ 2) ส่ง Transfer Code ให้ผู้รับสิทธิ์ตอนปิดดีล 3) ผู้รับสิทธิ์ใช้ Transfer Code ตอนลงข้อมูลที่นั่ง'
+    : 'How to use: 1) Use Owner Key to close/edit listing. 2) Send Transfer Code to buyer/trade partner after deal. 3) Receiver uses Transfer Code when submitting seat ownership.';
+  if(ownerLabel) ownerLabel.textContent=lang==='th'?'Owner Key':'Owner Key';
+  if(transferLabel) transferLabel.textContent=lang==='th'?'Transfer Code':'Transfer Code';
+  if(expLabel) expLabel.textContent=lang==='th'?'หมดอายุ':'Expires';
+  if(copyOwnerBtn) copyOwnerBtn.textContent=lang==='th'?'คัดลอก Owner Key':'Copy Owner Key';
+  if(copyTransferBtn) copyTransferBtn.textContent=lang==='th'?'คัดลอก Transfer Code':'Copy Transfer Code';
+  if(closeBtn) closeBtn.textContent=lang==='th'?'ปิด':'Close';
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+}
+
 /* ══════════════════════════════════════
    HOME PAGE DATA
 ══════════════════════════════════════ */
@@ -1614,7 +1714,7 @@ function isSeatTaken(data,{day,subZone,row,seatNum}){
   );
 }
 async function checkSeatDuplicateRealtime(){
-  const day=document.querySelector('.day-opt input:checked')?.value||'';
+  const day=document.querySelector('input[name="show-day"]:checked')?.value||'';
   const mz=document.getElementById('main-zone').value;
   const sz=document.getElementById('sub-zone').value;
   const row=document.getElementById('seat-row').value;
@@ -1633,7 +1733,7 @@ async function checkSeatDuplicateRealtime(){
 }
 
 async function submitForm(){
-  const day=document.querySelector('.day-opt input:checked')?.value||'';
+  const day=document.querySelector('input[name="show-day"]:checked')?.value||'';
   if(!day){toast('❌ '+(lang==='th'?'กรุณาเลือกวันที่ไป':'Select day'));return}
   const mz=document.getElementById('main-zone').value;
   const sz=document.getElementById('sub-zone').value;
@@ -1657,27 +1757,40 @@ async function submitForm(){
   if(!fandoms.length){toast('❌ '+(lang==='th'?'กรุณาเลือกคู่/ด้อม':'Select pair/fandom'));return}
   const normalizedFandoms=normalizeFandoms(fandoms);
   const nickname=document.getElementById('nickname').value.trim()||'—';
+  const mpTransferCode=(document.getElementById('reg-mp-tc')?.value||'').trim();
   await syncData(true);
   let overwrite=false;
   if(isSeatTaken(getData(),{day,subZone:sz,row,seatNum})){
-    setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้ถูกลงทะเบียนแล้วในวันเดียวกัน':'⚠️ This seat is already registered for this day');
-    const ok=await openSeatOverwriteModal({
-      day,mainZone:mz,subZone:sz,row,seatNum,price:pr,
-      fandomNames:normalizedFandoms.map(fid=>fandomName(fid)),
-      nickname
-    });
-    if(!ok){
-      toast('❌ '+(lang==='th'?'ยกเลิกการลงทับข้อมูล':'Overwrite cancelled'));
-      return;
+    if(mpTransferCode){
+      // มี TC → ข้ามการถามยืนยัน ให้ backend ตรวจสอบเอง
+      overwrite=true;
+      setSeatCheckMessage('ok',lang==='th'?'🔑 ใช้ Transfer Code สำหรับลงทะเบียน':'🔑 Using Transfer Code for registration');
+    } else {
+      setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้ถูกลงทะเบียนแล้วในวันเดียวกัน':'⚠️ This seat is already registered for this day');
+      const ok=await openSeatOverwriteModal({
+        day,mainZone:mz,subZone:sz,row,seatNum,price:pr,
+        fandomNames:normalizedFandoms.map(fid=>fandomName(fid)),
+        nickname
+      });
+      if(!ok){
+        toast('❌ '+(lang==='th'?'ยกเลิกการลงทับข้อมูล':'Overwrite cancelled'));
+        return;
+      }
+      overwrite=true;
     }
-    overwrite=true;
   }
   const dayStr=formatShowDateTime(day,{locale:lang,includeYear:true,includeTime:true});
-  const entry={id:Date.now(),days:[day],dayStr,mainZone:mz,subZone:sz,price:pr,row,seatNum,fandoms:normalizedFandoms,nickname,overwrite,ts:new Date().toISOString()};
+  const ownerKey=createOwnerKey();
+  const transferCode=createTransferCode();
+  const transferCodeExpiresAt=new Date(Date.now()+24*60*60*1000).toISOString();
+  const entry={id:Date.now(),days:[day],dayStr,mainZone:mz,subZone:sz,price:pr,row,seatNum,fandoms:normalizedFandoms,nickname,overwrite,ownerKey,transferCode,transferCodeExpiresAt,ts:new Date().toISOString(),...(mpTransferCode?{mpTransferCode}:{})};
   const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='⏳...';
   // Save to Google Sheets
   let remoteStatus='none';
   let remoteMessage='';
+  let issuedOwnerKey=ownerKey;
+  let issuedTransferCode=transferCode;
+  let issuedTransferCodeExpiresAt=transferCodeExpiresAt;
   if(GAS_URL){
     try{
       const res=await fetch(GAS_URL,{
@@ -1690,6 +1803,9 @@ async function submitForm(){
       const json=await res.json();
       remoteStatus=String(json?.status||'').toLowerCase();
       remoteMessage=String(json?.message||'').trim();
+      issuedOwnerKey=String(json?.ownerKey||issuedOwnerKey);
+      issuedTransferCode=String(json?.transferCode||issuedTransferCode);
+      issuedTransferCodeExpiresAt=String(json?.transferCodeExpiresAt||issuedTransferCodeExpiresAt);
     }catch(e){
       console.warn('GAS cors write error',e);
       // Some deployments reject CORS POST but still accept no-cors writes.
@@ -1706,6 +1822,14 @@ async function submitForm(){
     }
   }
 
+  if(remoteStatus==='error'&&mpTransferCode){
+    // TC-specific error — show clearly
+    setSeatCheckMessage('warn',`❌ ${remoteMessage||'Transfer Code ไม่ถูกต้องหรือหมดอายุแล้ว'}`);
+    toast(`❌ TC Error: ${remoteMessage||'Invalid Transfer Code'}`);
+    btn.disabled=false;btn.textContent=lang==='th'?'✦ บันทึก & ส่งข้อมูล':'✦ Save & Submit';
+    return;
+  }
+
   if(remoteStatus==='skipped'){
     setSeatCheckMessage('warn',lang==='th'?'⚠️ ที่นั่งนี้ถูกลงทะเบียนแล้วในวันเดียวกัน':'⚠️ This seat is already registered for this day');
     toast('❌ '+(lang==='th'?'ที่นั่งนี้มีคนลงไว้แล้ว (วันเดียวกัน)':'Seat already taken for this day'));
@@ -1714,6 +1838,18 @@ async function submitForm(){
   }
 
   const remoteSaved=remoteStatus==='ok'||remoteStatus==='updated';
+
+  // Transfer Code must be verified server-side only; never fall back to local write.
+  if(mpTransferCode&&!remoteSaved){
+    setSeatCheckMessage('warn',lang==='th'
+      ?'❌ ยืนยัน Transfer Code กับเซิร์ฟเวอร์ไม่สำเร็จ กรุณาลองอีกครั้ง'
+      :'❌ Could not validate Transfer Code with server. Please try again.');
+    toast(lang==='th'
+      ?'❌ ไม่สามารถยืนยัน Transfer Code ได้ (ระบบไม่ตอบสนอง)'
+      :'❌ Transfer Code validation failed (server unavailable)');
+    btn.disabled=false;btn.textContent=lang==='th'?'✦ บันทึก & ส่งข้อมูล':'✦ Save & Submit';
+    return;
+  }
 
   // Save local only when remote did not persist
   if(!remoteSaved){
@@ -1746,10 +1882,16 @@ async function submitForm(){
     fandomNames:fandomNamesForShare,
     nickname
   });
+  openOwnerTransferModal({
+    ownerKey:issuedOwnerKey,
+    transferCode:issuedTransferCode,
+    transferCodeExpiresAt:issuedTransferCodeExpiresAt,
+  });
 
   // Reset
   document.querySelectorAll('.day-opt input,.fc input').forEach(c=>c.checked=false);
-  ['nickname'].forEach(id=>document.getElementById(id).value='');
+  ['nickname','reg-mp-tc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  clearMpTCStatus();
   document.getElementById('main-zone').value='';
   document.getElementById('sub-zone').innerHTML='<option value="" disabled selected>—</option>';
   document.getElementById('seat-price').innerHTML='<option value="" disabled selected>—</option>';
@@ -1770,11 +1912,11 @@ let registerTab='seat';
 
 function setRegisterTab(tab){
   registerTab=tab;
-  const isSeat=tab==='seat';
-  document.getElementById('register-tab-seat')?.classList.toggle('on',isSeat);
-  document.getElementById('register-tab-live')?.classList.toggle('on',!isSeat);
-  document.getElementById('register-pane-seat')?.classList.toggle('active',isSeat);
-  document.getElementById('register-pane-live')?.classList.toggle('active',!isSeat);
+  ['seat','live','marketplace'].forEach(t=>{
+    document.getElementById('register-tab-'+t)?.classList.toggle('on',t===tab);
+    document.getElementById('register-pane-'+t)?.classList.toggle('active',t===tab);
+  });
+  if(tab==='marketplace') buildMpLookingForChips();
 }
 
 function getEntryDays(entry){
@@ -2045,6 +2187,26 @@ async function renderCensus(){
       }
     });
   });
+  // ── Marketplace listing counts on SVG zones ──
+  const mktData=getMarketplaceData();
+  const mktSubZoneCnt={};
+  const mktDayCurrent=censusDayFilter!=='all'?censusDayFilter:null;
+  mktData.forEach(l=>{
+    if(mktDayCurrent&&String(l.day)!==mktDayCurrent) return;
+    const sz=String(l.subZone||'').toUpperCase();
+    if(sz) mktSubZoneCnt[sz]=(mktSubZoneCnt[sz]||0)+1;
+  });
+  Object.keys(ZONES).forEach(m=>{
+    ZONES[m].subs.forEach(sz=>{
+      const cnt=mktSubZoneCnt[sz]||0;
+      const el=document.getElementById('sc-'+sz);
+      if(el&&cnt>0){
+        const baseText=el.textContent||'';
+        el.textContent=baseText+` 🛒${cnt}`;
+      }
+    });
+  });
+
   // D/E strip counts
   [...ZONES.D.subs,...ZONES.E.subs].forEach(sz=>{
     const el=document.getElementById('dbc-'+sz);
@@ -2154,6 +2316,26 @@ function buildSeatGrid(zoneId,entries,filter){
         continue;
       }
       let match=es;if(filter!=='all')match=es.filter(e=>normalizeFandoms(e.fandoms).includes(filter));
+      // ── Marketplace badge ──
+      const mktDay=censusDayFilter!=='all'?censusDayFilter:null;
+      const mktListing=mktDay?getMarketplaceBadgeForSeat(mktDay,zoneId,rowName,s):null;
+      if(mktListing){
+        const isResell=mktListing.listingType==='resell';
+        const badge=document.createElement('div');
+        badge.style.cssText=`position:absolute;top:-6px;right:-4px;font-size:8px;font-weight:900;padding:1px 4px;border-radius:4px;z-index:2;pointer-events:none;${isResell?'background:#ef4444;color:#fff;':'background:#3b82f6;color:#fff;'}`;
+        badge.textContent=isResell?(lang==='th'?'ขาย':'SELL'):(lang==='th'?'เทรด':'TRADE');
+        btn.style.position='relative';
+        btn.appendChild(badge);
+        // Marketplace tooltip addition
+        const mktTip=document.createElement('div');
+        mktTip.style.cssText='position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:rgba(15,10,40,.97);border:1px solid rgba(244,114,182,.3);border-radius:8px;padding:6px 10px;font-size:10px;white-space:nowrap;color:#fff;z-index:10;pointer-events:none;display:none;line-height:1.6';
+        const contactStr=[mktListing.twitter,mktListing.lineId?`LINE:${mktListing.lineId}`:''].filter(Boolean).join(' / ');
+        mktTip.innerHTML=`<strong style="color:${isResell?'#f87171':'#60a5fa'}">${isResell?(lang==='th'?'ขายต่อ':'RESELL'):(lang==='th'?'เทรด':'TRADE')}</strong><br>${Number(mktListing.originalPrice||0).toLocaleString()}฿<br>${contactStr}`;
+        btn.appendChild(mktTip);
+        btn.addEventListener('mouseenter',()=>mktTip.style.display='block');
+        btn.addEventListener('mouseleave',()=>mktTip.style.display='none');
+      }
+
       if(match.length>0){
         btn.classList.add('taken');
         const by13=match.filter(e=>getEntryDays(e).includes('13'));
@@ -2247,6 +2429,554 @@ function buildSeatGrid(zoneId,entries,filter){
       return`<div class="fan-chip" style="border-color:${col}44"><div class="fan-dot" style="background:${col};box-shadow:0 0 5px ${col}"></div><span style="color:rgba(255,255,255,0.8)">${fandomName(id)}</span><strong style="color:${col}">${c}</strong></div>`;
     }).join('');
 }
+
+/* ══════════════════════════════════════
+   MARKETPLACE
+══════════════════════════════════════ */
+const MARKETPLACE_LOCAL_KEY='bb_marketplace_v1';
+let MARKETPLACE_CACHE=(()=>{try{return JSON.parse(localStorage.getItem(MARKETPLACE_LOCAL_KEY)||'[]')}catch{return[]}})();
+let MARKETPLACE_LAST_SYNC=0;
+let mktDayFilter='all';
+let mktTypeFilter='all';
+let mktZoneFilter='all';
+
+// ─ price table สำหรับล็อคราคา (numeric)
+const MP_PRICE_TABLE={
+  A1:5000,A2:7900,A3:7900,A4:5000,
+  B1:4500,B2:5900,B3:5900,B4:5900,B5:4500,
+  C1:3500,C2:4500,C3:4500,C4:4500,C5:3500,
+};
+const MP_PRICE_DE={
+  D1:[3000,2500],D2:[3000,2500],D3:[3000,2500],D4:[3000,2500],
+  E1:[2000,1500],E2:[2000,1500],E3:[2000,1500],E4:[2000,1500],
+};
+
+function getMpOriginalPrice(subZone){
+  if(MP_PRICE_TABLE[subZone]!==undefined) return MP_PRICE_TABLE[subZone];
+  return null; // D/E have 2 tiers — requires dropdown
+}
+
+function isValidDriveUrl(url){
+  return /^https:\/\/(drive|docs)\.google\.com\/.+/.test(String(url||'').trim());
+}
+
+function isValidLineId(v){
+  return /^[A-Za-z0-9_.\-]{4,20}$/.test(String(v||'').trim());
+}
+
+/* ─ Zone/Sub/Price/Row/Seat selectors for marketplace form ─ */
+function updateMpSub(){
+  const mz=document.getElementById('mp-main-zone').value;
+  const sub=document.getElementById('mp-sub-zone');
+  sub.innerHTML='<option value="" disabled selected>—</option>';
+  (ZONES[mz]?.subs||[]).forEach(sz=>{
+    const opt=document.createElement('option');
+    opt.value=sz;opt.textContent=sz;
+    sub.appendChild(opt);
+  });
+  document.getElementById('mp-price-text').textContent=lang==='th'?'เลือกโซนย่อยก่อน':'Select sub-zone';
+  document.getElementById('mp-price-value').value='';
+  document.getElementById('mp-price-tier').style.display='none';
+  document.getElementById('mp-row').innerHTML='<option value="" disabled selected>—</option>';
+  document.getElementById('mp-seat-num').innerHTML='<option value="" disabled selected>—</option>';
+  document.getElementById('mp-seat-check-msg').innerHTML='';
+}
+
+function updateMpPrice(){
+  const sz=document.getElementById('mp-sub-zone').value;
+  if(!sz) return;
+  const priceTier=document.getElementById('mp-price-tier');
+  const priceText=document.getElementById('mp-price-text');
+  const priceVal=document.getElementById('mp-price-value');
+  if(MP_PRICE_TABLE[sz]!==undefined){
+    const price=MP_PRICE_TABLE[sz];
+    priceText.textContent=price.toLocaleString()+'฿';
+    priceText.style.color='#a78bfa';
+    priceVal.value=price;
+    priceTier.style.display='none';
+  } else if(MP_PRICE_DE[sz]){
+    const tiers=MP_PRICE_DE[sz];
+    priceTier.innerHTML=`<option value="" disabled selected>${lang==='th'?'เลือก tier ราคาของคุณ':'Select your price tier'}</option>`
+      +tiers.map(p=>`<option value="${p}">${p.toLocaleString()}฿</option>`).join('');
+    priceTier.style.display='block';
+    priceTier.onchange=()=>{
+      priceText.textContent=Number(priceTier.value).toLocaleString()+'฿';
+      priceText.style.color='#a78bfa';
+      priceVal.value=priceTier.value;
+    };
+    priceText.textContent=lang==='th'?'เลือก tier ด้านล่าง':'Pick tier below';
+    priceText.style.color='rgba(255,255,255,.35)';
+    priceVal.value='';
+  }
+}
+
+function updateMpRowOptions(){
+  const mz=document.getElementById('mp-main-zone').value;
+  const sz=document.getElementById('mp-sub-zone').value;
+  const rowSel=document.getElementById('mp-row');
+  rowSel.innerHTML='<option value="" disabled selected>—</option>';
+  const rows=SZ_ROWS[sz]||ZONE_ROWS[mz]||[];
+  rows.forEach(r=>{
+    const opt=document.createElement('option');
+    opt.value=r;opt.textContent=r;
+    rowSel.appendChild(opt);
+  });
+  document.getElementById('mp-seat-num').innerHTML='<option value="" disabled selected>—</option>';
+}
+
+function updateMpSeatOptions(){
+  const mz=document.getElementById('mp-main-zone').value;
+  const sz=document.getElementById('mp-sub-zone').value;
+  const row=document.getElementById('mp-row').value;
+  const seatSel=document.getElementById('mp-seat-num');
+  seatSel.innerHTML='<option value="" disabled selected>—</option>';
+  if(!row||!sz) return;
+  const win=getRowSeatWindow(sz,row);
+  if(!win) return;
+  for(let s=win.start;s<=win.end;s++){
+    const opt=document.createElement('option');
+    opt.value=s;opt.textContent=s<10?'0'+s:String(s);
+    seatSel.appendChild(opt);
+  }
+}
+
+function onMpTypeChange(){
+  const type=document.querySelector('input[name="mp-type"]:checked')?.value||'';
+  const wrap=document.getElementById('mp-looking-for-wrap');
+  if(wrap) wrap.style.display=type==='trade'?'block':'none';
+}
+
+function buildMpLookingForChips(){
+  const wrap=document.getElementById('mp-lf-wrap');
+  if(!wrap) return;
+  wrap.innerHTML='';
+  ['A','B','C','D','E'].forEach(m=>{
+    (ZONES[m]?.subs||[]).forEach(sz=>{
+      const d=document.createElement('div');d.className='fc';
+      d.innerHTML=`<input type="checkbox" id="mp-lf-${sz}" value="${sz}"><label for="mp-lf-${sz}" style="border-color:${ZONES[m].colors[sz]||ZONES[m].mainColor}44">${sz}</label>`;
+      wrap.appendChild(d);
+    });
+  });
+}
+
+function getSelectedMpLookingFor(){
+  return [...document.querySelectorAll('#mp-lf-wrap input:checked')].map(i=>i.value);
+}
+
+/* ─ Marketplace data sync ─ */
+function getMarketplaceData(){return Array.isArray(MARKETPLACE_CACHE)?MARKETPLACE_CACHE:[];}
+function saveMarketplaceLocal(list){
+  MARKETPLACE_CACHE=Array.isArray(list)?list:[];
+  localStorage.setItem(MARKETPLACE_LOCAL_KEY,JSON.stringify(MARKETPLACE_CACHE));
+}
+async function syncMarketplaceData(force=false){
+  const now=Date.now();
+  if(!force&&(now-MARKETPLACE_LAST_SYNC)<15000&&getMarketplaceData().length) return getMarketplaceData();
+  if(GAS_URL){
+    try{
+      const url=`${GAS_URL}${GAS_URL.includes('?')?'&':'?'}action=read_marketplace&t=${now}`;
+      const res=await fetch(url,{method:'GET'});
+      if(!res.ok) throw new Error(`MKT read failed: ${res.status}`);
+      const json=await res.json();
+      const arr=Array.isArray(json?.data)?json.data:[];
+      saveMarketplaceLocal(arr);
+      MARKETPLACE_LAST_SYNC=now;
+      return arr;
+    }catch(err){console.warn('Marketplace sync error',err);}
+  }
+  return getMarketplaceData();
+}
+
+function hasDuplicateActiveListingLocal(day,subZone,row,seatNum){
+  return getMarketplaceData().some(l=>
+    String(l.day)===String(day)&&
+    String(l.subZone||'').toUpperCase()===String(subZone||'').toUpperCase()&&
+    String(l.row||'').toUpperCase()===String(row||'').toUpperCase()&&
+    Number(l.seatNum||0)===Number(seatNum||0)&&
+    String(l.status||'active')==='active'
+  );
+}
+
+/* ─ Submit marketplace listing ─ */
+async function submitMarketplaceForm(){
+  const listingType=document.querySelector('input[name="mp-type"]:checked')?.value||'';
+  if(!listingType){toast('❌ '+(lang==='th'?'เลือกประเภทประกาศก่อน':'Select listing type'));return;}
+  const day=document.querySelector('input[name="mp-day"]:checked')?.value||'';
+  if(!day){toast('❌ '+(lang==='th'?'เลือกวันที่แสดงก่อน':'Select show day'));return;}
+  const mz=document.getElementById('mp-main-zone').value;
+  const sz=document.getElementById('mp-sub-zone').value;
+  const priceVal=document.getElementById('mp-price-value').value;
+  const row=document.getElementById('mp-row').value;
+  const seatNumRaw=document.getElementById('mp-seat-num').value;
+  const twitter=normalizeTwitterHandle(document.getElementById('mp-twitter').value||'');
+  const lineId=(document.getElementById('mp-line-id').value||'').trim();
+  const proofUrl=(document.getElementById('mp-proof-url').value||'').trim();
+  const note=(document.getElementById('mp-note').value||'').trim();
+  const lookingForZones=listingType==='trade'?getSelectedMpLookingFor():[];
+
+  if(!mz){toast('❌ '+(lang==='th'?'เลือกโซนหลัก':'Select zone'));return;}
+  if(!sz){toast('❌ '+(lang==='th'?'เลือกโซนย่อย':'Select sub-zone'));return;}
+  if(!priceVal){toast('❌ '+(lang==='th'?'กรุณาเลือกราคาบัตร':'Select ticket price'));return;}
+  if(!row){toast('❌ '+(lang==='th'?'เลือกแถว':'Select row'));return;}
+  const seatNum=parseInt(seatNumRaw,10);
+  if(!Number.isInteger(seatNum)||seatNum<1){toast('❌ '+(lang==='th'?'เลือกเลขที่นั่ง':'Select seat number'));return;}
+  if(!twitter&&!lineId){toast('❌ '+(lang==='th'?'กรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง':'Enter Twitter or LINE ID — at least one required'));return;}
+  if(listingType==='trade'&&lookingForZones.length===0){toast('❌ '+(lang==='th'?'กรุณาเลือกโซนที่อยากได้อย่างน้อย 1 โซน':'Please select at least 1 zone you are looking for'));return;}
+  if(!proofUrl){toast('❌ '+(lang==='th'?'กรอกลิงก์รูปหลักฐาน':'Enter proof image link'));return;}
+  if(!isValidDriveUrl(proofUrl)){toast('❌ '+(lang==='th'?'ลิงก์ต้องเป็น Google Drive เท่านั้น (drive.google.com)':'Link must be a Google Drive URL'));return;}
+
+  const dupMsg=document.getElementById('mp-dup-msg');
+  await syncMarketplaceData(true);
+  if(hasDuplicateActiveListingLocal(day,sz,row,seatNum)){
+    if(dupMsg) dupMsg.innerHTML=`<span class="seat-warn">⚠️ ${lang==='th'?'ที่นั่งนี้มีประกาศ active อยู่แล้วในวันนี้ กรุณาปิดประกาศเดิมก่อน':'This seat already has an active listing for this day. Close the existing listing first.'}</span>`;
+    return;
+  }
+  if(dupMsg) dupMsg.innerHTML='';
+
+  const btn=document.getElementById('mp-submit-btn');
+  btn.disabled=true;btn.textContent='⏳...';
+
+  const payload={
+    action:'save_marketplace',
+    listingType,day,mainZone:mz,subZone:sz,
+    row:normalizeRowForZone(mz,row),seatNum,
+    originalPrice:Number(priceVal),
+    lookingForZones,twitter,lineId,proofDriveUrl:proofUrl,note
+  };
+
+  let listingId='',ownerKey='';
+  if(GAS_URL){
+    try{
+      const res=await fetch(GAS_URL,{
+        method:'POST',mode:'cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error(`MKT write failed: ${res.status}`);
+      const json=await res.json();
+      if(String(json?.status||'').toLowerCase()==='duplicate'){
+        if(dupMsg) dupMsg.innerHTML=`<span class="seat-warn">⚠️ ${json.message||'Duplicate listing'}</span>`;
+        btn.disabled=false;btn.textContent=lang==='th'?'🛒 ลงประกาศ':'🛒 Post Listing';
+        return;
+      }
+      if(String(json?.status||'').toLowerCase()!=='ok'){
+        toast('❌ '+(json?.message||'Error'));
+        btn.disabled=false;btn.textContent=lang==='th'?'🛒 ลงประกาศ':'🛒 Post Listing';
+        return;
+      }
+      listingId=String(json?.listingId||'');
+      ownerKey=String(json?.ownerKey||'');
+      await syncMarketplaceData(true);
+    }catch(err){
+      console.warn('MKT submit error',err);
+      // Local fallback — บันทึก locally ถ้า API fail
+      const localEntry={
+        listingId:'LOCAL-'+Date.now(),
+        createdAt:new Date().toISOString(),
+        status:'active',
+        listingType,day,mainZone:mz,subZone:sz,
+        row:normalizeRowForZone(mz,row),seatNum,
+        originalPrice:Number(priceVal),
+        lookingForZones,twitter,lineId,
+        proofDriveUrl:proofUrl,note
+      };
+      saveMarketplaceLocal([...getMarketplaceData(),localEntry]);
+      buildMarketplaceSeatMap();
+      listingId=localEntry.listingId;
+      ownerKey='(Local - no API)';
+      const reason=err?.message?` (${err.message})`:'';
+      toast(lang==='th'
+        ?`🛒 บันทึก Local แล้ว · API ไม่ตอบสนอง${reason} · ลอง deploy Apps Script ใหม่`
+        :`🛒 Saved locally · API unavailable${reason} · Check Apps Script deployment`);
+    }
+  } else {
+    toast('❌ '+(lang==='th'?'ยังไม่ได้ตั้งค่า Google Apps Script URL — ดู SETUP_GUIDE.md':'Google Apps Script URL not set — see SETUP_GUIDE.md'));
+    btn.disabled=false;btn.textContent=lang==='th'?'🛒 ลงประกาศ':'🛒 Post Listing';
+    return;
+  }
+
+  // Reset form
+  document.querySelectorAll('input[name="mp-type"],input[name="mp-day"]').forEach(i=>i.checked=false);
+  ['mp-main-zone','mp-sub-zone','mp-row','mp-seat-num'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.value='';el.innerHTML='<option value="" disabled selected>—</option>';}
+  });
+  ['mp-twitter','mp-line-id','mp-proof-url','mp-note'].forEach(id=>{
+    const el=document.getElementById(id);if(el) el.value='';
+  });
+  document.getElementById('mp-price-text').textContent=lang==='th'?'เลือกโซนก่อน':'Select zone first';
+  document.getElementById('mp-price-text').style.color='rgba(255,255,255,.35)';
+  document.getElementById('mp-price-value').value='';
+  document.getElementById('mp-price-tier').style.display='none';
+  document.getElementById('mp-looking-for-wrap').style.display='none';
+  document.querySelectorAll('#mp-lf-wrap input').forEach(i=>i.checked=false);
+  btn.disabled=false;btn.textContent=lang==='th'?'🛒 ลงประกาศ':'🛒 Post Listing';
+
+  openMpSuccessModal(listingId,ownerKey);
+  toast(lang==='th'?'🛒 ลงประกาศสำเร็จ!':'🛒 Listing posted!');
+}
+
+/* ─ Success modal ─ */
+function openMpSuccessModal(listingId,ownerKey){
+  const modal=document.getElementById('mp-success-modal');if(!modal)return;
+  const lidEl=document.getElementById('mp-success-listing-id');
+  const keyEl=document.getElementById('mp-success-owner-key');
+  const title=document.getElementById('mp-success-title');
+  const desc=document.getElementById('mp-success-desc');
+  if(lidEl) lidEl.textContent=listingId||'-';
+  if(keyEl) keyEl.textContent=ownerKey||'-';
+  if(title) title.textContent=lang==='th'?'🛒 ลงประกาศสำเร็จ!':'🛒 Listing Posted!';
+  if(desc) desc.textContent=lang==='th'
+    ?'บันทึก Listing ID และ Owner Key ไว้ให้ดี — ใช้สำหรับปิดประกาศเมื่อขาย/เทรดสำเร็จ'
+    :'Save your Listing ID and Owner Key — required to close the listing after a successful deal.';
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+}
+function closeMpSuccessModal(){
+  const modal=document.getElementById('mp-success-modal');if(!modal)return;
+  modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+}
+async function copyMpField(id){
+  const el=document.getElementById(id);if(!el)return;
+  const text=String(el.textContent||'').trim();
+  if(!text||text==='-') return;
+  try{await navigator.clipboard.writeText(text);toast(lang==='th'?'📋 คัดลอกแล้ว':'📋 Copied');}
+  catch(_){toast(lang==='th'?'❌ คัดลอกไม่สำเร็จ':'❌ Copy failed');}
+}
+
+/* ─ Marketplace Transfer Code modal (shown to seller after close) ─ */
+function openMpTCModal(tc, expiresAt, listingData){
+  const modal=document.getElementById('mp-tc-modal');if(!modal)return;
+  const tcEl=document.getElementById('mp-tc-value');
+  const expEl=document.getElementById('mp-tc-expires');
+  const infoEl=document.getElementById('mp-tc-listing-info');
+  if(tcEl) tcEl.textContent=tc||'-';
+  if(expEl){
+    if(expiresAt){
+      const d=new Date(expiresAt);
+      const diff=Math.round((d.getTime()-Date.now())/3600000);
+      const locale=lang==='th'?'th-TH':'en-US';
+      expEl.textContent=lang==='th'
+        ? `${d.toLocaleString(locale,{dateStyle:'medium',timeStyle:'short'})} (อีก ${diff} ชั่วโมง)`
+        : `${d.toLocaleString(locale,{dateStyle:'medium',timeStyle:'short'})} (${diff} hour(s) left)`;
+    } else {
+      expEl.textContent='-';
+    }
+  }
+  if(infoEl&&listingData){
+    const dayLabel=`${listingData.day} ${lang==='th'?'มิ.ย.':'Jun'}`;
+    infoEl.innerHTML=lang==='th'
+      ? `<strong style="color:rgba(255,255,255,.8)">ที่นั่งที่โอน:</strong> วันที่ ${dayLabel} · โซน <strong style="color:#a78bfa">${listingData.subZone||listingData.mainZone}</strong> · แถว ${listingData.row} · ที่ ${listingData.seatNum} · ${Number(listingData.originalPrice||0).toLocaleString()}฿`
+      : `<strong style="color:rgba(255,255,255,.8)">Transferred seat:</strong> Day ${dayLabel} · Zone <strong style="color:#a78bfa">${listingData.subZone||listingData.mainZone}</strong> · Row ${listingData.row} · Seat ${listingData.seatNum} · ${Number(listingData.originalPrice||0).toLocaleString()} THB`;
+  } else if(infoEl){
+    infoEl.innerHTML='';
+  }
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+}
+function closeMpTCModal(){
+  const modal=document.getElementById('mp-tc-modal');if(!modal)return;
+  modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+}
+async function copyMpTCField(id){
+  const el=document.getElementById(id);if(!el)return;
+  const text=String(el.textContent||'').trim();
+  if(!text||text==='-') return;
+  try{await navigator.clipboard.writeText(text);toast(lang==='th'?'📋 คัดลอก Transfer Code แล้ว':'📋 Transfer Code copied');}
+  catch(_){toast(lang==='th'?'❌ คัดลอกไม่สำเร็จ':'❌ Copy failed');}
+}
+
+/* ─ Close listing modal ─ */
+function openCloseListingModal(listingId){
+  const modal=document.getElementById('close-listing-modal');if(!modal)return;
+  const lidInp=document.getElementById('cl-listing-id');
+  if(lidInp&&listingId) lidInp.value=listingId;
+  const keyInp=document.getElementById('cl-owner-key');
+  if(keyInp) keyInp.value='';
+  const msg=document.getElementById('cl-status-msg');
+  if(msg) msg.innerHTML='';
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+}
+function closeCloseListingModal(){
+  const modal=document.getElementById('close-listing-modal');if(!modal)return;
+  modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+}
+async function submitCloseListing(){
+  const listingId=(document.getElementById('cl-listing-id')?.value||'').trim();
+  const ownerKey=(document.getElementById('cl-owner-key')?.value||'').trim();
+  const msg=document.getElementById('cl-status-msg');
+  const btn=document.getElementById('cl-submit-btn');
+  if(!listingId){if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${lang==='th'?'กรอก Listing ID':'Enter Listing ID'}</span>`;return;}
+  if(!ownerKey){if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${lang==='th'?'กรอก Owner Key':'Enter Owner Key'}</span>`;return;}
+  if(!GAS_URL){toast('❌ GAS URL not set');return;}
+  btn.disabled=true;btn.textContent='⏳...';
+  try{
+    const res=await fetch(GAS_URL,{
+      method:'POST',mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'close_listing',listingId,ownerKey})
+    });
+    if(!res.ok) throw new Error(`Status ${res.status}`);
+    const json=await res.json();
+    if(String(json?.status||'').toLowerCase()==='ok'){
+      if(msg)msg.innerHTML=`<span class="seat-ok">✅ ${lang==='th'?'ปิดประกาศสำเร็จ':'Listing closed successfully'}</span>`;
+      toast(lang==='th'?'✅ ปิดประกาศเรียบร้อย':'✅ Listing closed');
+      await syncMarketplaceData(true);
+      renderMarketplaceListings();
+      // ถ้าได้ Transfer Code กลับมา → เปิด TC modal
+      if(json?.transferCode){
+        setTimeout(()=>{
+          closeCloseListingModal();
+          openMpTCModal(json.transferCode, json.transferCodeExpiresAt, json.listingData);
+        },400);
+      } else {
+        setTimeout(closeCloseListingModal,1500);
+      }
+    } else {
+      if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${json?.message||'Error'}</span>`;
+    }
+  }catch(err){
+    if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${err.message||'Error'}</span>`;
+  } finally {
+    btn.disabled=false;btn.textContent=lang==='th'?'ยืนยันปิดประกาศ':'Confirm Close';
+  }
+}
+
+/* ─ Filter ─ */
+function setMktFilter(key,val){
+  if(key==='day'){
+    mktDayFilter=val;
+    ['all','13','14'].forEach(v=>document.getElementById('mkt-f-day-'+v)?.classList.toggle('on',v===val));
+  } else if(key==='type'){
+    mktTypeFilter=val;
+    ['all','resell','trade'].forEach(v=>document.getElementById('mkt-f-type-'+v)?.classList.toggle('on',v===val));
+  } else if(key==='zone'){
+    mktZoneFilter=val;
+  }
+  renderMarketplaceListings();
+}
+
+function getFilteredMarketplace(){
+  return getMarketplaceData().filter(l=>{
+    if(String(l.status||'').toLowerCase()!=='active') return false;
+    if(mktDayFilter!=='all'&&String(l.day)!==mktDayFilter) return false;
+    if(mktTypeFilter!=='all'&&String(l.listingType)!==mktTypeFilter) return false;
+    if(mktZoneFilter!=='all'&&String(l.mainZone||'').toUpperCase()!==mktZoneFilter) return false;
+    return true;
+  });
+}
+
+/* ─ Render public listings ─ */
+function renderMarketplaceListings(){
+  const wrap=document.getElementById('mkt-listings');if(!wrap)return;
+  const total=document.getElementById('mkt-total');
+  const data=getFilteredMarketplace();
+  if(total) total.textContent=data.length;
+  if(!data.length){
+    wrap.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px">${lang==='th'?'ไม่มีประกาศที่ตรงกับเงื่อนไข':'No listings match the filter'}</div>`;
+    return;
+  }
+  wrap.innerHTML=data.map(l=>{
+    const isResell=l.listingType==='resell';
+    const typeBadge=isResell
+      ?`<span style="background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:800">📤 ${lang==='th'?'ขายต่อ':'RESELL'}</span>`
+      :`<span style="background:rgba(59,130,246,.2);color:#60a5fa;border:1px solid rgba(59,130,246,.3);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:800">🔄 ${lang==='th'?'เทรด':'TRADE'}</span>`;
+    const dayLabel=`${l.day} ${lang==='th'?'มิ.ย.':'Jun'}`;
+    const contact=[];
+    if(l.twitter) contact.push(`<a href="https://twitter.com/${l.twitter.replace('@','')}" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;text-decoration:none">🐦 ${l.twitter}</a>`);
+    if(l.lineId) contact.push(`<span style="color:#4ade80">💬 LINE: ${l.lineId}</span>`);
+    const lookingPart=l.listingType==='trade'&&l.lookingForZones?.length
+      ?`<div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.6)"><strong style="color:#fde68a">${lang==='th'?'Looking for:':'Looking for:'}</strong> ${l.lookingForZones.join(', ')}</div>`:'';
+    const notePart=l.note?`<div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,.5);font-style:italic">"${l.note}"</div>`:'';
+    const timeAgo=formatTimeAgo(l.createdAt);
+    const priceColor=isResell?'#f87171':'#60a5fa';
+    return `<div style="background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:16px;box-shadow:0 4px 15px rgba(0,0,0,0.1);display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">
+        ${typeBadge}
+        <span style="font-size:11px;color:rgba(255,255,255,.35)">${timeAgo}</span>
+      </div>
+      <div style="font-size:20px;font-weight:800;color:${priceColor};letter-spacing:.02em">${Number(l.originalPrice||0).toLocaleString()}฿</div>
+      <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.9)">
+        📅 ${dayLabel} &nbsp;|&nbsp; Zone <strong style="color:${ZONES[l.mainZone]?.mainColor||'var(--lav)'}">${l.subZone||l.mainZone}</strong> &nbsp;แถว ${l.row} ที่นั่ง ${l.seatNum}
+      </div>
+      ${lookingPart}
+      <div style="font-size:12px;display:flex;flex-direction:column;gap:4px;margin-top:4px">${contact.join('')}</div>
+      ${notePart}
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <a href="${l.proofDriveUrl}" target="_blank" rel="noopener noreferrer" style="padding:6px 12px;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);border-radius:8px;color:#a78bfa;font-size:11px;font-weight:700;text-decoration:none" data-th="🖼 ดูหลักฐาน" data-en="🖼 View Proof">🖼 ${lang==='th'?'ดูหลักฐาน':'View Proof'}</a>
+        <button onclick="openCloseListingModal('${l.listingId}')" style="padding:6px 12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#f87171;font-size:11px;font-weight:700;cursor:pointer;font-family:'Noto Sans Thai',sans-serif" data-th="🔐 ปิดประกาศ" data-en="🔐 Close">🔐 ${lang==='th'?'ปิดประกาศ':'Close'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function formatTimeAgo(isoStr){
+  if(!isoStr) return '';
+  const diff=(Date.now()-new Date(isoStr).getTime())/1000;
+  if(diff<60) return lang==='th'?'เมื่อกี้':'just now';
+  if(diff<3600) return `${Math.floor(diff/60)}${lang==='th'?' นาทีที่แล้ว':' min ago'}`;
+  if(diff<86400) return `${Math.floor(diff/3600)}${lang==='th'?' ชั่วโมงที่แล้ว':' hr ago'}`;
+  return `${Math.floor(diff/86400)}${lang==='th'?' วันที่แล้ว':' day(s) ago'}`;
+}
+
+/* ─ Seat map marketplace badges ─ */
+let MARKETPLACE_SEAT_MAP={};
+
+function buildMarketplaceSeatMap(){
+  MARKETPLACE_SEAT_MAP={};
+  getMarketplaceData().forEach(l=>{
+    const key=`${l.day}|${String(l.subZone||'').toUpperCase()}|${String(l.row||'').toUpperCase()}|${Number(l.seatNum||0)}`;
+    MARKETPLACE_SEAT_MAP[key]=l;
+  });
+}
+
+function getMarketplaceBadgeForSeat(day,subZone,row,seatNum){
+  if(!day) return null; // when no day filter, don't show badges
+  const key=`${day}|${String(subZone||'').toUpperCase()}|${String(row||'').toUpperCase()}|${Number(seatNum||0)}`;
+  return MARKETPLACE_SEAT_MAP[key]||null;
+}
+
+/* ─ Transfer Code verify (buyer side — ก่อน submit ที่นั่ง) ─ */
+function clearMpTCStatus(){
+  const s=document.getElementById('reg-mp-tc-status');
+  if(s) s.innerHTML='';
+}
+async function verifyMpTC(){
+  const tc=(document.getElementById('reg-mp-tc')?.value||'').trim();
+  const statusEl=document.getElementById('reg-mp-tc-status');
+  const btn=document.getElementById('reg-mp-tc-btn');
+  if(!tc){
+    if(statusEl) statusEl.innerHTML=`<span style="color:#f87171">❌ ${lang==='th'?'กรอก Transfer Code ก่อน':'Enter Transfer Code first'}</span>`;
+    return;
+  }
+  if(!GAS_URL){
+    if(statusEl) statusEl.innerHTML=`<span style="color:#fde68a">⚠️ ต้องตั้งค่า GAS URL ก่อนตรวจสอบ TC</span>`;
+    return;
+  }
+  if(btn){btn.disabled=true;btn.textContent='⏳...';}
+  try{
+    const url=`${GAS_URL}${GAS_URL.includes('?')?'&':'?'}action=verify_marketplace_tc&tc=${encodeURIComponent(tc)}&t=${Date.now()}`;
+    const res=await fetch(url,{method:'GET'});
+    if(!res.ok) throw new Error(`Status ${res.status}`);
+    const json=await res.json();
+    if(String(json?.status||'').toLowerCase()==='ok'&&json?.listingData){
+      const d=json.listingData;
+      const dayLabel=`${d.day} ${lang==='th'?'มิ.ย.':'Jun'}`;
+      const expStr=d.transferCodeExpiresAt?new Date(d.transferCodeExpiresAt).toLocaleString(lang==='th'?'th-TH':'en-US',{dateStyle:'short',timeStyle:'short'}):'';
+      if(statusEl) statusEl.innerHTML=`<span style="color:#4ade80">✅ ${lang==='th'?'TC ถูกต้อง!':'Valid Transfer Code!'}</span> <span style="color:rgba(255,255,255,.7);font-size:11px">Day ${dayLabel} · Zone <strong>${d.subZone||d.mainZone}</strong> ${lang==='th'?'แถว':'Row'} ${d.row} ${lang==='th'?'ที่':'Seat'} ${d.seatNum} · ${Number(d.originalPrice||0).toLocaleString()}฿${expStr?` · ${lang==='th'?'หมดอายุ':'Expires'} ${expStr}`:''}</span>`;
+    } else {
+      if(statusEl) statusEl.innerHTML=`<span style="color:#f87171">❌ ${json?.message||'Transfer Code ไม่ถูกต้องหรือหมดอายุแล้ว'}</span>`;
+    }
+  }catch(err){
+    if(statusEl) statusEl.innerHTML=`<span style="color:#f87171">❌ ตรวจสอบไม่สำเร็จ: ${err.message||'Error'}</span>`;
+  } finally {
+    if(btn){btn.disabled=false;btn.textContent=lang==='th'?'🔍 ตรวจสอบ':'Verify';}
+  }
+}
+
+/* ══════════════════════════════════════
+   MARKETPLACE INIT (ต่อท้าย)
+══════════════════════════════════════ */
+buildMpLookingForChips();
+syncMarketplaceData().then(()=>buildMarketplaceSeatMap());
 
 /* ══ INIT ══ */
 buildHomePage();
