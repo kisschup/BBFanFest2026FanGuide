@@ -291,7 +291,7 @@ function toggleLang(){
   });
   if(document.getElementById('page-census')?.classList.contains('active')) renderCensus();
   if(document.getElementById('page-analysis')?.classList.contains('active')) renderAnalysis();
-  if(document.getElementById('page-marketplace')?.classList.contains('active')) renderMarketplaceListings();
+  if(document.getElementById('page-board')?.classList.contains('active')) renderMarketplaceListings();
 }
 
 /* ══ NAV ══ */
@@ -308,10 +308,15 @@ function goPage(id){
       renderLiveStreamingSummary();
     });
   }
-  if(id==='marketplace'){
-    syncMarketplaceData().then(()=>{
+  if(id==='board'){
+    const curTab=document.getElementById('board-panel-rideshare')?.style.display==='none'?'marketplace':'rideshare';
+    Promise.all([
+      syncMarketplaceData(),
+      syncRideShareData()
+    ]).then(()=>{
       buildMarketplaceSeatMap();
       renderMarketplaceListings();
+      renderRideShareListings();
     });
   }
 }
@@ -1912,11 +1917,12 @@ let registerTab='seat';
 
 function setRegisterTab(tab){
   registerTab=tab;
-  ['seat','live','marketplace'].forEach(t=>{
+  ['seat','live','marketplace','rideshare'].forEach(t=>{
     document.getElementById('register-tab-'+t)?.classList.toggle('on',t===tab);
     document.getElementById('register-pane-'+t)?.classList.toggle('active',t===tab);
   });
   if(tab==='marketplace') buildMpLookingForChips();
+  if(tab==='rideshare') buildRsAreaChips();
 }
 
 function getEntryDays(entry){
@@ -2977,6 +2983,7 @@ async function verifyMpTC(){
 ══════════════════════════════════════ */
 buildMpLookingForChips();
 syncMarketplaceData().then(()=>buildMarketplaceSeatMap());
+syncRideShareData();
 
 /* ══ INIT ══ */
 buildHomePage();
@@ -2990,3 +2997,316 @@ syncLiveData(true).then(()=>renderLiveStreamingSummary());
 
 // Trigger initial fetch if GAS_URL is set
 if(GAS_URL) renderCensus();
+
+/* ══════════════════════════════════════════════════════════════
+   SHARE RIDE — ร่วมเดินทาง
+══════════════════════════════════════════════════════════════ */
+const RIDESHARE_LOCAL_KEY = 'bb_rideshare_v1';
+let RIDESHARE_CACHE = (()=>{ try{ return JSON.parse(localStorage.getItem(RIDESHARE_LOCAL_KEY)||'[]') }catch{ return [] } })();
+let RIDESHARE_LAST_SYNC = 0;
+let rsDay = 'all';
+let rsDir = 'all';
+let rsTr  = 'all';
+
+const RS_TRANSPORT_LABEL = {
+  car:       '🚗 รถส่วนตัว',
+  grab_taxi: '🟢 Grab/แท็กซี่',
+  van:       '🚐 รถตู้',
+  bts:       '🚇 BTS/MRT',
+  airport:   '✈️ สนามบิน',
+};
+const RS_DIR_LABEL = {
+  to_event:   { th:'→ ไปงาน',   badge:'to-event' },
+  from_event: { th:'← กลับบ้าน', badge:'from-event' },
+  both:       { th:'↔ ไป-กลับ', badge:'both' },
+};
+const RS_AREA_PRESETS = [
+  // BTS Sukhumvit
+  'BTS สยาม','BTS อโศก','BTS อ่อนนุช','BTS อุดมสุข','BTS แบริ่ง','BTS สำโรง',
+  // BTS Silom
+  'BTS สีลม','BTS ช่องนนทรี','BTS ตากสิน',
+  // MRT
+  'MRT สุขุมวิท','MRT ลุมพินี','MRT พระราม 9',
+  // Airport
+  'สนามบินสุวรรณภูมิ','สนามบินดอนเมือง',
+  // Districts
+  'ลาดกระบัง','บางนา','สมุทรปราการ','รังสิต','ปทุมธานี','นนทบุรี','เชียงใหม่','ขอนแก่น','นครราชสีมา',
+];
+
+function getRideShareData(){ return Array.isArray(RIDESHARE_CACHE)?RIDESHARE_CACHE:[]; }
+
+function saveRideShareLocal(list){
+  RIDESHARE_CACHE = Array.isArray(list)?list:[];
+  try{ localStorage.setItem(RIDESHARE_LOCAL_KEY, JSON.stringify(RIDESHARE_CACHE)); }catch(e){}
+}
+
+async function syncRideShareData(force=false){
+  const now = Date.now();
+  if(!force && (now-RIDESHARE_LAST_SYNC)<15000 && getRideShareData().length) return getRideShareData();
+  if(!GAS_URL) return getRideShareData();
+  try{
+    const res = await fetch(GAS_URL+'?action=read_rideshare&_='+now);
+    const json = await res.json();
+    if(json.status==='ok' && Array.isArray(json.data)){
+      saveRideShareLocal(json.data);
+      RIDESHARE_LAST_SYNC = now;
+    }
+  }catch(e){ console.warn('syncRideShareData error',e); }
+  return getRideShareData();
+}
+
+/* ── Board tab switcher ── */
+function setBoardTab(tab){
+  ['marketplace','rideshare'].forEach(t=>{
+    const btn = document.getElementById('board-tab-'+t);
+    const panel = document.getElementById('board-panel-'+t);
+    if(btn) btn.classList.toggle('on', t===tab);
+    if(panel) panel.style.display = t===tab?'':'none';
+  });
+  if(tab==='marketplace'){
+    const refreshBtn = document.getElementById('board-refresh-btn');
+    if(refreshBtn) refreshBtn.onclick = ()=>syncMarketplaceData(true).then(renderMarketplaceListings);
+    const postBtn = document.getElementById('board-post-btn');
+    if(postBtn) postBtn.onclick = ()=>{ setRegisterTab('marketplace'); goPage('register'); };
+  } else {
+    const refreshBtn = document.getElementById('board-refresh-btn');
+    if(refreshBtn) refreshBtn.onclick = ()=>syncRideShareData(true).then(renderRideShareListings);
+    const postBtn = document.getElementById('board-post-btn');
+    if(postBtn) postBtn.onclick = ()=>{ setRegisterTab('rideshare'); goPage('register'); };
+  }
+}
+
+function boardRefresh(){
+  // proxy to active tab
+  const rsPanel = document.getElementById('board-panel-rideshare');
+  if(rsPanel && rsPanel.style.display!=='none'){
+    syncRideShareData(true).then(renderRideShareListings);
+  } else {
+    syncMarketplaceData(true).then(renderMarketplaceListings);
+  }
+}
+
+function boardPost(){
+  const rsPanel = document.getElementById('board-panel-rideshare');
+  if(rsPanel && rsPanel.style.display!=='none'){
+    setRegisterTab('rideshare'); goPage('register');
+  } else {
+    setRegisterTab('marketplace'); goPage('register');
+  }
+}
+
+/* ── Filters ── */
+function setRsFilter(type, val){
+  if(type==='day')  rsDay = val;
+  if(type==='dir')  rsDir = val;
+  if(type==='tr')   rsTr  = val;
+  // update chip active state
+  document.querySelectorAll('[id^="rs-f-'+type+'-"]').forEach(b=>b.classList.remove('on'));
+  const target = document.getElementById('rs-f-'+type+'-'+val);
+  if(target) target.classList.add('on');
+  renderRideShareListings();
+}
+
+/* ── Area preset chips ── */
+function buildRsAreaChips(){
+  ['from','to'].forEach(side=>{
+    const wrap = document.getElementById('rs-'+side+'-chips');
+    if(!wrap) return;
+    wrap.innerHTML = RS_AREA_PRESETS.map(a=>`<button class="cdf-chip" onclick="pickRsArea('${side}','${a.replace(/'/g,"\\'")}')">${a}</button>`).join('');
+  });
+}
+
+function pickRsArea(side, val){
+  const input = document.getElementById('rs-'+side+'-area');
+  if(input) input.value = val;
+}
+
+/* ── Render listings ── */
+function renderRideShareListings(){
+  const wrap = document.getElementById('rs-listings');
+  const totalEl = document.getElementById('rs-total');
+  if(!wrap) return;
+  let data = getRideShareData().filter(r=>r.status==='active'||!r.status);
+  if(rsDay!=='all') data = data.filter(r=>r.day===rsDay||r.day==='both');
+  if(rsDir!=='all') data = data.filter(r=>r.direction===rsDir||r.direction==='both');
+  if(rsTr!=='all')  data = data.filter(r=>r.transportType===rsTr);
+  if(totalEl) totalEl.textContent = data.length;
+  if(!data.length){
+    wrap.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px">ยังไม่มีโพสต์ในขณะนี้ · ลองโพสต์เป็นคนแรก!</div>`;
+    return;
+  }
+  wrap.innerHTML = data.map(r=>renderRsCard(r)).join('');
+}
+
+function renderRsCard(r){
+  const dir = RS_DIR_LABEL[r.direction] || {th:r.direction||'-', badge:'both'};
+  const tr  = RS_TRANSPORT_LABEL[r.transportType] || r.transportType || '-';
+  const day = r.day==='both'?'13+14 มิ.ย.' : (r.day?r.day+' มิ.ย.':'-');
+  const from = r.fromArea||'-';
+  const to   = r.toArea||'-';
+  const slots = r.slots||'-';
+  const dep   = r.departureTime||'';
+  const note  = r.note||'';
+  const twitter = r.twitter||'';
+  const line    = r.lineId||'';
+
+  const contactBtns = [
+    twitter ? `<button class="rs-contact-btn twitter" onclick="window.open('https://twitter.com/'+encodeURIComponent('${twitter.replace(/^@/,'')}'),'_blank')">🐦 @${twitter.replace(/^@/,'')}</button>` : '',
+    line    ? `<button class="rs-contact-btn line" onclick="window.open('https://line.me/ti/p/~'+encodeURIComponent('${line.replace(/^@/,'')}'),'_blank')">💬 LINE: ${line}</button>` : '',
+  ].filter(Boolean).join('');
+
+  return `<div class="rs-card">
+  <div class="rs-card-header">
+    <span class="rs-badge ${dir.badge}">${dir.th}</span>
+    <button class="rs-close-btn" onclick="openCloseRideShareModal('${r.rideId||''}')">✕ ปิดโพสต์</button>
+  </div>
+  <div class="rs-route">${escH(from)} → ${escH(to)}</div>
+  <div class="rs-meta">
+    <span class="rs-pill">${day}</span>
+    <span class="rs-pill">${tr}</span>
+    <span class="rs-pill">👥 ${slots} คน</span>
+    ${dep?`<span class="rs-pill">🕐 ${escH(dep)}</span>`:''}
+  </div>
+  ${note?`<div class="rs-note">${escH(note)}</div>`:''}
+  <div class="rs-contact">${contactBtns||'<span style="font-size:11px;color:rgba(255,255,255,.35)">ไม่มีข้อมูลติดต่อ</span>'}</div>
+  <div style="font-size:10px;color:rgba(255,255,255,.25);margin-top:2px">${r.rideId||''}</div>
+</div>`;
+}
+
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── Submit ride share form ── */
+async function submitRideShareForm(){
+  const btn = document.getElementById('rs-submit-btn');
+  if(btn){ btn.disabled=true; btn.textContent='กำลังโพสต์...'; }
+
+  const day       = document.querySelector('input[name="rs-day"]:checked')?.value||'';
+  const direction = document.querySelector('input[name="rs-dir"]:checked')?.value||'';
+  const transport = document.querySelector('input[name="rs-transport"]:checked')?.value||'';
+  const fromArea  = (document.getElementById('rs-from-area')?.value||'').trim();
+  const toArea    = (document.getElementById('rs-to-area')?.value||'').trim();
+  const slots     = document.getElementById('rs-slots')?.value||'1';
+  const dep       = (document.getElementById('rs-departure-time')?.value||'').trim();
+  const twitter   = (document.getElementById('rs-twitter')?.value||'').trim();
+  const lineId    = (document.getElementById('rs-line-id')?.value||'').trim();
+  const note      = (document.getElementById('rs-note')?.value||'').trim();
+
+  const statusEl = document.getElementById('rs-err-msg');
+  const show = (msg,color='#f87171')=>{ if(statusEl){ statusEl.innerHTML=`<span style="color:${color}">${msg}</span>`; }};
+
+  if(!day){ show('กรุณาเลือกวันที่'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!direction){ show('กรุณาเลือกทิศทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!transport){ show('กรุณาเลือกประเภทการเดินทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!fromArea){ show('กรุณาระบุจุดออกเดินทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!toArea){ show('กรุณาระบุจุดหมายปลายทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!twitter&&!lineId){ show('กรุณาใส่ช่องทางติดต่ออย่างน้อย 1 ช่อง (Twitter หรือ LINE)'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+
+  const payload = {
+    action:'save_rideshare',
+    day, direction, transportType:transport,
+    fromArea, toArea, slots, departureTime:dep,
+    twitter, lineId, note
+  };
+
+  try{
+    if(!GAS_URL){ show('ยังไม่ได้ตั้งค่า GAS_URL'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+    const res = await fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload) });
+    const json = await res.json();
+    if(json.status==='ok'){
+      show('');
+      // refresh cache
+      await syncRideShareData(true);
+      renderRideShareListings();
+      // reset form
+      document.querySelectorAll('input[name="rs-day"]').forEach(r=>r.checked=false);
+      document.querySelectorAll('input[name="rs-dir"]').forEach(r=>r.checked=false);
+      document.querySelectorAll('input[name="rs-transport"]').forEach(r=>r.checked=false);
+      ['rs-from-area','rs-to-area','rs-departure-time','rs-twitter','rs-line-id','rs-note'].forEach(id=>{
+        const el=document.getElementById(id); if(el) el.value='';
+      });
+      const slotsEl=document.getElementById('rs-slots'); if(slotsEl) slotsEl.value='2';
+      // go to board
+      goPage('board');
+      setBoardTab('rideshare');
+      // show success modal after delay
+      setTimeout(()=>openRsSuccessModal(json.rideId, json.closeKey), 400);
+    } else {
+      show(json.message||'โพสต์ไม่สำเร็จ');
+    }
+  }catch(err){
+    show('เกิดข้อผิดพลาด: '+(err.message||'Network error'));
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='🚗 ลงประกาศร่วมเดินทาง'; }
+  }
+}
+
+/* ── RideShare Success modal ── */
+function openRsSuccessModal(rideId, closeKey){
+  const m = document.getElementById('rs-success-modal');
+  if(!m) return;
+  const idEl  = document.getElementById('rs-success-id');
+  const keyEl = document.getElementById('rs-success-key');
+  if(idEl)  idEl.textContent  = rideId||'-';
+  if(keyEl) keyEl.textContent = closeKey||'-';
+  m.setAttribute('aria-hidden','false');
+  m.classList.add('open');
+}
+
+function closeRsSuccessModal(){
+  const m = document.getElementById('rs-success-modal');
+  if(m){ m.setAttribute('aria-hidden','true'); m.classList.remove('open'); }
+}
+
+function copyRsKey(){
+  const keyEl = document.getElementById('rs-success-key');
+  if(!keyEl) return;
+  navigator.clipboard?.writeText(keyEl.textContent||'').then(()=>toast('📋 คัดลอก Close Key แล้ว')).catch(()=>{});
+}
+
+/* ── Close RideShare modal ── */
+function openCloseRideShareModal(rideId=''){
+  const m = document.getElementById('close-rideshare-modal');
+  if(!m) return;
+  const idEl = document.getElementById('crs-ride-id');
+  if(idEl && rideId) idEl.value = rideId;
+  const keyEl = document.getElementById('crs-close-key');
+  if(keyEl) keyEl.value = '';
+  const statusEl = document.getElementById('crs-status-msg');
+  if(statusEl) statusEl.innerHTML='';
+  m.setAttribute('aria-hidden','false');
+  m.classList.add('open');
+}
+
+function closeCloseRideShareModal(){
+  const m = document.getElementById('close-rideshare-modal');
+  if(m){ m.setAttribute('aria-hidden','true'); m.classList.remove('open'); }
+}
+
+async function submitCloseRideShare(){
+  const btn = document.getElementById('crs-submit-btn');
+  if(btn){ btn.disabled=true; btn.textContent='กำลังปิด...'; }
+  const rideId   = (document.getElementById('crs-ride-id')?.value||'').trim();
+  const closeKey = (document.getElementById('crs-close-key')?.value||'').trim();
+  const statusEl = document.getElementById('crs-status-msg');
+  const show = (msg,color='#f87171')=>{ if(statusEl) statusEl.innerHTML=`<span style="color:${color}">${msg}</span>`; };
+
+  if(!rideId){ show('กรุณาระบุ Ride ID'); if(btn){btn.disabled=false;btn.textContent='ยืนยันปิดโพสต์';} return; }
+  if(!closeKey){ show('กรุณาระบุ Close Key'); if(btn){btn.disabled=false;btn.textContent='ยืนยันปิดโพสต์';} return; }
+
+  try{
+    const res = await fetch(GAS_URL, { method:'POST', body:JSON.stringify({ action:'close_rideshare', rideId, closeKey }) });
+    const json = await res.json();
+    if(json.status==='ok'){
+      show('✅ ปิดโพสต์สำเร็จ','#4ade80');
+      await syncRideShareData(true);
+      renderRideShareListings();
+      setTimeout(()=>{ closeCloseRideShareModal(); toast('🚗 ปิดโพสต์ร่วมเดินทางแล้ว'); }, 1200);
+    } else {
+      show(json.message||'ปิดไม่สำเร็จ — ตรวจสอบ Ride ID และ Close Key');
+    }
+  }catch(err){
+    show('เกิดข้อผิดพลาด: '+(err.message||'Network error'));
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='ยืนยันปิดโพสต์'; }
+  }
+}

@@ -514,6 +514,30 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 .register-tab.on{background:rgba(167,139,250,.22);border-color:var(--lav);color:#fff;box-shadow:0 0 12px rgba(167,139,250,.25)}
 .register-pane{display:none}
 .register-pane.active{display:block}
+.board-tab{padding:11px 20px;border:none;border-bottom:3px solid transparent;background:transparent;color:rgba(255,255,255,.5);font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:-2px}
+.board-tab:hover{color:rgba(255,255,255,.8)}
+.board-tab.on{color:#fff;border-bottom-color:var(--lav)}
+.rs-card{background:var(--card);border:1px solid rgba(45,212,191,.2);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
+.rs-card:hover{border-color:rgba(45,212,191,.45)}
+.rs-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.rs-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700}
+.rs-badge.to-event{background:rgba(167,139,250,.2);color:#a78bfa;border:1px solid rgba(167,139,250,.35)}
+.rs-badge.from-event{background:rgba(244,114,182,.2);color:#f472b6;border:1px solid rgba(244,114,182,.35)}
+.rs-badge.both{background:rgba(45,212,191,.2);color:#2dd4bf;border:1px solid rgba(45,212,191,.35)}
+.rs-route{font-size:13px;font-weight:700;color:#fff;line-height:1.4}
+.rs-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rs-pill{padding:3px 9px;border-radius:999px;font-size:10px;font-weight:600;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.65)}
+.rs-note{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.06)}
+.rs-contact{display:flex;gap:8px;flex-wrap:wrap}
+.rs-contact-btn{padding:7px 12px;border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;border:none;font-family:'Noto Sans Thai',sans-serif;transition:all .2s}
+.rs-contact-btn.twitter{background:rgba(29,161,242,.15);color:#1da1f2;border:1px solid rgba(29,161,242,.3)}
+.rs-contact-btn.twitter:hover{background:rgba(29,161,242,.3)}
+.rs-contact-btn.line{background:rgba(0,185,0,.12);color:#00b900;border:1px solid rgba(0,185,0,.25)}
+.rs-contact-btn.line:hover{background:rgba(0,185,0,.25)}
+.rs-close-btn{padding:5px 10px;border-radius:999px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(255,255,255,.4);font-family:'Noto Sans Thai',sans-serif;transition:all .2s;align-self:flex-start}
+.rs-close-btn:hover{border-color:rgba(244,114,182,.4);color:#f472b6}
+.rs-key-box{background:rgba(0,0,0,.4);border:1px solid rgba(45,212,191,.3);border-radius:10px;padding:10px 14px;font-family:monospace;font-size:13px;color:#2dd4bf;word-break:break-all;letter-spacing:.04em;cursor:pointer;transition:background .2s;text-align:center}
+.rs-key-box:hover{background:rgba(45,212,191,.08)}
 .analysis-live-note{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px}
 
 /* setup banner */
