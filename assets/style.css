@@ -534,8 +534,14 @@ svg.smap{width:100%;max-width:560px;display:block;margin:0 auto;cursor:default;f
 .rs-contact-btn.twitter:hover{background:rgba(29,161,242,.3)}
 .rs-contact-btn.line{background:rgba(0,185,0,.12);color:#00b900;border:1px solid rgba(0,185,0,.25)}
 .rs-contact-btn.line:hover{background:rgba(0,185,0,.25)}
+.rs-card-actions{display:flex;gap:6px;align-items:flex-start;margin-left:auto;flex-shrink:0}
 .rs-close-btn{padding:5px 10px;border-radius:999px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:rgba(255,255,255,.4);font-family:'Noto Sans Thai',sans-serif;transition:all .2s;align-self:flex-start}
 .rs-close-btn:hover{border-color:rgba(244,114,182,.4);color:#f472b6}
+.rs-close-btn--dim{opacity:.3;cursor:default;pointer-events:none}
+.rs-edit-btn{padding:5px 10px;border-radius:999px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid rgba(167,139,250,.3);background:rgba(167,139,250,.08);color:#a78bfa;font-family:'Noto Sans Thai',sans-serif;transition:all .2s;align-self:flex-start}
+.rs-edit-btn:hover{border-color:rgba(167,139,250,.6);background:rgba(167,139,250,.18)}
+.rs-full-badge{padding:3px 10px;border-radius:999px;font-size:10px;font-weight:800;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.4);color:#fbbf24;letter-spacing:.04em}
+.rs-card--full{opacity:.72;border-color:rgba(251,191,36,.25)}
 .rs-key-box{background:rgba(0,0,0,.4);border:1px solid rgba(45,212,191,.3);border-radius:10px;padding:10px 14px;font-family:monospace;font-size:13px;color:#2dd4bf;word-break:break-all;letter-spacing:.04em;cursor:pointer;transition:background .2s;text-align:center}
 .rs-key-box:hover{background:rgba(45,212,191,.08)}
 .analysis-live-note{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:12px}

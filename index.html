@@ -63,7 +63,7 @@
   <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;justify-content:center">
     <button onclick="goPage('census')" style="padding:12px 24px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(124,58,237,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(124,58,237,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(124,58,237,0.3)'" data-th="🗺 เช็คประชากร" data-en="🗺 Census">🗺 เช็คประชากร</button>
     <button onclick="goPage('register')" style="padding:12px 24px;background:linear-gradient(135deg,#ec4899,#f472b6);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(236,72,153,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(236,72,153,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(236,72,153,0.3)'" data-th="📝 ลงทะเบียนที่นั่ง" data-en="📝 Register Seat">📝 ลงทะเบียนที่นั่ง</button>
-    <button onclick="goPage('board')" style="padding:12px 24px;background:linear-gradient(135deg,#0d9488,#2dd4bf);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(13,148,136,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(13,148,136,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(13,148,136,0.3)'" data-th="🛒 ตลาดบัตร / ร่วมเดินทาง" data-en="🛒 Board">🛒 ตลาดบัตร / ร่วมเดินทาง</button>
+    <button onclick="goPage('board')" style="padding:12px 24px;background:linear-gradient(135deg,#0d9488,#2dd4bf);border:none;border-radius:12px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 15px rgba(13,148,136,0.3);transition:all 0.2s" onmouseover="this.style.boxShadow='0 6px 20px rgba(13,148,136,0.5)'" onmouseout="this.style.boxShadow='0 4px 15px rgba(13,148,136,0.3)'" data-th="🛒 ตลาดบัตร / ร่วมเดินทาง" data-en="🛒 Ticket Market / Share Ride">🛒 ตลาดบัตร / ร่วมเดินทาง</button>
   </div>
 
   <div class="sec-hd"><span data-th="⏰ กำหนดการงาน" data-en="⏰ Day Schedule">⏰ กำหนดการงาน</span></div>
@@ -661,9 +661,9 @@
     <div class="fg" style="margin-bottom:16px">
       <label class="req" data-th="วันที่" data-en="Day">วันที่</label>
       <div class="day-grid">
-        <div class="day-opt"><input type="radio" name="rs-day" id="rs-d13" value="13"><label for="rs-d13"><strong>13</strong> มิ.ย.</label></div>
-        <div class="day-opt"><input type="radio" name="rs-day" id="rs-d14" value="14"><label for="rs-d14"><strong>14</strong> มิ.ย.</label></div>
-        <div class="day-opt"><input type="radio" name="rs-day" id="rs-both" value="both"><label for="rs-both">📅 ทั้งสองวัน</label></div>
+        <div class="day-opt"><input type="radio" name="rs-day" id="rs-d13" value="13"><label for="rs-d13" data-th="13 มิ.ย." data-en="13 Jun"><strong>13</strong> มิ.ย.</label></div>
+        <div class="day-opt"><input type="radio" name="rs-day" id="rs-d14" value="14"><label for="rs-d14" data-th="14 มิ.ย." data-en="14 Jun"><strong>14</strong> มิ.ย.</label></div>
+        <div class="day-opt"><input type="radio" name="rs-day" id="rs-both" value="both"><label for="rs-both" data-th="📅 ทั้งสองวัน" data-en="📅 Both days">📅 ทั้งสองวัน</label></div>
       </div>
     </div>
 
@@ -671,9 +671,9 @@
     <div class="fg" style="margin-bottom:16px">
       <label class="req" data-th="ทิศทางการเดินทาง" data-en="Direction">ทิศทางการเดินทาง</label>
       <div class="day-grid">
-        <div class="day-opt"><input type="radio" name="rs-dir" id="rs-to" value="to_event"><label for="rs-to">🏟 ไปงาน</label></div>
-        <div class="day-opt"><input type="radio" name="rs-dir" id="rs-from" value="from_event"><label for="rs-from">🏠 กลับบ้าน</label></div>
-        <div class="day-opt"><input type="radio" name="rs-dir" id="rs-dir-both" value="both"><label for="rs-dir-both">🔄 ไป-กลับ</label></div>
+        <div class="day-opt"><input type="radio" name="rs-dir" id="rs-to" value="to_event"><label for="rs-to" data-th="🏟 ไปงาน" data-en="🏟 To Venue">🏟 ไปงาน</label></div>
+        <div class="day-opt"><input type="radio" name="rs-dir" id="rs-from" value="from_event"><label for="rs-from" data-th="🏠 กลับบ้าน" data-en="🏠 Going Home">🏠 กลับบ้าน</label></div>
+        <div class="day-opt"><input type="radio" name="rs-dir" id="rs-dir-both" value="both"><label for="rs-dir-both" data-th="🔄 ไป-กลับ" data-en="🔄 Both ways">🔄 ไป-กลับ</label></div>
       </div>
     </div>
 
@@ -681,11 +681,11 @@
     <div class="fg" style="margin-bottom:16px">
       <label class="req" data-th="ประเภทยานพาหนะ" data-en="Transport Type">ประเภทยานพาหนะ</label>
       <div class="day-grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
-        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-car" value="car"><label for="rs-car">🚗 รถส่วนตัว</label></div>
-        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-grab" value="grab_taxi"><label for="rs-grab">🚖 Grab / แท็กซี่</label></div>
-        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-van" value="van"><label for="rs-van">🚌 รถตู้ / Minivan</label></div>
-        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-bts" value="bts"><label for="rs-bts">🚇 BTS / MRT</label></div>
-        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-airport" value="airport"><label for="rs-airport">✈️ สนามบิน</label></div>
+        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-car" value="car"><label for="rs-car" data-th="🚗 รถส่วนตัว" data-en="🚗 Private Car">🚗 รถส่วนตัว</label></div>
+        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-grab" value="grab_taxi"><label for="rs-grab" data-th="🚖 Grab / แท็กซี่" data-en="🚖 Grab / Taxi">🚖 Grab / แท็กซี่</label></div>
+        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-van" value="van"><label for="rs-van" data-th="🚌 รถตู้ / Minivan" data-en="🚌 Van / Minivan">🚌 รถตู้ / Minivan</label></div>
+        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-bts" value="bts"><label for="rs-bts" data-th="🚇 BTS / MRT" data-en="🚇 BTS / MRT">🚇 BTS / MRT</label></div>
+        <div class="day-opt"><input type="radio" name="rs-transport" id="rs-airport" value="airport"><label for="rs-airport" data-th="✈️ สนามบิน" data-en="✈️ Airport">✈️ สนามบิน</label></div>
       </div>
     </div>
 
@@ -693,11 +693,11 @@
     <div class="frow">
       <div class="fg">
         <label class="req" data-th="ต้นทาง / จุดนัดพบ" data-en="From / Meeting point">ต้นทาง / จุดนัดพบ</label>
-        <input type="text" id="rs-from-area" placeholder="เช่น BTS อ่อนนุช, สุขุมวิท 71, เชียงใหม่…" maxlength="80">
+        <input type="text" id="rs-from-area" placeholder="เช่น BTS อ่อนนุช, สุขุมวิท 71, เชียงใหม่…" data-ph-th="เช่น BTS อ่อนนุช, สุขุมวิท 71, เชียงใหม่…" data-ph-en="e.g. BTS On Nut, Sukhumvit 71, Chiang Mai…" maxlength="80">
       </div>
       <div class="fg">
         <label class="req" data-th="ปลายทาง" data-en="Destination">ปลายทาง</label>
-        <input type="text" id="rs-to-area" placeholder="เช่น BITEC, BTS บางนา, สุวรรณภูมิ…" maxlength="80">
+        <input type="text" id="rs-to-area" placeholder="เช่น BITEC, BTS บางนา, สุวรรณภูมิ…" data-ph-th="เช่น BITEC, BTS บางนา, สุวรรณภูมิ…" data-ph-en="e.g. BITEC, BTS Bang Na, Suvarnabhumi…" maxlength="80">
       </div>
     </div>
 
@@ -706,21 +706,21 @@
       <div class="fg">
         <label data-th="จำนวนที่ว่าง (คน)" data-en="Available slots">จำนวนที่ว่าง (คน)</label>
         <select id="rs-slots">
-          <option value="1">1 คน</option>
-          <option value="2">2 คน</option>
-          <option value="3">3 คน</option>
-          <option value="4">4 คน</option>
-          <option value="5">5 คน</option>
-          <option value="6">6 คน</option>
-          <option value="7">7 คน</option>
-          <option value="8">8 คน</option>
-          <option value="9">9 คน</option>
+          <option value="1" data-th="1 คน" data-en="1 seat">1 คน</option>
+          <option value="2" data-th="2 คน" data-en="2 seats">2 คน</option>
+          <option value="3" data-th="3 คน" data-en="3 seats">3 คน</option>
+          <option value="4" data-th="4 คน" data-en="4 seats">4 คน</option>
+          <option value="5" data-th="5 คน" data-en="5 seats">5 คน</option>
+          <option value="6" data-th="6 คน" data-en="6 seats">6 คน</option>
+          <option value="7" data-th="7 คน" data-en="7 seats">7 คน</option>
+          <option value="8" data-th="8 คน" data-en="8 seats">8 คน</option>
+          <option value="9" data-th="9 คน" data-en="9 seats">9 คน</option>
         </select>
-        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:5px">มีที่ว่างรับคนร่วมเดินทางได้กี่คน</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:5px" data-th="มีที่ว่างรับคนร่วมเดินทางได้กี่คน" data-en="How many people can join your ride?">มีที่ว่างรับคนร่วมเดินทางได้กี่คน</div>
       </div>
       <div class="fg">
         <label data-th="เวลาออกเดินทาง (ไม่บังคับ)" data-en="Departure time (optional)">เวลาออกเดินทาง (ไม่บังคับ)</label>
-        <input type="text" id="rs-departure-time" placeholder="เช่น 15:30, หลังงานจบ, ~23:00" maxlength="30">
+        <input type="text" id="rs-departure-time" placeholder="เช่น 15:30, หลังงานจบ, ~23:00" data-ph-th="เช่น 15:30, หลังงานจบ, ~23:00" data-ph-en="e.g. 15:30, after the show, ~23:00" maxlength="30">
       </div>
     </div>
 
@@ -737,13 +737,13 @@
         <input type="text" id="rs-line-id" placeholder="your.line.id">
       </div>
     </div>
-    <div style="font-size:11px;color:rgba(251,191,36,.7);margin-bottom:14px">⚡ ต้องกรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง</div>
+    <div style="font-size:11px;color:rgba(251,191,36,.7);margin-bottom:14px" data-th="⚡ ต้องกรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง" data-en="⚡ At least one of Twitter or LINE ID is required">⚡ ต้องกรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง</div>
 
     <!-- Note -->
     <div class="frow full">
       <div class="fg">
         <label data-th="หมายเหตุ (ไม่บังคับ)" data-en="Note (optional)">หมายเหตุ (ไม่บังคับ)</label>
-        <input type="text" id="rs-note" placeholder="เช่น หารค่าน้ำมัน / หลายต่อ BTS→Grab→BITEC / ผู้หญิงเท่านั้น" maxlength="200">
+        <input type="text" id="rs-note" placeholder="เช่น หารค่าน้ำมัน / หลายต่อ BTS→Grab→BITEC / ผู้หญิงเท่านั้น" data-ph-th="เช่น หารค่าน้ำมัน / หลายต่อ BTS→Grab→BITEC / ผู้หญิงเท่านั้น" data-ph-en="e.g. split petrol / BTS→Grab→BITEC / ladies only" maxlength="200">
       </div>
     </div>
 
@@ -752,7 +752,7 @@
     <p class="form-note" data-th="ลงประกาศแล้วจะได้ Close Key สำหรับลบประกาศ · ข้อมูลติดต่อจะแสดงสาธารณะ · ไม่มีค่าใช้จ่ายใดๆ" data-en="After posting you'll get a Close Key to remove the listing · Contact info will be public · Always free">ลงประกาศแล้วจะได้ Close Key · ข้อมูลติดต่อจะแสดงสาธารณะ · ไม่มีค่าใช้จ่ายใดๆ</p>
 
     <div style="margin-top:12px;text-align:center">
-      <button onclick="goPage('board');setBoardTab('rideshare')" style="padding:8px 20px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:100px;color:#2dd4bf;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer">📋 ดูประกาศทั้งหมด →</button>
+      <button onclick="goPage('board');setBoardTab('rideshare')" style="padding:8px 20px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);border-radius:100px;color:#2dd4bf;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer" data-th="📋 ดูประกาศทั้งหมด →" data-en="📋 View all posts →">📋 ดูประกาศทั้งหมด →</button>
     </div>
   </div>
   </div>
@@ -812,28 +812,28 @@
   <!-- Board header -->
   <div class="census-top">
     <div>
-      <div class="census-title">📋 บอร์ดชุมชน</div>
+      <div class="census-title" data-th="📋 บอร์ดชุมชน" data-en="📋 Community Board">📋 บอร์ดชุมชน</div>
       <span style="font-size:12px;color:rgba(255,255,255,.6);display:inline-block;margin-top:4px">
         <span class="live-dot"></span>
         <span data-th="ประกาศและนัดหมายจากแฟนคลับ" data-en="Fan-posted listings & meetups">ประกาศและนัดหมายจากแฟนคลับ</span>
       </span>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <button id="board-refresh-btn" onclick="boardRefresh()" style="padding:8px 16px;background:rgba(244,114,182,.15);border:1px solid #f472b6;border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer">↻ อัปเดต</button>
-      <button id="board-post-btn" onclick="boardPost()" style="padding:8px 16px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer">+ ลงประกาศ</button>
+      <button id="board-refresh-btn" onclick="boardRefresh()" style="padding:8px 16px;background:rgba(244,114,182,.15);border:1px solid #f472b6;border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer" data-th="↻ อัปเดต" data-en="↻ Refresh">↻ อัปเดต</button>
+      <button id="board-post-btn" onclick="boardPost()" style="padding:8px 16px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;border-radius:100px;color:#fff;font-family:'Noto Sans Thai',sans-serif;font-size:12px;font-weight:700;cursor:pointer" data-th="+ ลงประกาศ" data-en="+ Post">+ ลงประกาศ</button>
     </div>
   </div>
 
   <!-- Board sub-tabs -->
   <div style="display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid rgba(255,255,255,.1)">
-    <button class="board-tab on" id="board-tab-marketplace" onclick="setBoardTab('marketplace')">🎫 ตลาดบัตร</button>
-    <button class="board-tab" id="board-tab-rideshare" onclick="setBoardTab('rideshare')">🚗 ร่วมเดินทาง</button>
+    <button class="board-tab on" id="board-tab-marketplace" onclick="setBoardTab('marketplace')" data-th="🎫 ตลาดบัตร" data-en="🎫 Ticket Market">🎫 ตลาดบัตร</button>
+    <button class="board-tab" id="board-tab-rideshare" onclick="setBoardTab('rideshare')" data-th="🚗 ร่วมเดินทาง" data-en="🚗 Share Ride">🚗 ร่วมเดินทาง</button>
   </div>
 
   <!-- ── Marketplace panel ── -->
   <div id="board-panel-marketplace">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
-      <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:600">กรอง:</span>
+      <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:600" data-th="กรอง:" data-en="Filter:">กรอง:</span>
       <button class="cdf-chip on" id="mkt-f-day-all" onclick="setMktFilter('day','all')" data-th="ทุกวัน" data-en="All days">ทุกวัน</button>
       <button class="cdf-chip" id="mkt-f-day-13" onclick="setMktFilter('day','13')" data-th="13 มิ.ย." data-en="13 Jun">13 มิ.ย.</button>
       <button class="cdf-chip" id="mkt-f-day-14" onclick="setMktFilter('day','14')" data-th="14 มิ.ย." data-en="14 Jun">14 มิ.ย.</button>
@@ -858,45 +858,45 @@
       </div>
     </div>
     <div id="mkt-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
-      <div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px">กำลังโหลดประกาศ...</div>
+      <div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px" data-th="กำลังโหลดประกาศ..." data-en="Loading listings...">กำลังโหลดประกาศ...</div>
     </div>
     <div style="margin-top:24px;padding:14px 18px;border-radius:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);font-size:12px;color:rgba(255,255,255,.5);line-height:1.8">
-      <strong style="color:#fde68a">⚠️ ข้อควรระวัง:</strong>
-      ข้อมูลในประกาศเป็นข้อมูลที่ผู้ลงประกาศกรอกเอง ระบบไม่ได้ยืนยันตัวตน · ตรวจสอบหลักฐานก่อนดำเนินการ · อย่าโอนเงินก่อนได้รับบัตรและตรวจสอบแล้ว
+      <strong style="color:#fde68a" data-th="⚠️ ข้อควรระวัง:" data-en="⚠️ Caution:">⚠️ ข้อควรระวัง:</strong>
+      <span data-th="ข้อมูลในประกาศเป็นข้อมูลที่ผู้ลงประกาศกรอกเอง ระบบไม่ได้ยืนยันตัวตน · ตรวจสอบหลักฐานก่อนดำเนินการ · อย่าโอนเงินก่อนได้รับบัตรและตรวจสอบแล้ว" data-en="Listings are user-submitted — identities are not verified · Always check proof before transacting · Never transfer money before receiving and checking the ticket">ข้อมูลในประกาศเป็นข้อมูลที่ผู้ลงประกาศกรอกเอง ระบบไม่ได้ยืนยันตัวตน · ตรวจสอบหลักฐานก่อนดำเนินการ · อย่าโอนเงินก่อนได้รับบัตรและตรวจสอบแล้ว</span>
     </div>
   </div><!-- /board-panel-marketplace -->
 
   <!-- ── RideShare panel ── -->
   <div id="board-panel-rideshare" style="display:none">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
-      <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:600">กรอง:</span>
-      <button class="cdf-chip on" id="rs-f-day-all" onclick="setRsFilter('day','all')">ทุกวัน</button>
-      <button class="cdf-chip" id="rs-f-day-13" onclick="setRsFilter('day','13')">13 มิ.ย.</button>
-      <button class="cdf-chip" id="rs-f-day-14" onclick="setRsFilter('day','14')">14 มิ.ย.</button>
+      <span style="font-size:12px;color:rgba(255,255,255,.5);font-weight:600" data-th="กรอง:" data-en="Filter:">กรอง:</span>
+      <button class="cdf-chip on" id="rs-f-day-all" onclick="setRsFilter('day','all')" data-th="ทุกวัน" data-en="All days">ทุกวัน</button>
+      <button class="cdf-chip" id="rs-f-day-13" onclick="setRsFilter('day','13')" data-th="13 มิ.ย." data-en="13 Jun">13 มิ.ย.</button>
+      <button class="cdf-chip" id="rs-f-day-14" onclick="setRsFilter('day','14')" data-th="14 มิ.ย." data-en="14 Jun">14 มิ.ย.</button>
       <span style="color:rgba(255,255,255,.2)">|</span>
-      <button class="cdf-chip on" id="rs-f-dir-all" onclick="setRsFilter('dir','all')">ทุกทิศทาง</button>
-      <button class="cdf-chip" id="rs-f-dir-to" onclick="setRsFilter('dir','to_event')">→ ไปงาน</button>
-      <button class="cdf-chip" id="rs-f-dir-from" onclick="setRsFilter('dir','from_event')">→ กลับบ้าน</button>
+      <button class="cdf-chip on" id="rs-f-dir-all" onclick="setRsFilter('dir','all')" data-th="ทุกทิศทาง" data-en="All directions">ทุกทิศทาง</button>
+      <button class="cdf-chip" id="rs-f-dir-to" onclick="setRsFilter('dir','to_event')" data-th="→ ไปงาน" data-en="→ To Venue">→ ไปงาน</button>
+      <button class="cdf-chip" id="rs-f-dir-from" onclick="setRsFilter('dir','from_event')" data-th="← กลับบ้าน" data-en="← Going Home">← กลับบ้าน</button>
       <span style="color:rgba(255,255,255,.2)">|</span>
-      <button class="cdf-chip on" id="rs-f-tr-all" onclick="setRsFilter('tr','all')">ทุกประเภท</button>
-      <button class="cdf-chip" id="rs-f-tr-car" onclick="setRsFilter('tr','car')">🚗 รถส่วนตัว</button>
-      <button class="cdf-chip" id="rs-f-tr-grab" onclick="setRsFilter('tr','grab_taxi')">🟢 Grab/แท็กซี่</button>
-      <button class="cdf-chip" id="rs-f-tr-van" onclick="setRsFilter('tr','van')">🚐 รถตู้</button>
-      <button class="cdf-chip" id="rs-f-tr-bts" onclick="setRsFilter('tr','bts')">🚇 BTS/MRT</button>
-      <button class="cdf-chip" id="rs-f-tr-airport" onclick="setRsFilter('tr','airport')">✈️ สนามบิน</button>
+      <button class="cdf-chip on" id="rs-f-tr-all" onclick="setRsFilter('tr','all')" data-th="ทุกประเภท" data-en="All types">ทุกประเภท</button>
+      <button class="cdf-chip" id="rs-f-tr-car" onclick="setRsFilter('tr','car')" data-th="🚗 รถส่วนตัว" data-en="🚗 Private Car">🚗 รถส่วนตัว</button>
+      <button class="cdf-chip" id="rs-f-tr-grab" onclick="setRsFilter('tr','grab_taxi')" data-th="🟢 Grab/แท็กซี่" data-en="🟢 Grab/Taxi">🟢 Grab/แท็กซี่</button>
+      <button class="cdf-chip" id="rs-f-tr-van" onclick="setRsFilter('tr','van')" data-th="🚐 รถตู้" data-en="🚐 Van/Minibus">🚐 รถตู้</button>
+      <button class="cdf-chip" id="rs-f-tr-bts" onclick="setRsFilter('tr','bts')" data-th="🚇 BTS/MRT" data-en="🚇 BTS/MRT">🚇 BTS/MRT</button>
+      <button class="cdf-chip" id="rs-f-tr-airport" onclick="setRsFilter('tr','airport')" data-th="✈️ สนามบิน" data-en="✈️ Airport">✈️ สนามบิน</button>
     </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <div class="total-badge">
         <strong id="rs-total">0</strong>
-        <span>โพสต์</span>
+        <span data-th="โพสต์" data-en="posts">โพสต์</span>
       </div>
     </div>
     <div id="rs-listings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
-      <div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px">กำลังโหลด...</div>
+      <div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px" data-th="กำลังโหลด..." data-en="Loading...">กำลังโหลด...</div>
     </div>
     <div style="margin-top:24px;padding:14px 18px;border-radius:12px;background:rgba(45,212,191,.06);border:1px solid rgba(45,212,191,.2);font-size:12px;color:rgba(255,255,255,.5);line-height:1.8">
-      <strong style="color:#5eead4">🚗 ร่วมเดินทางกัน:</strong>
-      ข้อมูลติดต่อจากผู้โพสต์โดยตรง · ระบบไม่ได้ยืนยันตัวตน · นัดหมายด้วยความระมัดระวัง · แชร์ค่าใช้จ่ายตกลงกันเองระหว่างผู้เดินทาง
+      <strong style="color:#5eead4" data-th="🚗 ร่วมเดินทางกัน:" data-en="🚗 Ride Together:">🚗 ร่วมเดินทางกัน:</strong>
+      <span data-th="ข้อมูลติดต่อจากผู้โพสต์โดยตรง · ระบบไม่ได้ยืนยันตัวตน · นัดหมายด้วยความระมัดระวัง · แชร์ค่าใช้จ่ายตกลงกันเองระหว่างผู้เดินทาง" data-en="Contact info is self-reported · Identities not verified · Arrange meetups carefully · Costs are agreed between travelers">ข้อมูลติดต่อจากผู้โพสต์โดยตรง · ระบบไม่ได้ยืนยันตัวตน · นัดหมายด้วยความระมัดระวัง · แชร์ค่าใช้จ่ายตกลงกันเองระหว่างผู้เดินทาง</span>
     </div>
   </div><!-- /board-panel-rideshare -->
 
@@ -907,8 +907,8 @@
 
 <div class="confirm-modal" id="seat-overwrite-modal" aria-hidden="true">
   <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="seat-overwrite-title">
-    <div class="confirm-modal-title" id="seat-overwrite-title">ยืนยันการลงทับข้อมูลที่นั่ง</div>
-    <div class="confirm-modal-desc" id="seat-overwrite-desc">การลงทะเบียนนี้เป็นการลงทับข้อมูลที่มีอยู่ โปรดแน่ใจว่าข้อมูลดังกล่าวเป็นข้อมูลของท่านเอง</div>
+    <div class="confirm-modal-title" id="seat-overwrite-title" data-th="ยืนยันการลงทับข้อมูลที่นั่ง" data-en="Confirm Seat Overwrite">ยืนยันการลงทับข้อมูลที่นั่ง</div>
+    <div class="confirm-modal-desc" id="seat-overwrite-desc" data-th="การลงทะเบียนนี้เป็นการลงทับข้อมูลที่มีอยู่ โปรดแน่ใจว่าข้อมูลดังกล่าวเป็นข้อมูลของท่านเอง" data-en="This registration will overwrite existing data. Please confirm this seat belongs to you.">การลงทะเบียนนี้เป็นการลงทับข้อมูลที่มีอยู่ โปรดแน่ใจว่าข้อมูลดังกล่าวเป็นข้อมูลของท่านเอง</div>
     <div class="confirm-grid">
       <div class="confirm-item"><span class="confirm-key">Day</span><span class="confirm-val" id="ow-day">-</span></div>
       <div class="confirm-item"><span class="confirm-key">Zone</span><span class="confirm-val" id="ow-zone">-</span></div>
@@ -919,11 +919,11 @@
     </div>
     <div class="confirm-agree">
       <input type="checkbox" id="ow-self-confirm">
-      <label for="ow-self-confirm" id="ow-self-confirm-label">ยืนยันว่าเป็นข้อมูลของตนเองและอนุญาตให้ลงทับข้อมูลที่นั่งนี้</label>
+      <label for="ow-self-confirm" id="ow-self-confirm-label" data-th="ยืนยันว่าเป็นข้อมูลของตนเองและอนุญาตให้ลงทับข้อมูลที่นั่งนี้" data-en="I confirm this is my seat and authorise the overwrite">ยืนยันว่าเป็นข้อมูลของตนเองและอนุญาตให้ลงทับข้อมูลที่นั่งนี้</label>
     </div>
     <div class="confirm-actions">
-      <button class="confirm-btn cancel" id="ow-cancel" type="button">ยกเลิก</button>
-      <button class="confirm-btn ok" id="ow-confirm" type="button" disabled>ยืนยันลงทับ</button>
+      <button class="confirm-btn cancel" id="ow-cancel" type="button" data-th="ยกเลิก" data-en="Cancel">ยกเลิก</button>
+      <button class="confirm-btn ok" id="ow-confirm" type="button" disabled data-th="ยืนยันลงทับ" data-en="Confirm Overwrite">ยืนยันลงทับ</button>
     </div>
   </div>
 </div>
@@ -956,7 +956,7 @@
 <div class="confirm-modal" id="owner-transfer-modal" aria-hidden="true" onclick="if(event.target===this)closeOwnerTransferModal()">
   <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="owner-transfer-title">
     <div class="confirm-modal-title" id="owner-transfer-title">🔐 Owner Key &amp; Transfer Code</div>
-    <div class="confirm-modal-desc" id="owner-transfer-desc">บันทึกรหัสนี้ทันที ใช้สำหรับจัดการประกาศขาย/เทรด และยืนยันการโอนที่นั่ง</div>
+    <div class="confirm-modal-desc" id="owner-transfer-desc" data-th="บันทึกรหัสนี้ทันที ใช้สำหรับจัดการประกาศขาย/เทรด และยืนยันการโอนที่นั่ง" data-en="Save these codes immediately — use them to manage your listing and confirm seat transfers">บันทึกรหัสนี้ทันที ใช้สำหรับจัดการประกาศขาย/เทรด และยืนยันการโอนที่นั่ง</div>
     <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
       <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
         <span class="confirm-key" id="owner-key-label">Owner Key</span>
@@ -967,20 +967,20 @@
         <span class="confirm-val" id="transfer-code-value">-</span>
       </div>
       <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-        <span class="confirm-key" id="transfer-exp-label">หมดอายุ</span>
+        <span class="confirm-key" id="transfer-exp-label" data-th="หมดอายุ" data-en="Expires">หมดอายุ</span>
         <span class="confirm-val" id="transfer-exp-value">-</span>
       </div>
     </div>
     <div id="owner-transfer-howto" style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
       วิธีใช้: 1) ใช้ Owner Key เพื่อปิด/แก้ไขประกาศ 2) ส่ง Transfer Code ให้ผู้รับสิทธิ์ตอนปิดดีล 3) ผู้รับสิทธิ์ใช้ Transfer Code ตอนลงข้อมูลที่นั่ง
     </div>
-    <div id="owner-transfer-warning" style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+    <div id="owner-transfer-warning" style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7" data-th="⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง" data-en="⚠️ Keep these details safe. Never lose them or share with unrelated parties.">
       ⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง
     </div>
     <div class="confirm-actions" style="flex-wrap:wrap">
-      <button class="confirm-btn ok" id="copy-owner-btn" type="button" onclick="copyOwnerTransferField('owner-key-value')">คัดลอก Owner Key</button>
-      <button class="confirm-btn ok" id="copy-transfer-btn" type="button" onclick="copyOwnerTransferField('transfer-code-value')">คัดลอก Transfer Code</button>
-      <button class="confirm-btn cancel" id="owner-transfer-close-btn" type="button" onclick="closeOwnerTransferModal()">ปิด</button>
+      <button class="confirm-btn ok" id="copy-owner-btn" type="button" onclick="copyOwnerTransferField('owner-key-value')" data-th="คัดลอก Owner Key" data-en="Copy Owner Key">คัดลอก Owner Key</button>
+      <button class="confirm-btn ok" id="copy-transfer-btn" type="button" onclick="copyOwnerTransferField('transfer-code-value')" data-th="คัดลอก Transfer Code" data-en="Copy Transfer Code">คัดลอก Transfer Code</button>
+      <button class="confirm-btn cancel" id="owner-transfer-close-btn" type="button" onclick="closeOwnerTransferModal()" data-th="ปิด" data-en="Close">ปิด</button>
     </div>
   </div>
 </div>
@@ -988,8 +988,8 @@
 <!-- Marketplace listing success modal -->
 <div class="confirm-modal" id="mp-success-modal" aria-hidden="true" onclick="if(event.target===this)closeMpSuccessModal()">
   <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="mp-success-title">
-    <div class="confirm-modal-title" id="mp-success-title">🛒 ลงประกาศสำเร็จ!</div>
-    <div class="confirm-modal-desc" id="mp-success-desc">บันทึก Listing ID และ Owner Key ไว้ให้ดี — ใช้สำหรับปิดประกาศ</div>
+    <div class="confirm-modal-title" id="mp-success-title" data-th="🛒 ลงประกาศสำเร็จ!" data-en="🛒 Listing Posted!">🛒 ลงประกาศสำเร็จ!</div>
+    <div class="confirm-modal-desc" id="mp-success-desc" data-th="บันทึก Listing ID และ Owner Key ไว้ให้ดี — ใช้สำหรับปิดประกาศ" data-en="Save your Listing ID and Owner Key — you'll need them to close the listing">บันทึก Listing ID และ Owner Key ไว้ให้ดี — ใช้สำหรับปิดประกาศ</div>
     <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
       <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
         <span class="confirm-key">Listing ID</span>
@@ -1000,10 +1000,10 @@
         <span class="confirm-val" id="mp-success-owner-key">-</span>
       </div>
     </div>
-    <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7">
+    <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.7" data-th="วิธีใช้: ใช้ Listing ID + Owner Key เมื่อต้องการปิดประกาศ (เช่น ขาย/เทรดสำเร็จแล้ว)" data-en="How to use: Enter your Listing ID + Owner Key when you want to close the listing (e.g. after a successful sale or trade)">
       วิธีใช้: ใช้ Listing ID + Owner Key เมื่อต้องการปิดประกาศ (เช่น ขาย/เทรดสำเร็จแล้ว)
     </div>
-    <div style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+    <div style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7" data-th="⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง" data-en="⚠️ Keep these details safe. Never lose them or share with unrelated parties.">
       ⚠️ โปรดเก็บรักษาข้อมูลให้ดี ห้ามหาย และห้ามส่งให้คนที่ไม่เกี่ยวข้อง
     </div>
     <div class="confirm-actions" style="flex-wrap:wrap">
@@ -1017,8 +1017,8 @@
 <!-- Marketplace Transfer Code modal (แสดงหลังปิดประกาศ — สำหรับผู้ขาย/เทรด) -->
 <div class="confirm-modal" id="mp-tc-modal" aria-hidden="true" onclick="if(event.target===this)closeMpTCModal()">
   <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="mp-tc-title">
-    <div class="confirm-modal-title" id="mp-tc-title">🔑 Transfer Code — ส่งให้ผู้รับสิทธิ์</div>
-    <div class="confirm-modal-desc" id="mp-tc-desc">ประกาศถูกปิดแล้ว — ส่ง Transfer Code นี้ให้ผู้ซื้อหรือผู้รับเทรด เพื่อให้เขาใช้ตอนลงทะเบียนที่นั่ง</div>
+    <div class="confirm-modal-title" id="mp-tc-title" data-th="🔑 Transfer Code — ส่งให้ผู้รับสิทธิ์" data-en="🔑 Transfer Code — Send to the recipient">🔑 Transfer Code — ส่งให้ผู้รับสิทธิ์</div>
+    <div class="confirm-modal-desc" id="mp-tc-desc" data-th="ประกาศถูกปิดแล้ว — ส่ง Transfer Code นี้ให้ผู้ซื้อหรือผู้รับเทรด เพื่อให้เขาใช้ตอนลงทะเบียนที่นั่ง" data-en="Listing closed — send this Transfer Code to the buyer or trade recipient so they can use it when registering the seat">ประกาศถูกปิดแล้ว — ส่ง Transfer Code นี้ให้ผู้ซื้อหรือผู้รับเทรด เพื่อให้เขาใช้ตอนลงทะเบียนที่นั่ง</div>
     <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
       <div class="confirm-item" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
         <span class="confirm-key">Transfer Code</span>
@@ -1030,14 +1030,23 @@
       </div>
       <div id="mp-tc-listing-info" style="font-size:12px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05);border-radius:8px;padding:10px 12px;line-height:1.8"></div>
     </div>
-    <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.8">
+    <div id="mp-tc-howto" style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.8">
       <strong style="color:#a78bfa">วิธีใช้:</strong><br>
       1️⃣ คัดลอก Transfer Code แล้วส่งให้ผู้รับสิทธิ์<br>
       2️⃣ ผู้รับสิทธิ์นำ TC ไปกรอกในฟอร์มลงทะเบียนที่นั่ง<br>
       3️⃣ ระบบจะยืนยันการโอนสิทธิ์และลงทะเบียนที่นั่งให้อัตโนมัติ
     </div>
-    <div style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+    <div id="mp-tc-howto-en" style="display:none;margin-top:10px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.8">
+      <strong style="color:#a78bfa">How to use:</strong><br>
+      1️⃣ Copy the Transfer Code and send it to the recipient<br>
+      2️⃣ Recipient enters the TC in the seat registration form<br>
+      3️⃣ The system will verify the transfer and register the seat automatically
+    </div>
+    <div id="mp-tc-warning" style="margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
       ⚠️ TC ใช้ได้ <strong>48 ชั่วโมง</strong> — ส่งให้ผู้รับโดยตรง อย่าเผยแพร่สาธารณะ
+    </div>
+    <div id="mp-tc-warning-en" style="display:none;margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.1);font-size:12px;color:#fde68a;line-height:1.7">
+      ⚠️ TC valid for <strong>48 hours</strong> — send directly to recipient, do not share publicly
     </div>
     <div class="confirm-actions" style="flex-wrap:wrap">
       <button class="confirm-btn ok" type="button" onclick="copyMpTCField('mp-tc-value')" data-th="คัดลอก Transfer Code" data-en="Copy Transfer Code">📋 คัดลอก TC</button>
@@ -1064,30 +1073,34 @@
       <button class="confirm-btn ok" type="button" id="cl-submit-btn" onclick="submitCloseListing()" data-th="ยืนยันปิดประกาศ" data-en="Confirm Close">ยืนยันปิดประกาศ</button>
       <button class="confirm-btn cancel" type="button" onclick="closeCloseListingModal()" data-th="ยกเลิก" data-en="Cancel">ยกเลิก</button>
     </div>
+    <div style="margin-top:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:12px">
+      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:8px" data-th="ส่ง Transfer Code แล้วแต่ผู้รับยังไม่ได้ลงทะเบียน? เปิดประกาศใหม่ได้เลย" data-en="Sent a Transfer Code but buyer hasn't registered? Reopen your listing here">ส่ง Transfer Code แล้วแต่ผู้รับยังไม่ได้ลงทะเบียน? เปิดประกาศใหม่ได้เลย</div>
+      <button class="confirm-btn" type="button" id="cl-reopen-btn" onclick="submitReopenListing()" style="width:100%;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:#fde68a;" data-th="↩ เปิดประกาศใหม่" data-en="↩ Reopen Listing">↩ เปิดประกาศใหม่</button>
+    </div>
   </div>
 </div>
 
 <!-- RideShare success modal (shown after posting a ride) -->
 <div class="confirm-modal" id="rs-success-modal" aria-hidden="true" onclick="if(event.target===this)closeRsSuccessModal()">
   <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="rs-success-title">
-    <div class="confirm-modal-title" id="rs-success-title">🚗 โพสต์สำเร็จ! พบเพื่อนร่วมทาง</div>
-    <div class="confirm-modal-desc">บันทึก Ride ID และ Close Key ไว้ — ใช้สำหรับลบโพสต์เมื่อเดินทางครบแล้ว</div>
+    <div class="confirm-modal-title" id="rs-success-title" data-th="🚗 โพสต์สำเร็จ! พบเพื่อนร่วมทาง" data-en="🚗 Posted! Find your travel buddy">🚗 โพสต์สำเร็จ! พบเพื่อนร่วมทาง</div>
+    <div class="confirm-modal-desc" data-th="บันทึก Ride ID และ Close Key ไว้ — ใช้สำหรับลบโพสต์เมื่อเดินทางครบแล้ว" data-en="Save your Ride ID and Close Key — use them to remove the post once you're set">บันทึก Ride ID และ Close Key ไว้ — ใช้สำหรับลบโพสต์เมื่อเดินทางครบแล้ว</div>
     <div class="confirm-grid" style="grid-template-columns:1fr;gap:10px">
       <div class="confirm-item">
         <span class="confirm-key">Ride ID</span>
         <span class="confirm-val" id="rs-success-id" style="font-size:13px;letter-spacing:.05em">-</span>
       </div>
       <div>
-        <span style="font-size:12px;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Close Key <span style="color:#fde68a">(บันทึกไว้ก่อนปิด — จะไม่แสดงอีก)</span></span>
+        <span style="font-size:12px;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Close Key <span style="color:#fde68a" data-th="(บันทึกไว้ก่อนปิด — จะไม่แสดงอีก)" data-en="(save before closing — will not be shown again)">(บันทึกไว้ก่อนปิด — จะไม่แสดงอีก)</span></span>
         <div class="rs-key-box" id="rs-success-key" onclick="copyRsKey()" title="คลิกเพื่อคัดลอก">-</div>
       </div>
     </div>
-    <div style="margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.08);font-size:12px;color:#fde68a;line-height:1.7">
+    <div style="margin-top:12px;padding:10px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.08);font-size:12px;color:#fde68a;line-height:1.7" data-th="⚠️ Close Key แสดงเพียงครั้งเดียว — บันทึกไว้ในโน้ตหรือ DM ตัวเอง · ใช้ปิดโพสต์เมื่อครบจำนวนคนแล้ว" data-en="⚠️ Close Key is shown only once — save it in your notes or DM yourself · Use it to close the post when you have a full group">
       ⚠️ Close Key แสดงเพียงครั้งเดียว — บันทึกไว้ในโน้ตหรือ DM ตัวเอง<br>ใช้ปิดโพสต์เมื่อครบจำนวนคนแล้ว
     </div>
     <div class="confirm-actions" style="flex-wrap:wrap">
-      <button class="confirm-btn ok" type="button" onclick="copyRsKey()">📋 คัดลอก Close Key</button>
-      <button class="confirm-btn cancel" type="button" onclick="closeRsSuccessModal()">ปิด</button>
+      <button class="confirm-btn ok" type="button" onclick="copyRsKey()" data-th="📋 คัดลอก Close Key" data-en="📋 Copy Close Key">📋 คัดลอก Close Key</button>
+      <button class="confirm-btn cancel" type="button" onclick="closeRsSuccessModal()" data-th="ปิด" data-en="Close">ปิด</button>
     </div>
   </div>
 </div>
@@ -1095,8 +1108,8 @@
 <!-- Close RideShare modal -->
 <div class="confirm-modal" id="close-rideshare-modal" aria-hidden="true" onclick="if(event.target===this)closeCloseRideShareModal()">
   <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="crs-title">
-    <div class="confirm-modal-title" id="crs-title">🔐 ปิดโพสต์ร่วมเดินทาง</div>
-    <div class="confirm-modal-desc">กรอก Ride ID และ Close Key เพื่อลบโพสต์ออกจากบอร์ด</div>
+    <div class="confirm-modal-title" id="crs-title" data-th="🔐 ปิดโพสต์ร่วมเดินทาง" data-en="🔐 Close Ride Post">🔐 ปิดโพสต์ร่วมเดินทาง</div>
+    <div class="confirm-modal-desc" data-th="กรอก Ride ID และ Close Key เพื่อลบโพสต์ออกจากบอร์ด" data-en="Enter your Ride ID and Close Key to remove the post from the board">กรอก Ride ID และ Close Key เพื่อลบโพสต์ออกจากบอร์ด</div>
     <div class="fg" style="margin-bottom:12px">
       <label style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:6px;display:block">Ride ID</label>
       <input type="text" id="crs-ride-id" placeholder="SR-xxxxxxxxxxxx" style="width:100%;box-sizing:border-box">
@@ -1107,8 +1120,36 @@
     </div>
     <div class="seat-check" id="crs-status-msg" style="margin-bottom:10px"></div>
     <div class="confirm-actions">
-      <button class="confirm-btn ok" type="button" id="crs-submit-btn" onclick="submitCloseRideShare()">ยืนยันปิดโพสต์</button>
-      <button class="confirm-btn cancel" type="button" onclick="closeCloseRideShareModal()">ยกเลิก</button>
+      <button class="confirm-btn ok" type="button" id="crs-submit-btn" onclick="submitCloseRideShare()" data-th="ยืนยันปิดโพสต์" data-en="Confirm Close">ยืนยันปิดโพสต์</button>
+      <button class="confirm-btn cancel" type="button" onclick="closeCloseRideShareModal()" data-th="ยกเลิก" data-en="Cancel">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit RideShare modal (owner only — change slots or mark full) -->
+<div class="confirm-modal" id="edit-rideshare-modal" aria-hidden="true" onclick="if(event.target===this)closeEditRideShareModal()">
+  <div class="confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="ers-title">
+    <div class="confirm-modal-title" id="ers-title" data-th="✏️ แก้ไขโพสต์ร่วมเดินทาง" data-en="✏️ Edit Ride Post">✏️ แก้ไขโพสต์ร่วมเดินทาง</div>
+    <div class="confirm-modal-desc" data-th="แก้ไขจำนวนที่นั่งหรือทำเครื่องหมายว่าเต็มแล้ว" data-en="Update available seats or mark the post as full">แก้ไขจำนวนที่นั่งหรือทำเครื่องหมายว่าเต็มแล้ว</div>
+    <input type="hidden" id="ers-ride-id">
+    <div class="fg" style="margin-bottom:12px">
+      <label style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:6px;display:block" data-th="จำนวนที่นั่งว่าง" data-en="Available seats">จำนวนที่นั่งว่าง</label>
+      <input type="number" id="ers-slots" min="1" max="9" value="1" style="width:100%;box-sizing:border-box">
+    </div>
+    <div class="fg" style="margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:rgba(255,255,255,.8)">
+        <input type="checkbox" id="ers-mark-full" style="width:16px;height:16px;cursor:pointer">
+        <span data-th="ทำเครื่องหมายว่าครบแล้ว (FULL)" data-en="Mark as Full (no more seats)">ทำเครื่องหมายว่าครบแล้ว (FULL)</span>
+      </label>
+    </div>
+    <div class="fg" style="margin-bottom:12px">
+      <label style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:6px;display:block">Close Key</label>
+      <input type="text" id="ers-close-key" placeholder="CK-xxxxxxxxxxxxxxxxxxxx" style="width:100%;box-sizing:border-box">
+    </div>
+    <div class="seat-check" id="ers-status-msg" style="margin-bottom:10px"></div>
+    <div class="confirm-actions">
+      <button class="confirm-btn ok" type="button" id="ers-submit-btn" onclick="submitEditRideShare()" data-th="บันทึก" data-en="Save Changes">บันทึก</button>
+      <button class="confirm-btn cancel" type="button" onclick="closeEditRideShareModal()" data-th="ยกเลิก" data-en="Cancel">ยกเลิก</button>
     </div>
   </div>
 </div>

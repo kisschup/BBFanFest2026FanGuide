@@ -281,8 +281,21 @@ function toggleLang(){
   document.getElementById('lang-btn').textContent=lang==='th'?'🇬🇧 ENG':'🇹🇭 ไทย';
   document.querySelectorAll('[data-th]').forEach(el=>{
     const v=el.dataset[lang]||el.dataset.th;
-    if(['OPTION','SPAN','STRONG','SMALL','A','P','BUTTON','LABEL'].includes(el.tagName)||!el.children.length)
-      el.textContent=v;
+    const isInlineTag=['OPTION','SPAN','STRONG','SMALL','A','P','BUTTON','LABEL'].includes(el.tagName);
+    const isLeaf=!el.children.length;
+    const hasBothLangs=el.dataset.en&&el.dataset.en!==el.dataset.th;
+    if(isInlineTag||isLeaf||hasBothLangs) el.textContent=v;
+  });
+  /* placeholder translations for inputs with data-ph-th / data-ph-en */
+  document.querySelectorAll('[data-ph-th]').forEach(el=>{
+    el.placeholder=lang==='en'?(el.dataset.phEn||el.dataset.phTh):el.dataset.phTh;
+  });
+  /* dual-div rich-HTML blocks: toggle Thai vs English version */
+  const dualPairs=[['mp-tc-howto','mp-tc-howto-en'],['mp-tc-warning','mp-tc-warning-en']];
+  dualPairs.forEach(([thId,enId])=>{
+    const thEl=document.getElementById(thId);const enEl=document.getElementById(enId);
+    if(thEl)thEl.style.display=lang==='en'?'none':'';
+    if(enEl)enEl.style.display=lang==='en'?'':'none';
   });
   buildHomePage();buildFandomChips();buildDEStrip();buildCensusDayFilter();buildAnalysisFilter();buildLiveCountryOptions();buildLiveFandomChips();renderLiveStreamingSummary();setRegisterTab(registerTab);checkSeatDuplicateRealtime();
   syncLiveData().then(()=>{
@@ -291,7 +304,10 @@ function toggleLang(){
   });
   if(document.getElementById('page-census')?.classList.contains('active')) renderCensus();
   if(document.getElementById('page-analysis')?.classList.contains('active')) renderAnalysis();
-  if(document.getElementById('page-board')?.classList.contains('active')) renderMarketplaceListings();
+  if(document.getElementById('page-board')?.classList.contains('active')){
+    renderMarketplaceListings();
+    renderRideShareListings();
+  }
 }
 
 /* ══ NAV ══ */
@@ -1967,6 +1983,28 @@ function setCensusDayFilter(day){
   renderCensus();
 }
 
+// Light-weight day filter change from inside the zone-detail seat grid.
+// Updates day filter + refreshes only the seat grid and zone meta, keeps zone panel open.
+function setCensusDayFromSeat(day){
+  censusDayFilter=day;
+  buildCensusDayFilter();
+  if(!curZone) return;
+  const m=curZone[0];
+  const data=getCensusFilteredData();
+  const entries=data.filter(e=>entryBelongsToZone(e,curZone));
+  const cap=SUBZONE_CAPACITY[curZone]||0;
+  const pr=ZONES[m].prices[curZone]||'';
+  const uniqueSeats=new Set(entries.map(e=>`${normalizeRowForZone(m,e.row)}-${Number(e.seatNum||0)}`)).size;
+  const metaEl=document.getElementById('zd-meta');
+  if(metaEl) metaEl.textContent=
+    censusDayFilter==='all'
+      ? (lang==='th'
+          ? `${uniqueSeats}/${cap||'—'} ที่นั่ง · ${entries.length} รายการลงทะเบียน · ${pr}฿`
+          : `${uniqueSeats}/${cap||'—'} seats · ${entries.length} registrations · ${pr}฿`)
+      : `${entries.length}/${cap||'—'} ${lang==='th'?'คนลงทะเบียน':'registered fans'} · ${pr}฿`;
+  buildSeatGrid(curZone,entries,curFilter);
+}
+
 function getAnalysisFilteredData(){
   let data=getData();
   if(analysisDayFilter!=='all') data=data.filter(e=>getEntryDays(e).includes(analysisDayFilter));
@@ -2332,14 +2370,16 @@ function buildSeatGrid(zoneId,entries,filter){
         badge.textContent=isResell?(lang==='th'?'ขาย':'SELL'):(lang==='th'?'เทรด':'TRADE');
         btn.style.position='relative';
         btn.appendChild(badge);
-        // Marketplace tooltip addition
-        const mktTip=document.createElement('div');
-        mktTip.style.cssText='position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:rgba(15,10,40,.97);border:1px solid rgba(244,114,182,.3);border-radius:8px;padding:6px 10px;font-size:10px;white-space:nowrap;color:#fff;z-index:10;pointer-events:none;display:none;line-height:1.6';
-        const contactStr=[mktListing.twitter,mktListing.lineId?`LINE:${mktListing.lineId}`:''].filter(Boolean).join(' / ');
-        mktTip.innerHTML=`<strong style="color:${isResell?'#f87171':'#60a5fa'}">${isResell?(lang==='th'?'ขายต่อ':'RESELL'):(lang==='th'?'เทรด':'TRADE')}</strong><br>${Number(mktListing.originalPrice||0).toLocaleString()}฿<br>${contactStr}`;
-        btn.appendChild(mktTip);
-        btn.addEventListener('mouseenter',()=>mktTip.style.display='block');
-        btn.addEventListener('mouseleave',()=>mktTip.style.display='none');
+        // Standalone tooltip only when seat is empty — if occupied, mkt info merges into the fandom tip below
+        if(match.length===0){
+          const mktTip=document.createElement('div');
+          mktTip.style.cssText='position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:rgba(15,10,40,.97);border:1px solid rgba(244,114,182,.3);border-radius:8px;padding:6px 10px;font-size:10px;white-space:nowrap;color:#fff;z-index:10;pointer-events:none;display:none;line-height:1.6';
+          const contactStr=[mktListing.twitter,mktListing.lineId?`LINE:${mktListing.lineId}`:''].filter(Boolean).join(' / ');
+          mktTip.innerHTML=`<strong style="color:${isResell?'#f87171':'#60a5fa'}">${isResell?(lang==='th'?'ขายต่อ':'RESELL'):(lang==='th'?'เทรด':'TRADE')}</strong><br>${Number(mktListing.originalPrice||0).toLocaleString()}฿<br>${contactStr}`;
+          btn.appendChild(mktTip);
+          btn.addEventListener('mouseenter',()=>mktTip.style.display='block');
+          btn.addEventListener('mouseleave',()=>mktTip.style.display='none');
+        }
       }
 
       if(match.length>0){
@@ -2419,6 +2459,38 @@ function buildSeatGrid(zoneId,entries,filter){
           const fn=ff.map(f=>fandomName(f)).join(', ');
           const singleDays=[...new Set(getEntryDays(match[0]))].sort().map(d=>`${d} ${lang==='th'?'มิ.ย.':'Jun'}`).join(', ');
           tip.innerHTML=`<strong>${match[0].nickname||'—'}</strong><br>${fn}<br><span style="color:rgba(255,255,255,.4);font-size:9px">${singleDays||''} · ${match[0].price||''}฿</span>`;
+        }
+        // If this seat also has a marketplace listing, prepend that info into the fandom tip
+        if(mktListing){
+          const isResell=mktListing.listingType==='resell';
+          const contactStr=[mktListing.twitter,mktListing.lineId?`LINE:${mktListing.lineId}`:''].filter(Boolean).join(' / ');
+          const mktBanner=`<div style="margin-bottom:6px;padding:4px 7px;border-radius:6px;background:${isResell?'rgba(239,68,68,.18)':'rgba(59,130,246,.18)'};border:1px solid ${isResell?'rgba(239,68,68,.4)':'rgba(59,130,246,.4)'}"><strong style="font-size:10px;color:${isResell?'#f87171':'#60a5fa'}">${isResell?(lang==='th'?'ขายต่อ':'RESELL'):(lang==='th'?'เทรด':'TRADE')}</strong> <span style="color:rgba(255,255,255,.8)">${Number(mktListing.originalPrice||0).toLocaleString()}฿</span>${contactStr?`<br><span style="font-size:9px;color:rgba(255,255,255,.55)">${contactStr}</span>`:''}</div>`;
+          tip.innerHTML=mktBanner+tip.innerHTML;
+          tip.classList.add('split-day');
+        }
+        // Day indicator badges — only shown in "all days" view; each is clickable to filter to that day
+        if(censusDayFilter==='all'){
+          const has13=by13.length>0, has14=by14.length>0;
+          const wrap=document.createElement('div');
+          wrap.style.cssText='position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);display:flex;gap:2px;z-index:3;white-space:nowrap';
+          btn.style.position='relative';
+          if(has13){
+            const d=document.createElement('div');
+            d.style.cssText='font-size:6.5px;font-weight:800;padding:0 3px;border-radius:3px;background:rgba(167,139,250,.8);color:#fff;line-height:1.5;cursor:pointer';
+            d.textContent='13';
+            d.title=lang==='th'?'คลิกดูวันที่ 13 มิ.ย.':'Filter to 13 Jun';
+            d.addEventListener('click',(e)=>{ e.stopPropagation(); setCensusDayFromSeat('13'); });
+            wrap.appendChild(d);
+          }
+          if(has14){
+            const d=document.createElement('div');
+            d.style.cssText='font-size:6.5px;font-weight:800;padding:0 3px;border-radius:3px;background:rgba(244,114,182,.8);color:#fff;line-height:1.5;cursor:pointer';
+            d.textContent='14';
+            d.title=lang==='th'?'คลิกดูวันที่ 14 มิ.ย.':'Filter to 14 Jun';
+            d.addEventListener('click',(e)=>{ e.stopPropagation(); setCensusDayFromSeat('14'); });
+            wrap.appendChild(d);
+          }
+          btn.appendChild(wrap);
         }
         btn.appendChild(tip);
       } else if(es.length>0)btn.classList.add('dimmed');
@@ -2846,6 +2918,40 @@ async function submitCloseListing(){
   }
 }
 
+/* ─ Reopen a pending_transfer listing back to active ─ */
+async function submitReopenListing(){
+  const listingId=(document.getElementById('cl-listing-id')?.value||'').trim();
+  const ownerKey=(document.getElementById('cl-owner-key')?.value||'').trim();
+  const msg=document.getElementById('cl-status-msg');
+  const btn=document.getElementById('cl-reopen-btn');
+  if(!listingId){if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${lang==='th'?'กรอก Listing ID':'Enter Listing ID'}</span>`;return;}
+  if(!ownerKey){if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${lang==='th'?'กรอก Owner Key':'Enter Owner Key'}</span>`;return;}
+  if(!GAS_URL){toast('❌ GAS URL not set');return;}
+  if(btn){btn.disabled=true;btn.textContent='⏳...';}
+  try{
+    const res=await fetch(GAS_URL,{
+      method:'POST',mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'reopen_listing',listingId,ownerKey})
+    });
+    if(!res.ok) throw new Error(`Status ${res.status}`);
+    const json=await res.json();
+    if(String(json?.status||'').toLowerCase()==='ok'){
+      if(msg)msg.innerHTML=`<span class="seat-ok">✅ ${lang==='th'?'เปิดประกาศใหม่เรียบร้อยแล้ว':'Listing reopened successfully'}</span>`;
+      toast(lang==='th'?'✅ ประกาศกลับมาแสดงบนบอร์ดแล้ว':'✅ Listing is back on the board');
+      await syncMarketplaceData(true);
+      renderMarketplaceListings();
+      setTimeout(closeCloseListingModal,1500);
+    } else {
+      if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${json?.message||'Error'}</span>`;
+    }
+  }catch(err){
+    if(msg)msg.innerHTML=`<span class="seat-warn">❌ ${err.message||'Error'}</span>`;
+  } finally {
+    if(btn){btn.disabled=false;btn.textContent=lang==='th'?'เปิดประกาศใหม่':'Reopen Listing';}
+  }
+}
+
 /* ─ Filter ─ */
 function setMktFilter(key,val){
   if(key==='day'){
@@ -2966,10 +3072,10 @@ async function verifyMpTC(){
     if(String(json?.status||'').toLowerCase()==='ok'&&json?.listingData){
       const d=json.listingData;
       const dayLabel=`${d.day} ${lang==='th'?'มิ.ย.':'Jun'}`;
-      const expStr=d.transferCodeExpiresAt?new Date(d.transferCodeExpiresAt).toLocaleString(lang==='th'?'th-TH':'en-US',{dateStyle:'short',timeStyle:'short'}):'';
-      if(statusEl) statusEl.innerHTML=`<span style="color:#4ade80">✅ ${lang==='th'?'TC ถูกต้อง!':'Valid Transfer Code!'}</span> <span style="color:rgba(255,255,255,.7);font-size:11px">Day ${dayLabel} · Zone <strong>${d.subZone||d.mainZone}</strong> ${lang==='th'?'แถว':'Row'} ${d.row} ${lang==='th'?'ที่':'Seat'} ${d.seatNum} · ${Number(d.originalPrice||0).toLocaleString()}฿${expStr?` · ${lang==='th'?'หมดอายุ':'Expires'} ${expStr}`:''}</span>`;
+      const seatInfo=`<span style="color:rgba(255,255,255,.7);font-size:11px">Day ${dayLabel} · Zone <strong>${d.subZone||d.mainZone}</strong> ${lang==='th'?'แถว':'Row'} ${d.row} ${lang==='th'?'ที่':'Seat'} ${d.seatNum} · ${Number(d.originalPrice||0).toLocaleString()}฿</span>`;
+      if(statusEl) statusEl.innerHTML=`<span style="color:#4ade80">✅ ${lang==='th'?'TC ถูกต้อง!':'Valid Transfer Code!'}</span> ${seatInfo}`;
     } else {
-      if(statusEl) statusEl.innerHTML=`<span style="color:#f87171">❌ ${json?.message||'Transfer Code ไม่ถูกต้องหรือหมดอายุแล้ว'}</span>`;
+      if(statusEl) statusEl.innerHTML=`<span style="color:#f87171">❌ ${json?.message||'Transfer Code ไม่ถูกต้องหรือถูกยกเลิกแล้ว'}</span>`;
     }
   }catch(err){
     if(statusEl) statusEl.innerHTML=`<span style="color:#f87171">❌ ตรวจสอบไม่สำเร็จ: ${err.message||'Error'}</span>`;
@@ -3009,16 +3115,16 @@ let rsDir = 'all';
 let rsTr  = 'all';
 
 const RS_TRANSPORT_LABEL = {
-  car:       '🚗 รถส่วนตัว',
-  grab_taxi: '🟢 Grab/แท็กซี่',
-  van:       '🚐 รถตู้',
-  bts:       '🚇 BTS/MRT',
-  airport:   '✈️ สนามบิน',
+  car:       { th:'🚗 รถส่วนตัว',   en:'🚗 Private Car' },
+  grab_taxi: { th:'🟢 Grab/แท็กซี่', en:'🟢 Grab/Taxi' },
+  van:       { th:'🚐 รถตู้',        en:'🚐 Van/Minibus' },
+  bts:       { th:'🚇 BTS/MRT',      en:'🚇 BTS/MRT' },
+  airport:   { th:'✈️ สนามบิน',      en:'✈️ Airport' },
 };
 const RS_DIR_LABEL = {
-  to_event:   { th:'→ ไปงาน',   badge:'to-event' },
-  from_event: { th:'← กลับบ้าน', badge:'from-event' },
-  both:       { th:'↔ ไป-กลับ', badge:'both' },
+  to_event:   { th:'→ ไปงาน',    en:'→ To Venue',   badge:'to-event' },
+  from_event: { th:'← กลับบ้าน', en:'← Going Home', badge:'from-event' },
+  both:       { th:'↔ ไป-กลับ', en:'↔ Both Ways',  badge:'both' },
 };
 const RS_AREA_PRESETS = [
   // BTS Sukhumvit
@@ -3126,59 +3232,108 @@ function renderRideShareListings(){
   const wrap = document.getElementById('rs-listings');
   const totalEl = document.getElementById('rs-total');
   if(!wrap) return;
-  let data = getRideShareData().filter(r=>r.status==='active'||!r.status);
+  let data = getRideShareData().filter(r=>r.status==='active'||r.status==='full'||!r.status);
   if(rsDay!=='all') data = data.filter(r=>r.day===rsDay||r.day==='both');
   if(rsDir!=='all') data = data.filter(r=>r.direction===rsDir||r.direction==='both');
   if(rsTr!=='all')  data = data.filter(r=>r.transportType===rsTr);
+  // active first, full at bottom
+  data.sort((a,b)=>{
+    const sa = a.status==='full' ? 1 : 0;
+    const sb = b.status==='full' ? 1 : 0;
+    return sa - sb;
+  });
   if(totalEl) totalEl.textContent = data.length;
   if(!data.length){
-    wrap.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px">ยังไม่มีโพสต์ในขณะนี้ · ลองโพสต์เป็นคนแรก!</div>`;
+    wrap.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:rgba(255,255,255,.35);padding:40px 0;font-size:13px">${lang==='en'?'No posts yet · Be the first to post!':'ยังไม่มีโพสต์ในขณะนี้ · ลองโพสต์เป็นคนแรก!'}</div>`;
     return;
   }
   wrap.innerHTML = data.map(r=>renderRsCard(r)).join('');
 }
 
 function renderRsCard(r){
-  const dir = RS_DIR_LABEL[r.direction] || {th:r.direction||'-', badge:'both'};
-  const tr  = RS_TRANSPORT_LABEL[r.transportType] || r.transportType || '-';
-  const day = r.day==='both'?'13+14 มิ.ย.' : (r.day?r.day+' มิ.ย.':'-');
-  const from = r.fromArea||'-';
-  const to   = r.toArea||'-';
+  const dir   = RS_DIR_LABEL[r.direction] || {th:r.direction||'-', en:r.direction||'-', badge:'both'};
+  const trObj = RS_TRANSPORT_LABEL[r.transportType];
+  const tr    = trObj ? (lang==='en'?trObj.en:trObj.th) : (r.transportType||'-');
+  const dirLabel = lang==='en' ? (dir.en||dir.th) : dir.th;
+  const day = r.day==='both'
+    ? (lang==='en'?'13+14 Jun':'13+14 มิ.ย.')
+    : (r.day ? (lang==='en'?r.day+' Jun':r.day+' มิ.ย.') : '-');
+  const from  = r.fromArea||'-';
+  const to    = r.toArea||'-';
   const slots = r.slots||'-';
   const dep   = r.departureTime||'';
   const note  = r.note||'';
   const twitter = r.twitter||'';
   const line    = r.lineId||'';
+  const isFull  = r.status==='full';
+  const mine    = isMyRide(r.rideId);
 
+  const twitterHandle = twitter.replace(/^@/,'');
+  const lineHandle    = line.replace(/^@/,'');
   const contactBtns = [
-    twitter ? `<button class="rs-contact-btn twitter" onclick="window.open('https://twitter.com/'+encodeURIComponent('${twitter.replace(/^@/,'')}'),'_blank')">🐦 @${twitter.replace(/^@/,'')}</button>` : '',
-    line    ? `<button class="rs-contact-btn line" onclick="window.open('https://line.me/ti/p/~'+encodeURIComponent('${line.replace(/^@/,'')}'),'_blank')">💬 LINE: ${line}</button>` : '',
+    twitter ? `<button class="rs-contact-btn twitter" onclick="window.open('https://twitter.com/'+encodeURIComponent('${twitterHandle.replace(/'/g,"\\'")}'),'_blank')">🐦 @${escH(twitterHandle)}</button>` : '',
+    line    ? `<button class="rs-contact-btn line" onclick="window.open('https://line.me/ti/p/~'+encodeURIComponent('${lineHandle.replace(/'/g,"\\'")}'),'_blank')">💬 LINE: ${escH(lineHandle)}</button>` : '',
   ].filter(Boolean).join('');
 
-  return `<div class="rs-card">
+  // Close button — always visible, dimmed + tooltip when not owner's device
+  const closeBtnStyle = mine
+    ? 'rs-close-btn'
+    : 'rs-close-btn rs-close-btn--dim';
+  const closeBtnTitle = mine
+    ? (lang==='en'?'Close this post':'ปิดโพสต์นี้')
+    : (lang==='en'?'Only the original poster can close this post':'เฉพาะผู้โพสต์เท่านั้นที่ปิดได้');
+  const closeBtn = `<button class="${closeBtnStyle}" onclick="openCloseRideShareModal('${escH(r.rideId||'')}')" title="${closeBtnTitle}"${mine?'':' tabindex="-1"'}>✕ ${lang==='en'?'Close':'ปิด'}</button>`;
+
+  // Edit button — only for owner's device
+  const editBtn = mine
+    ? `<button class="rs-edit-btn" onclick="openEditRideShareModal('${escH(r.rideId||'')}')" title="${lang==='en'?'Edit slots / mark full':'แก้ไขจำนวน / ครบแล้ว'}">✏️ ${lang==='en'?'Edit':'แก้ไข'}</button>`
+    : '';
+
+  // Full badge
+  const fullBadge = isFull
+    ? `<span class="rs-full-badge">${lang==='en'?'FULL':'ครบแล้ว'}</span>`
+    : '';
+
+  return `<div class="rs-card${isFull?' rs-card--full':''}">
   <div class="rs-card-header">
-    <span class="rs-badge ${dir.badge}">${dir.th}</span>
-    <button class="rs-close-btn" onclick="openCloseRideShareModal('${r.rideId||''}')">✕ ปิดโพสต์</button>
+    <span class="rs-badge ${dir.badge}">${dirLabel}</span>
+    ${fullBadge}
+    <div class="rs-card-actions">${editBtn}${closeBtn}</div>
   </div>
   <div class="rs-route">${escH(from)} → ${escH(to)}</div>
   <div class="rs-meta">
     <span class="rs-pill">${day}</span>
     <span class="rs-pill">${tr}</span>
-    <span class="rs-pill">👥 ${slots} คน</span>
+    <span class="rs-pill">👥 ${slots} ${lang==='en'?'seats':'คน'}</span>
     ${dep?`<span class="rs-pill">🕐 ${escH(dep)}</span>`:''}
   </div>
   ${note?`<div class="rs-note">${escH(note)}</div>`:''}
-  <div class="rs-contact">${contactBtns||'<span style="font-size:11px;color:rgba(255,255,255,.35)">ไม่มีข้อมูลติดต่อ</span>'}</div>
+  <div class="rs-contact">${contactBtns||`<span style="font-size:11px;color:rgba(255,255,255,.35)">${lang==='en'?'No contact info':'ไม่มีข้อมูลติดต่อ'}</span>`}</div>
   <div style="font-size:10px;color:rgba(255,255,255,.25);margin-top:2px">${r.rideId||''}</div>
 </div>`;
 }
 
 function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ── localStorage helpers for "my" rides ── */
+function getMyRideIds(){
+  try{ return JSON.parse(localStorage.getItem('bbg_my_rides')||'[]'); }
+  catch{ return []; }
+}
+function saveMyRideId(id){
+  if(!id) return;
+  const ids = getMyRideIds();
+  if(!ids.includes(id)){ ids.push(id); localStorage.setItem('bbg_my_rides', JSON.stringify(ids)); }
+}
+function isMyRide(id){
+  if(!id) return false;
+  return getMyRideIds().includes(id);
+}
+
 /* ── Submit ride share form ── */
 async function submitRideShareForm(){
   const btn = document.getElementById('rs-submit-btn');
-  if(btn){ btn.disabled=true; btn.textContent='กำลังโพสต์...'; }
+  if(btn){ btn.disabled=true; btn.textContent=lang==='en'?'Posting...':'กำลังโพสต์...'; }
 
   const day       = document.querySelector('input[name="rs-day"]:checked')?.value||'';
   const direction = document.querySelector('input[name="rs-dir"]:checked')?.value||'';
@@ -3194,119 +3349,206 @@ async function submitRideShareForm(){
   const statusEl = document.getElementById('rs-err-msg');
   const show = (msg,color='#f87171')=>{ if(statusEl){ statusEl.innerHTML=`<span style="color:${color}">${msg}</span>`; }};
 
-  if(!day){ show('กรุณาเลือกวันที่'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
-  if(!direction){ show('กรุณาเลือกทิศทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
-  if(!transport){ show('กรุณาเลือกประเภทการเดินทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
-  if(!fromArea){ show('กรุณาระบุจุดออกเดินทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
-  if(!toArea){ show('กรุณาระบุจุดหมายปลายทาง'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
-  if(!twitter&&!lineId){ show('กรุณาใส่ช่องทางติดต่ออย่างน้อย 1 ช่อง (Twitter หรือ LINE)'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!day)       { show(lang==='en'?'Please select a day':'กรุณาเลือกวัน');          if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!direction) { show(lang==='en'?'Please select direction':'กรุณาเลือกทิศทาง');   if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!transport) { show(lang==='en'?'Please select transport':'กรุณาเลือกการเดินทาง'); if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!fromArea)  { show(lang==='en'?'Please enter departure area':'กรุณากรอกจุดนัด'); if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!toArea)    { show(lang==='en'?'Please enter destination':'กรุณากรอกปลายทาง');  if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';} return; }
+  if(!twitter && !lineId){ show(lang==='en'?'Please enter Twitter or LINE ID':'กรุณากรอก Twitter หรือ LINE ID อย่างน้อย 1 ช่อง'); if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';} return; }
+
+  const closeKey = 'CK-' + Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
 
   const payload = {
     action:'save_rideshare',
     day, direction, transportType:transport,
-    fromArea, toArea, slots, departureTime:dep,
-    twitter, lineId, note
+    fromArea, toArea, slots:Number(slots)||1,
+    departureTime:dep, twitter, lineId, note,
+    closeKey, ts: Date.now()
   };
 
-  try{
-    if(!GAS_URL){ show('ยังไม่ได้ตั้งค่า GAS_URL'); if(btn){btn.disabled=false;btn.textContent='🚗 ลงประกาศร่วมเดินทาง';} return; }
-    const res = await fetch(GAS_URL, { method:'POST', body:JSON.stringify(payload) });
-    const json = await res.json();
-    if(json.status==='ok'){
-      show('');
-      // refresh cache
-      await syncRideShareData(true);
-      renderRideShareListings();
-      // reset form
-      document.querySelectorAll('input[name="rs-day"]').forEach(r=>r.checked=false);
-      document.querySelectorAll('input[name="rs-dir"]').forEach(r=>r.checked=false);
-      document.querySelectorAll('input[name="rs-transport"]').forEach(r=>r.checked=false);
-      ['rs-from-area','rs-to-area','rs-departure-time','rs-twitter','rs-line-id','rs-note'].forEach(id=>{
-        const el=document.getElementById(id); if(el) el.value='';
+  let rideId = '';
+  if(GAS_URL){
+    try{
+      const res = await fetch(GAS_URL,{
+        method:'POST', mode:'cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify(payload)
       });
-      const slotsEl=document.getElementById('rs-slots'); if(slotsEl) slotsEl.value='2';
-      // go to board
-      goPage('board');
-      setBoardTab('rideshare');
-      // show success modal after delay
-      setTimeout(()=>openRsSuccessModal(json.rideId, json.closeKey), 400);
-    } else {
-      show(json.message||'โพสต์ไม่สำเร็จ');
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      if(String(json?.status||'').toLowerCase()==='duplicate'){
+        show(json.message||'Duplicate post');
+        if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';}
+        return;
+      }
+      if(String(json?.status||'').toLowerCase()!=='ok'){
+        show(json?.message||'Error posting');
+        if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';}
+        return;
+      }
+      rideId = String(json?.rideId||'');
+      saveMyRideId(rideId);
+      await syncRideShareData(true);
+    }catch(err){
+      console.warn('RS submit error',err);
+      // Local fallback
+      rideId = 'SR-local-' + Date.now();
+      const localEntry = {rideId,status:'active',day,direction,transportType:transport,fromArea,toArea,
+        slots:Number(slots)||1,departureTime:dep,twitter,lineId,note,createdAt:new Date().toISOString()};
+      saveRideShareLocal([...getRideShareData(),localEntry]);
+      saveMyRideId(rideId);
+      toast(lang==='en'?'🚗 Saved locally · API unavailable':'🚗 บันทึก Local แล้ว · API ไม่ตอบสนอง');
     }
-  }catch(err){
-    show('เกิดข้อผิดพลาด: '+(err.message||'Network error'));
-  } finally {
-    if(btn){ btn.disabled=false; btn.textContent='🚗 ลงประกาศร่วมเดินทาง'; }
+  } else {
+    show(lang==='en'?'Google Apps Script URL not set':'ยังไม่ได้ตั้งค่า GAS URL');
+    if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';}
+    return;
   }
+
+  // Reset form
+  document.querySelectorAll('input[name="rs-day"],input[name="rs-dir"],input[name="rs-transport"]').forEach(i=>i.checked=false);
+  ['rs-from-area','rs-to-area','rs-departure-time','rs-twitter','rs-line-id','rs-note'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  const slotsEl=document.getElementById('rs-slots'); if(slotsEl) slotsEl.value='1';
+  if(statusEl) statusEl.innerHTML='';
+  if(btn){btn.disabled=false;btn.textContent=lang==='en'?'🚗 Post Ride':'🚗 ลงประกาศร่วมเดินทาง';}
+
+  openRsSuccessModal(rideId, closeKey);
+  renderRideShareListings();
+  toast(lang==='en'?'🚗 Ride post published!':'🚗 โพสต์ร่วมเดินทางสำเร็จ!');
 }
 
-/* ── RideShare Success modal ── */
+/* ── RideShare success modal ── */
 function openRsSuccessModal(rideId, closeKey){
-  const m = document.getElementById('rs-success-modal');
-  if(!m) return;
+  const modal = document.getElementById('rs-success-modal');
+  if(!modal) return;
   const idEl  = document.getElementById('rs-success-id');
   const keyEl = document.getElementById('rs-success-key');
   if(idEl)  idEl.textContent  = rideId||'-';
   if(keyEl) keyEl.textContent = closeKey||'-';
-  m.setAttribute('aria-hidden','false');
-  m.classList.add('open');
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
 }
-
 function closeRsSuccessModal(){
-  const m = document.getElementById('rs-success-modal');
-  if(m){ m.setAttribute('aria-hidden','true'); m.classList.remove('open'); }
+  const modal = document.getElementById('rs-success-modal');
+  if(!modal) return;
+  modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
 }
-
 function copyRsKey(){
   const keyEl = document.getElementById('rs-success-key');
   if(!keyEl) return;
-  navigator.clipboard?.writeText(keyEl.textContent||'').then(()=>toast('📋 คัดลอก Close Key แล้ว')).catch(()=>{});
+  navigator.clipboard.writeText(keyEl.textContent||'').then(()=>{
+    toast(lang==='en'?'✅ Close Key copied!':'✅ คัดลอก Close Key แล้ว');
+  }).catch(()=>{
+    toast(lang==='en'?'Copy failed — select manually':'คัดลอกไม่ได้ — กรุณา copy เอง');
+  });
 }
 
 /* ── Close RideShare modal ── */
-function openCloseRideShareModal(rideId=''){
-  const m = document.getElementById('close-rideshare-modal');
-  if(!m) return;
-  const idEl = document.getElementById('crs-ride-id');
-  if(idEl && rideId) idEl.value = rideId;
-  const keyEl = document.getElementById('crs-close-key');
-  if(keyEl) keyEl.value = '';
-  const statusEl = document.getElementById('crs-status-msg');
-  if(statusEl) statusEl.innerHTML='';
-  m.setAttribute('aria-hidden','false');
-  m.classList.add('open');
+function openCloseRideShareModal(rideId){
+  const modal = document.getElementById('close-rideshare-modal');
+  if(!modal) return;
+  const rideFld = document.getElementById('crs-ride-id');
+  if(rideFld) rideFld.value = rideId||'';
+  const keyFld = document.getElementById('crs-close-key');
+  if(keyFld) keyFld.value = '';
+  const msg = document.getElementById('crs-status-msg');
+  if(msg) msg.innerHTML='';
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
 }
-
 function closeCloseRideShareModal(){
-  const m = document.getElementById('close-rideshare-modal');
-  if(m){ m.setAttribute('aria-hidden','true'); m.classList.remove('open'); }
+  const modal = document.getElementById('close-rideshare-modal');
+  if(!modal) return;
+  modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
 }
-
 async function submitCloseRideShare(){
-  const btn = document.getElementById('crs-submit-btn');
-  if(btn){ btn.disabled=true; btn.textContent='กำลังปิด...'; }
   const rideId   = (document.getElementById('crs-ride-id')?.value||'').trim();
   const closeKey = (document.getElementById('crs-close-key')?.value||'').trim();
-  const statusEl = document.getElementById('crs-status-msg');
-  const show = (msg,color='#f87171')=>{ if(statusEl) statusEl.innerHTML=`<span style="color:${color}">${msg}</span>`; };
+  const msgEl    = document.getElementById('crs-status-msg');
+  const btn      = document.getElementById('crs-submit-btn');
+  const show = (msg,color='#f87171')=>{ if(msgEl) msgEl.innerHTML=`<span style="color:${color}">${msg}</span>`; };
 
-  if(!rideId){ show('กรุณาระบุ Ride ID'); if(btn){btn.disabled=false;btn.textContent='ยืนยันปิดโพสต์';} return; }
-  if(!closeKey){ show('กรุณาระบุ Close Key'); if(btn){btn.disabled=false;btn.textContent='ยืนยันปิดโพสต์';} return; }
+  if(!rideId)   { show(lang==='en'?'Please enter Ride ID':'กรุณากรอก Ride ID'); return; }
+  if(!closeKey) { show(lang==='en'?'Please enter Close Key':'กรุณากรอก Close Key'); return; }
+
+  if(btn){ btn.disabled=true; btn.textContent=lang==='en'?'Closing...':'กำลังปิด...'; }
 
   try{
-    const res = await fetch(GAS_URL, { method:'POST', body:JSON.stringify({ action:'close_rideshare', rideId, closeKey }) });
+    const res = await fetch(GAS_URL,{
+      method:'POST', mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'close_rideshare', rideId, closeKey, ts:Date.now()})
+    });
     const json = await res.json();
-    if(json.status==='ok'){
-      show('✅ ปิดโพสต์สำเร็จ','#4ade80');
+    if(String(json?.status||'').toLowerCase()==='ok'){
+      show(lang==='en'?'✅ Post closed!':'✅ ปิดโพสต์เรียบร้อย','#4ade80');
       await syncRideShareData(true);
       renderRideShareListings();
-      setTimeout(()=>{ closeCloseRideShareModal(); toast('🚗 ปิดโพสต์ร่วมเดินทางแล้ว'); }, 1200);
+      setTimeout(()=>closeCloseRideShareModal(), 1200);
     } else {
-      show(json.message||'ปิดไม่สำเร็จ — ตรวจสอบ Ride ID และ Close Key');
+      show(json?.message||(lang==='en'?'Error — check Ride ID & Close Key':'ผิดพลาด — ตรวจสอบ Ride ID และ Close Key'));
     }
   }catch(err){
-    show('เกิดข้อผิดพลาด: '+(err.message||'Network error'));
-  } finally {
-    if(btn){ btn.disabled=false; btn.textContent='ยืนยันปิดโพสต์'; }
+    show(lang==='en'?'Network error — try again':'ข้อผิดพลาดเครือข่าย');
+    console.warn('close rideshare error',err);
   }
+  if(btn){ btn.disabled=false; btn.textContent=lang==='en'?'Confirm Close':'ยืนยันปิดโพสต์'; }
+}
+
+/* ── Edit RideShare modal ── */
+function openEditRideShareModal(rideId){
+  const modal = document.getElementById('edit-rideshare-modal');
+  if(!modal) return;
+  // Pre-fill rideId; find current slots from data
+  const rideFld = document.getElementById('ers-ride-id');
+  if(rideFld) rideFld.value = rideId||'';
+  const allData = getRideShareData();
+  const entry   = allData.find(r=>r.rideId===rideId);
+  const slotsFld = document.getElementById('ers-slots');
+  if(slotsFld) slotsFld.value = entry?.slots||1;
+  const fullChk = document.getElementById('ers-mark-full');
+  if(fullChk) fullChk.checked = entry?.status==='full';
+  const msg = document.getElementById('ers-status-msg');
+  if(msg) msg.innerHTML='';
+  modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+}
+function closeEditRideShareModal(){
+  const modal = document.getElementById('edit-rideshare-modal');
+  if(!modal) return;
+  modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+}
+async function submitEditRideShare(){
+  const rideId   = (document.getElementById('ers-ride-id')?.value||'').trim();
+  const closeKey = (document.getElementById('ers-close-key')?.value||'').trim();
+  const slots    = Number(document.getElementById('ers-slots')?.value||1);
+  const markFull = document.getElementById('ers-mark-full')?.checked||false;
+  const msgEl    = document.getElementById('ers-status-msg');
+  const btn      = document.getElementById('ers-submit-btn');
+  const show = (msg,color='#f87171')=>{ if(msgEl) msgEl.innerHTML=`<span style="color:${color}">${msg}</span>`; };
+
+  if(!rideId)   { show(lang==='en'?'Missing Ride ID':'ไม่พบ Ride ID'); return; }
+  if(!closeKey) { show(lang==='en'?'Please enter Close Key':'กรุณากรอก Close Key'); return; }
+
+  if(btn){ btn.disabled=true; btn.textContent=lang==='en'?'Saving...':'กำลังบันทึก...'; }
+
+  try{
+    const res = await fetch(GAS_URL,{
+      method:'POST', mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({action:'edit_rideshare', rideId, closeKey, slots, markFull, ts:Date.now()})
+    });
+    const json = await res.json();
+    if(String(json?.status||'').toLowerCase()==='ok'){
+      show(lang==='en'?'✅ Updated!':'✅ อัปเดตเรียบร้อย','#4ade80');
+      await syncRideShareData(true);
+      renderRideShareListings();
+      setTimeout(()=>closeEditRideShareModal(), 1200);
+    } else {
+      show(json?.message||(lang==='en'?'Error — check Close Key':'ผิดพลาด — ตรวจสอบ Close Key'));
+    }
+  }catch(err){
+    show(lang==='en'?'Network error — try again':'ข้อผิดพลาดเครือข่าย');
+    console.warn('edit rideshare error',err);
+  }
+  if(btn){ btn.disabled=false; btn.textContent=lang==='en'?'Save Changes':'บันทึก'; }
 }
